@@ -1,0 +1,3703 @@
+{
+  "clinics": [
+    {
+      "name": "Lotus Medical Center LLC (Med7 Clinic)",
+      "lat": 25.151787,
+      "lng": 55.241901
+    },
+    {
+      "name": "Aster Al Quoz",
+      "lat": 25.1474399,
+      "lng": 55.246036499999995
+    },
+    {
+      "name": "Sekher Medical Clinic LLc",
+      "lat": 25.154812399999997,
+      "lng": 55.2473555
+    },
+    {
+      "name": "Lifeline Clinic Al Quoz",
+      "lat": 25.1386875,
+      "lng": 55.258123499999996
+    },
+    {
+      "name": "DR SANJAY MEDICAL CENTER - DUBAI",
+      "lat": 25.1493728,
+      "lng": 55.245792099999996
+    },
+    {
+      "name": "NMC Medical Center, Al Qouz Branch",
+      "lat": 25.149184899999998,
+      "lng": 55.2462495
+    },
+    {
+      "name": "Toronto Medical Center",
+      "lat": 25.151239099999998,
+      "lng": 55.2433263
+    },
+    {
+      "name": "Aster Royal Clinic Downtown",
+      "lat": 25.192055999999997,
+      "lng": 55.274493899999996
+    },
+    {
+      "name": "Right Health Karama Medical Center (Al Khail Gate) Dubai",
+      "lat": 25.1389034,
+      "lng": 55.252958799999995
+    },
+    {
+      "name": "WellCare Advanced Poly Clinic",
+      "lat": 25.151947,
+      "lng": 55.2421112
+    },
+    {
+      "name": "Care & Cure Medical Center LLC Al Quze Dubai",
+      "lat": 25.1558142,
+      "lng": 55.2485089
+    },
+    {
+      "name": "Absolute Wellness Medical Center Dubai",
+      "lat": 25.153478699999997,
+      "lng": 55.243763599999994
+    },
+    {
+      "name": "Aster Clinic Emirates Towers Sheikh Zayed Road",
+      "lat": 25.2179871,
+      "lng": 55.278742099999995
+    },
+    {
+      "name": "iCARE Clinic - Oasis Centre",
+      "lat": 25.168783599999998,
+      "lng": 55.241886300000004
+    },
+    {
+      "name": "Life GP Clinic - Oasis Mall",
+      "lat": 25.1697354,
+      "lng": 55.2413568
+    },
+    {
+      "name": "Medi Sense Clinic",
+      "lat": 25.162835899999997,
+      "lng": 55.2346918
+    },
+    {
+      "name": "Life Medical Centre - DWTC",
+      "lat": 25.2240258,
+      "lng": 55.2854391
+    },
+    {
+      "name": "Mediclinic Dubai Mall",
+      "lat": 25.1981824,
+      "lng": 55.276353
+    },
+    {
+      "name": "YASMED CLINIC Al Quoz",
+      "lat": 25.1324006,
+      "lng": 55.2523133
+    },
+    {
+      "name": "REMEDY PLUS MEDICAL CLINC",
+      "lat": 25.1553544,
+      "lng": 55.248029599999995
+    },
+    {
+      "name": "VETS & PETS Dubai - Italian Veterinary Clinic",
+      "lat": 25.174580499999998,
+      "lng": 55.2308608
+    },
+    {
+      "name": "Pure Life Veterinary Clinic Dubai",
+      "lat": 25.1690698,
+      "lng": 55.215084999999995
+    },
+    {
+      "name": "Modern Vet Hospital",
+      "lat": 25.161277899999998,
+      "lng": 55.2212841
+    },
+    {
+      "name": "Noble Veterinary Clinic Jumeirah",
+      "lat": 25.171701,
+      "lng": 55.2249663
+    },
+    {
+      "name": "Petbook veterinary clinic",
+      "lat": 25.1629431,
+      "lng": 55.234983899999996
+    },
+    {
+      "name": "Umm Suqeim Veterinary Centre",
+      "lat": 25.1483124,
+      "lng": 55.210488399999996
+    },
+    {
+      "name": "Modern Vet Downtown",
+      "lat": 25.1877998,
+      "lng": 55.2788046
+    },
+    {
+      "name": "Dr. Well Veterinary Clinic",
+      "lat": 25.1524757,
+      "lng": 55.213839199999995
+    },
+    {
+      "name": "Al Barsha Veterinary Clinic LLC",
+      "lat": 25.1134788,
+      "lng": 55.194440699999994
+    },
+    {
+      "name": "The City Vet Clinic - Al Wasl Branch",
+      "lat": 25.155001799999997,
+      "lng": 55.2165299
+    },
+    {
+      "name": "Pet Xpress Vet Clinic",
+      "lat": 25.1632863,
+      "lng": 55.2476026
+    },
+    {
+      "name": "Amity Veterinary Clinic",
+      "lat": 25.089482399999998,
+      "lng": 55.1907851
+    },
+    {
+      "name": "ECVC - EuroPets Care Veterinary Clinic",
+      "lat": 25.1501214,
+      "lng": 55.2302738
+    },
+    {
+      "name": "THE VETERINARY HOSPITAL",
+      "lat": 25.1380832,
+      "lng": 55.2032695
+    },
+    {
+      "name": "Nad Al Shiba Veterinary Clinic",
+      "lat": 25.154092499999997,
+      "lng": 55.289918899999996
+    },
+    {
+      "name": "Whiskers and Wags Veterinary Clinic",
+      "lat": 25.1848787,
+      "lng": 55.2420279
+    },
+    {
+      "name": "Zabeel Veterinary Hospital",
+      "lat": 25.21048,
+      "lng": 55.288326299999994
+    },
+    {
+      "name": "Pet Connection Veterinary Clinic Dubai Al Barsha 1",
+      "lat": 25.1153957,
+      "lng": 55.2056038
+    },
+    {
+      "name": "Purr and Bark Pet Veterinary Clinic",
+      "lat": 25.067959,
+      "lng": 55.2338008
+    },
+    {
+      "name": "Dogventurez Vet Clinic",
+      "lat": 25.1182442,
+      "lng": 55.218788399999994
+    }
+  ],
+  "nurseries": [
+    {
+      "name": "Green Grass Nursery - Nursery Near Al Manara, Dubai",
+      "lat": 25.138831,
+      "lng": 55.213318199999996
+    },
+    {
+      "name": "Alphabet Street Nursery",
+      "lat": 25.151479,
+      "lng": 55.2176881
+    },
+    {
+      "name": "Le Petit Poucet Nursery and Kindergarten",
+      "lat": 25.1694872,
+      "lng": 55.2320724
+    },
+    {
+      "name": "Blue Bird Nursery - Al Quoz",
+      "lat": 25.1677808,
+      "lng": 55.253553999999994
+    },
+    {
+      "name": "The Forest Oasis Nursery- their space to grow!",
+      "lat": 25.147282,
+      "lng": 55.200897299999994
+    },
+    {
+      "name": "Little Land Nursery & Montessori Centre",
+      "lat": 25.157220799999997,
+      "lng": 55.2085266
+    },
+    {
+      "name": "Step By Step Nursery - Jumeirah",
+      "lat": 25.1757475,
+      "lng": 55.2440388
+    },
+    {
+      "name": "Kids Island Nursery Dubai",
+      "lat": 25.178857999999998,
+      "lng": 55.225347
+    },
+    {
+      "name": "Little Wonders Nursery Dubai",
+      "lat": 25.149441,
+      "lng": 55.221275999999996
+    },
+    {
+      "name": "Maple Bear Nursery Jumeirah",
+      "lat": 25.1681444,
+      "lng": 55.236326999999996
+    },
+    {
+      "name": "The Little Dreamers Nursery - Nursery in Dubai , Jumeirah 3",
+      "lat": 25.1897694,
+      "lng": 55.2327471
+    },
+    {
+      "name": "Odyssey Nursery Burj Al Arab - Dubai",
+      "lat": 25.130175299999998,
+      "lng": 55.2036206
+    },
+    {
+      "name": "Kids Spot Nursery - Jumeirah",
+      "lat": 25.203323599999997,
+      "lng": 55.254764699999996
+    },
+    {
+      "name": "Little Learners Nursery",
+      "lat": 25.1424544,
+      "lng": 55.2117065
+    },
+    {
+      "name": "Ladybird Nursery Jumeirah",
+      "lat": 25.2015533,
+      "lng": 55.2521324
+    },
+    {
+      "name": "Little Angel Nursery",
+      "lat": 25.1819864,
+      "lng": 55.2267478
+    },
+    {
+      "name": "Azbuka Nursery",
+      "lat": 25.1376559,
+      "lng": 55.212191399999995
+    },
+    {
+      "name": "Jumeirah International Nursery",
+      "lat": 25.1769082,
+      "lng": 55.2385841
+    },
+    {
+      "name": "Westfield Nursery",
+      "lat": 25.1987985,
+      "lng": 55.2616094
+    }
+  ],
+  "banks": [
+    {
+      "name": "Commercial Bank of Dubai - Al Quoz Branch",
+      "lat": 25.130428199999997,
+      "lng": 55.212742399999996
+    },
+    {
+      "name": "RAKBANK Branch - Al Quoz",
+      "lat": 25.162581,
+      "lng": 55.234472
+    },
+    {
+      "name": "Al Masraf - Sheikh Zayed Branch",
+      "lat": 25.1431707,
+      "lng": 55.2210124
+    },
+    {
+      "name": "Emirates NBD - Burj Khalifa Branch",
+      "lat": 25.1999,
+      "lng": 55.2742
+    },
+    {
+      "name": "Abu Dhabi Islamic Bank - Sh. Zayed Road",
+      "lat": 25.189662,
+      "lng": 55.257009999999994
+    },
+    {
+      "name": "Ajman Bank - Sheikh Zayed Road",
+      "lat": 25.1294893,
+      "lng": 55.209567199999995
+    },
+    {
+      "name": "MCB Bank Limited Dubai",
+      "lat": 25.128038999999998,
+      "lng": 55.2076928
+    },
+    {
+      "name": "National Bank of Oman - Dubai Branch",
+      "lat": 25.1295573,
+      "lng": 55.2096696
+    },
+    {
+      "name": "Arab Bank - Business Bay Branch",
+      "lat": 25.1924605,
+      "lng": 55.2621371
+    },
+    {
+      "name": "Emirates NBD - Jumeirah Branch",
+      "lat": 25.2114203,
+      "lng": 55.2572085
+    },
+    {
+      "name": "Emirates NBD - Dubai Mall Branch",
+      "lat": 25.1980571,
+      "lng": 55.279014999999994
+    },
+    {
+      "name": "BANQUE BANORIENT FRANCE",
+      "lat": 25.188505199999998,
+      "lng": 55.271918
+    },
+    {
+      "name": "Arab Bank HO UAE- Dubai",
+      "lat": 25.200808499999997,
+      "lng": 55.2717159
+    },
+    {
+      "name": "Emirates NBD - Emirates Towers Branch",
+      "lat": 25.2170901,
+      "lng": 55.2825171
+    },
+    {
+      "name": "HBL Habib Bank Limited",
+      "lat": 25.1383993,
+      "lng": 55.2160243
+    },
+    {
+      "name": "Invest Bank",
+      "lat": 25.2000352,
+      "lng": 55.2664889
+    },
+    {
+      "name": "Emirates NBD - Dubai Hills Mall Branch",
+      "lat": 25.1030014,
+      "lng": 55.237798399999996
+    },
+    {
+      "name": "Emirates NBD ATM & CDM",
+      "lat": 25.0861856,
+      "lng": 55.148317899999995
+    },
+    {
+      "name": "Emirates Islamic ATM & CDM",
+      "lat": 25.087811499999997,
+      "lng": 55.1472443
+    },
+    {
+      "name": "Mashreq ATM - Address Dubai Marina Hotel",
+      "lat": 25.0775076,
+      "lng": 55.140283999999994
+    },
+    {
+      "name": "HSBC ATM - Dubai Marina Walk",
+      "lat": 25.0859262,
+      "lng": 55.1482113
+    },
+    {
+      "name": "Emirates NBD ATM",
+      "lat": 25.0844199,
+      "lng": 55.1443301
+    },
+    {
+      "name": "Samba - ATM - Dubai Marina Walk",
+      "lat": 25.075889099999998,
+      "lng": 55.1322745
+    },
+    {
+      "name": "HSBC ATM - Dubai Marina Mall",
+      "lat": 25.0769913,
+      "lng": 55.140447599999995
+    },
+    {
+      "name": "Mashreq ATM - W Dubai Mina seyahi",
+      "lat": 25.09158,
+      "lng": 55.146739999999994
+    },
+    {
+      "name": "Mashreq ATM - Rixos Premium Hotels",
+      "lat": 25.080141299999998,
+      "lng": 55.1355077
+    },
+    {
+      "name": "Mashreq ATM - The Westin Dubai Mina Seyahi Beach Resort & Marina",
+      "lat": 25.09295,
+      "lng": 55.148686
+    },
+    {
+      "name": "Mashreq ATM - Vida Dubai Marina and Yatch Club",
+      "lat": 25.072387499999998,
+      "lng": 55.1361176
+    },
+    {
+      "name": "ATM",
+      "lat": 25.0852066,
+      "lng": 55.1436706
+    },
+    {
+      "name": "Mashreq ATM - Le Meridien Mina Seyahi Beach Resort & Marina",
+      "lat": 25.0919025,
+      "lng": 55.147220700000005
+    },
+    {
+      "name": "Mashreq ATM - Carrefour Market",
+      "lat": 25.082224999999998,
+      "lng": 55.14747
+    },
+    {
+      "name": "Arab Bank Roxy Cinema ATM - \u0635\u0631\u0627\u0641 \u0622\u0644\u064a \u0631\u0648\u0643\u0633 \u0633\u064a\u0646\u0645\u0627",
+      "lat": 25.078136399999998,
+      "lng": 55.1335969
+    }
+  ],
+  "services": [
+    {
+      "name": "Emirates Post - Al Quoz Fourth Post Office",
+      "lat": 25.150586399999998,
+      "lng": 55.2488403
+    },
+    {
+      "name": "Emirates Post \u2013 Al Quoz Delivery Center",
+      "lat": 25.154837,
+      "lng": 55.2331048
+    },
+    {
+      "name": "NXN - Dubai Central (formerly Emirates Post)",
+      "lat": 25.244688399999998,
+      "lng": 55.3092365
+    },
+    {
+      "name": "Emirates Post - Jumeirah Post Office.",
+      "lat": 25.2060406,
+      "lng": 55.2538128
+    },
+    {
+      "name": "NXN - Al Barsha Post Office (formerly Emirates Post)",
+      "lat": 25.0998129,
+      "lng": 55.2057784
+    },
+    {
+      "name": "NXN - Umm Suqeim Post Office (formerly Emirates Post)",
+      "lat": 25.144960899999997,
+      "lng": 55.2036356
+    },
+    {
+      "name": "Emirates Post",
+      "lat": 25.222445999999998,
+      "lng": 55.28750530000001
+    },
+    {
+      "name": "Emirates Post - Al Bada'a Post office",
+      "lat": 25.209911299999998,
+      "lng": 55.270229799999996
+    },
+    {
+      "name": "Emirates Post - DIFC Post Office",
+      "lat": 25.2139189,
+      "lng": 55.280333199999994
+    },
+    {
+      "name": "Emirates Post - TECOM Post Office",
+      "lat": 25.1021574,
+      "lng": 55.1617239
+    },
+    {
+      "name": "Emirates Post - Deira Main Post Office",
+      "lat": 25.2822981,
+      "lng": 55.3472083
+    },
+    {
+      "name": "Emirates Post Warehouse",
+      "lat": 25.1552207,
+      "lng": 55.2333965
+    },
+    {
+      "name": "NXN Kiosk - Dubai Mall (formerly Emirates Post)",
+      "lat": 25.197197199999998,
+      "lng": 55.280155799999996
+    },
+    {
+      "name": "Emirates Post - DMCC Post Office",
+      "lat": 25.068983600000003,
+      "lng": 55.1412048
+    },
+    {
+      "name": "Emirates Post - Al Mussala Post Office",
+      "lat": 25.262858700000002,
+      "lng": 55.299540099999994
+    },
+    {
+      "name": "Emirates Post - Al Riqqa Post Office",
+      "lat": 25.260011499999997,
+      "lng": 55.3262328
+    },
+    {
+      "name": "Emirates Post - Al Ramool Post Office",
+      "lat": 25.2361508,
+      "lng": 55.3580611
+    },
+    {
+      "name": "Emirates Post - Al Khor Post Office",
+      "lat": 25.2679246,
+      "lng": 55.303587199999996
+    },
+    {
+      "name": "7X Head Office",
+      "lat": 25.236850099999998,
+      "lng": 55.358469199999995
+    },
+    {
+      "name": "Emarat - Ittihad",
+      "lat": 25.167261399999997,
+      "lng": 55.2362977
+    },
+    {
+      "name": "Emarat- Quoz",
+      "lat": 25.1761797,
+      "lng": 55.254573799999996
+    },
+    {
+      "name": "Emarat- Shurooq",
+      "lat": 25.134662,
+      "lng": 55.21379
+    },
+    {
+      "name": "Emarat - Ghadeer",
+      "lat": 25.153233,
+      "lng": 55.21517300000001
+    },
+    {
+      "name": "Emarat- Chicago Beach",
+      "lat": 25.147336,
+      "lng": 55.196422999999996
+    },
+    {
+      "name": "Pronto, ENOC Al Khail Station",
+      "lat": 25.153083799999997,
+      "lng": 55.262399200000004
+    },
+    {
+      "name": "Emarat- Abu Kadra",
+      "lat": 25.192259,
+      "lng": 55.309115
+    },
+    {
+      "name": "Emarat- Safa",
+      "lat": 25.2040424,
+      "lng": 55.2520648
+    },
+    {
+      "name": "Car Wash",
+      "lat": 25.167428599999997,
+      "lng": 55.2360724
+    },
+    {
+      "name": "Crystal Shine Car Care",
+      "lat": 25.1627382,
+      "lng": 55.2398793
+    },
+    {
+      "name": "ProWash - 1075",
+      "lat": 25.1530952,
+      "lng": 55.2602386
+    },
+    {
+      "name": "ProWash - 1013",
+      "lat": 25.150311,
+      "lng": 55.244668999999995
+    },
+    {
+      "name": "TUBEWASH",
+      "lat": 25.1376977,
+      "lng": 55.217555
+    },
+    {
+      "name": "BlueVerse Auto Care Centre",
+      "lat": 25.1422238,
+      "lng": 55.257964799999996
+    },
+    {
+      "name": "7 Road Auto Care",
+      "lat": 25.1396259,
+      "lng": 55.2389405
+    },
+    {
+      "name": "Good Steam Auto Center",
+      "lat": 25.1598834,
+      "lng": 55.2386826
+    },
+    {
+      "name": "ProWash - 73",
+      "lat": 25.178364,
+      "lng": 55.253636
+    },
+    {
+      "name": "Grand Service Station Jumeirah",
+      "lat": 25.206806699999998,
+      "lng": 55.268400199999995
+    },
+    {
+      "name": "Zenith Car Washing and Cleaning",
+      "lat": 25.1195997,
+      "lng": 55.227002799999994
+    },
+    {
+      "name": "Dar Al Madina Car Wash",
+      "lat": 25.138720199999998,
+      "lng": 55.2486806
+    },
+    {
+      "name": "Kenzie's Car Wash",
+      "lat": 25.1363164,
+      "lng": 55.2224386
+    },
+    {
+      "name": "ProWash - 1060",
+      "lat": 25.09688,
+      "lng": 55.16491500000001
+    },
+    {
+      "name": "Shiners Premium Mobile Car Wash",
+      "lat": 25.144740199999998,
+      "lng": 55.2300951
+    },
+    {
+      "name": "BAZA Car Wash",
+      "lat": 25.1093907,
+      "lng": 55.2260619
+    },
+    {
+      "name": "ProWash - 1099",
+      "lat": 25.118109,
+      "lng": 55.207679000000006
+    },
+    {
+      "name": "Al Ashar parking car washing LLC",
+      "lat": 25.1541696,
+      "lng": 55.2560989
+    },
+    {
+      "name": "Wheel to Wheel Auto Service Station",
+      "lat": 25.117788200000003,
+      "lng": 55.2088592
+    },
+    {
+      "name": "Al Missan Car wash",
+      "lat": 25.1514047,
+      "lng": 55.250782
+    },
+    {
+      "name": "Car Wash Alqouz",
+      "lat": 25.1196271,
+      "lng": 55.227188899999994
+    },
+    {
+      "name": "Richies Laundry & Cleaning Services",
+      "lat": 25.1379155,
+      "lng": 55.2338918
+    },
+    {
+      "name": "Maxpress Dry Cleaning Services LLC",
+      "lat": 25.1797163,
+      "lng": 55.272035499999994
+    },
+    {
+      "name": "Smiley Laundry",
+      "lat": 25.1717746,
+      "lng": 55.2562315
+    },
+    {
+      "name": "Al Quoz Laundry",
+      "lat": 25.160352900000003,
+      "lng": 55.259159499999996
+    },
+    {
+      "name": "Dashtik Dry Cleaning L.L.C",
+      "lat": 25.1542194,
+      "lng": 55.2594049
+    },
+    {
+      "name": "Al Ameed Laundry Alqouz 4-Dubai",
+      "lat": 25.1514323,
+      "lng": 55.2506674
+    },
+    {
+      "name": "Rayan Laundry",
+      "lat": 25.178506900000002,
+      "lng": 55.2661429
+    },
+    {
+      "name": "Blossom Laundry Business Bay",
+      "lat": 25.1622326,
+      "lng": 55.2397018
+    },
+    {
+      "name": "Laundroville - Laundry & Dry Cleaning",
+      "lat": 25.116216299999998,
+      "lng": 55.205853
+    },
+    {
+      "name": "Washmen\u2122 - 25/Mins Home Pickup!",
+      "lat": 25.186934400000002,
+      "lng": 55.277642799999995
+    },
+    {
+      "name": "Bay Laundry L.LC",
+      "lat": 25.1888777,
+      "lng": 55.26473480000001
+    },
+    {
+      "name": "Downtown Dry Cleaners Laundry - Dubai Hills Estate",
+      "lat": 25.1235085,
+      "lng": 55.2606816
+    },
+    {
+      "name": "Golden Dashtik Laundry",
+      "lat": 25.160742700000004,
+      "lng": 55.250807900000005
+    },
+    {
+      "name": "Express Laundry Dryclean Shop",
+      "lat": 25.194944,
+      "lng": 55.2718585
+    },
+    {
+      "name": "Maham Laundry & Dry Cleaning",
+      "lat": 25.1788323,
+      "lng": 55.2711489
+    },
+    {
+      "name": "Big Bubbles Laundry & Dry Cleaning- Jumeirah",
+      "lat": 25.1785419,
+      "lng": 55.222505999999996
+    },
+    {
+      "name": "Le Degraissage Laundry - Dubai Hills Estate",
+      "lat": 25.1134956,
+      "lng": 55.2460046
+    },
+    {
+      "name": "The Finery - Luxury Dry Cleaning",
+      "lat": 25.0785126,
+      "lng": 55.1223746
+    },
+    {
+      "name": "Radiant Dry Cleaning & Steam Laundry - Jumeirah",
+      "lat": 25.1729375,
+      "lng": 55.2290625
+    },
+    {
+      "name": "First Class Laundry",
+      "lat": 25.1849235,
+      "lng": 55.2769027
+    },
+    {
+      "name": "CG Barbershop",
+      "lat": 25.095400299999998,
+      "lng": 55.153359099999996
+    },
+    {
+      "name": "Barber Bliss",
+      "lat": 25.190616900000002,
+      "lng": 55.2907322
+    },
+    {
+      "name": "BlackJack Barbershop Bay Avenue",
+      "lat": 25.1911311,
+      "lng": 55.26571250000001
+    },
+    {
+      "name": "Black Jack Barber Shop",
+      "lat": 25.1545529,
+      "lng": 55.203476200000004
+    },
+    {
+      "name": "House of Cuts Barbershop",
+      "lat": 25.102491099999998,
+      "lng": 55.1692921
+    },
+    {
+      "name": "Bekky Barber - Burj Vista",
+      "lat": 25.1984429,
+      "lng": 55.2707577
+    },
+    {
+      "name": "Fade & Shave Barbers",
+      "lat": 25.0887682,
+      "lng": 55.146952399999996
+    },
+    {
+      "name": "B\u00f4 Barbershop - Business Bay",
+      "lat": 25.1888374,
+      "lng": 55.2629563
+    },
+    {
+      "name": "Dastaan Barbers & Beyond",
+      "lat": 25.2005761,
+      "lng": 55.281397999999996
+    },
+    {
+      "name": "Moe's Barbershop",
+      "lat": 25.087666199999997,
+      "lng": 55.146865899999995
+    },
+    {
+      "name": "Chaps and Co - Dubai Design District",
+      "lat": 25.1887349,
+      "lng": 55.2970369
+    },
+    {
+      "name": "Afro Trim Men's Salon",
+      "lat": 25.146437499999998,
+      "lng": 55.249937499999994
+    },
+    {
+      "name": "The Barber Corner Gents Salon",
+      "lat": 25.2367471,
+      "lng": 55.309727900000006
+    },
+    {
+      "name": "Bekky Barber DHM",
+      "lat": 25.101605,
+      "lng": 55.2377037
+    },
+    {
+      "name": "Fresh Fades Mens Barbershop - Best Quality Barbers in Dubai Marina",
+      "lat": 25.0740697,
+      "lng": 55.1388641
+    },
+    {
+      "name": "The Barber House - Best Men\u2019s Barbershop in Dubai Marina",
+      "lat": 25.083214299999998,
+      "lng": 55.1465428
+    },
+    {
+      "name": "Chaps and Co - Bloomingdales, The Dubai Mall",
+      "lat": 25.199365999999998,
+      "lng": 55.277871399999995
+    },
+    {
+      "name": "Little Barberclub Duba\u00ef by Ouss barber",
+      "lat": 25.1905151,
+      "lng": 55.283048099999995
+    },
+    {
+      "name": "Soho Vintage Barbers",
+      "lat": 25.228883099999997,
+      "lng": 55.28639940000001
+    }
+  ],
+  "coworking": [
+    {
+      "name": "The Co\u2014Spaces (Downtown Dubai)",
+      "lat": 25.193136499999998,
+      "lng": 55.2767482
+    },
+    {
+      "name": "The Bureau Business Center - Gold & Diamond Park",
+      "lat": 25.125494999999997,
+      "lng": 55.207960099999994
+    },
+    {
+      "name": "Letswork",
+      "lat": 25.202425299999998,
+      "lng": 55.2793506
+    },
+    {
+      "name": "Nook Coworking",
+      "lat": 25.072448599999998,
+      "lng": 55.1449125
+    },
+    {
+      "name": "Modern Working",
+      "lat": 25.185465999999998,
+      "lng": 55.2617121
+    },
+    {
+      "name": "DQuarters - Dubai Media City",
+      "lat": 25.0966931,
+      "lng": 55.156238699999996
+    },
+    {
+      "name": "myOffice - Dubai Marina Plaza",
+      "lat": 25.0753976,
+      "lng": 55.1398252
+    },
+    {
+      "name": "WeWork - Office Space & Coworking",
+      "lat": 25.219780999999998,
+      "lng": 55.2855918
+    },
+    {
+      "name": "WrkBay Co-working & Cafe",
+      "lat": 25.2488772,
+      "lng": 55.3097144
+    },
+    {
+      "name": "UNBOX Community - Business Bay, Bay Square",
+      "lat": 25.186217,
+      "lng": 55.2798691
+    },
+    {
+      "name": "myOffice - Downtown Dubai",
+      "lat": 25.1999854,
+      "lng": 55.2738942
+    },
+    {
+      "name": "Sentro Space - workspace",
+      "lat": 25.096753699999997,
+      "lng": 55.1683984
+    },
+    {
+      "name": "Hotdesk",
+      "lat": 25.2199159,
+      "lng": 55.2858522
+    },
+    {
+      "name": "AstroLabs - Coworking Space in Dubai",
+      "lat": 25.0768995,
+      "lng": 55.147264199999995
+    },
+    {
+      "name": "Cloud Spaces - Circle Mall",
+      "lat": 25.066988,
+      "lng": 55.2156527
+    },
+    {
+      "name": "flowork - Dubai Hills Serviced Offices, Coworking, Virtual Offices, Podcast & Meeting Rooms",
+      "lat": 25.106047000000004,
+      "lng": 55.239373
+    },
+    {
+      "name": "Cloud Spaces - Dubai Mall Fountain Views",
+      "lat": 25.1944657,
+      "lng": 55.2816639
+    },
+    {
+      "name": "Scality",
+      "lat": 25.2632564,
+      "lng": 55.3704495
+    },
+    {
+      "name": "Bisdesk",
+      "lat": 25.2271816,
+      "lng": 55.287110999999996
+    }
+  ],
+  "gyms": [
+    {
+      "name": "Shimis Yoga",
+      "lat": 25.141880999999998,
+      "lng": 55.2252814
+    },
+    {
+      "name": "The Chi Room",
+      "lat": 25.1429989,
+      "lng": 55.2244687
+    },
+    {
+      "name": "Nilaya House",
+      "lat": 25.130200300000002,
+      "lng": 55.2232049
+    },
+    {
+      "name": "Lifestyle Yoga",
+      "lat": 25.208257,
+      "lng": 55.272166999999996
+    },
+    {
+      "name": "Karma Yoga",
+      "lat": 25.0753976,
+      "lng": 55.1398252
+    },
+    {
+      "name": "Dhyana Dubai",
+      "lat": 25.1856623,
+      "lng": 55.2637633
+    },
+    {
+      "name": "Samsara Yoga Tribe",
+      "lat": 25.070022200000004,
+      "lng": 55.1324935
+    },
+    {
+      "name": "Zoga Yoga Caf\u00e9",
+      "lat": 25.093770499999998,
+      "lng": 55.161125299999995
+    },
+    {
+      "name": "BayYoga",
+      "lat": 25.139564399999998,
+      "lng": 55.2302549
+    },
+    {
+      "name": "Prana House",
+      "lat": 25.045706499999998,
+      "lng": 55.2354859
+    },
+    {
+      "name": "Eco Yoga Sanctuary",
+      "lat": 25.241366,
+      "lng": 55.2720444
+    },
+    {
+      "name": "YOGA AT HOME",
+      "lat": 25.110744699999998,
+      "lng": 55.194820799999995
+    },
+    {
+      "name": "Zoga Yoga Cafe",
+      "lat": 25.187452800000003,
+      "lng": 55.2793734
+    },
+    {
+      "name": "Trident Wellness Center",
+      "lat": 25.0812124,
+      "lng": 55.1445412
+    },
+    {
+      "name": "Studio Republik Fitness Center LLC",
+      "lat": 25.131267299999998,
+      "lng": 55.2114735
+    },
+    {
+      "name": "Yoga La Vie Dubai",
+      "lat": 25.112013599999997,
+      "lng": 55.1407658
+    },
+    {
+      "name": "Maya Blu Yoga Studio",
+      "lat": 25.1789755,
+      "lng": 55.272769
+    },
+    {
+      "name": "Prime Fitness Dubai Marina",
+      "lat": 25.067687499999998,
+      "lng": 55.131562499999994
+    },
+    {
+      "name": "Wellfit Marina",
+      "lat": 25.0790582,
+      "lng": 55.1368095
+    },
+    {
+      "name": "The Marina Gym-24 hours Gym in Dubai Marina",
+      "lat": 25.0698221,
+      "lng": 55.1284874
+    },
+    {
+      "name": "PRIME FITNESS MARINA 2",
+      "lat": 25.070807799999997,
+      "lng": 55.135479100000005
+    },
+    {
+      "name": "Fitness First Marina Gate",
+      "lat": 25.08651,
+      "lng": 55.1468202
+    },
+    {
+      "name": "Sweat Fitness",
+      "lat": 25.0853224,
+      "lng": 55.1480356
+    },
+    {
+      "name": "BODIFY Ladies Fitness \u2013 Dubai Marina",
+      "lat": 25.0752338,
+      "lng": 55.1384081
+    },
+    {
+      "name": "KO8 Fitness DXB",
+      "lat": 25.083212999999997,
+      "lng": 55.144328599999994
+    },
+    {
+      "name": "PLATFORM Studios - Marina",
+      "lat": 25.0820321,
+      "lng": 55.141396099999994
+    },
+    {
+      "name": "Barry's Dubai Marina",
+      "lat": 25.083322199999998,
+      "lng": 55.140914099999996
+    },
+    {
+      "name": "Fidelity Fitness Club",
+      "lat": 25.068983600000003,
+      "lng": 55.1412048
+    },
+    {
+      "name": "F45 Training Dubai Marina",
+      "lat": 25.0831549,
+      "lng": 55.140902999999994
+    },
+    {
+      "name": "Balans Studios",
+      "lat": 25.0712859,
+      "lng": 55.1251641
+    },
+    {
+      "name": "The Warehouse Gym - Al Quoz",
+      "lat": 25.118150399999998,
+      "lng": 55.209891400000004
+    },
+    {
+      "name": "KoCrossBox Gym Dubai",
+      "lat": 25.070753099999997,
+      "lng": 55.135982
+    },
+    {
+      "name": "SWT ARENA FITNESS",
+      "lat": 25.0723131,
+      "lng": 55.132367099999996
+    },
+    {
+      "name": "UFC GYM JBR",
+      "lat": 25.082452399999998,
+      "lng": 55.139860199999994
+    },
+    {
+      "name": "Ultimate Performance Personal Trainers Dubai Marina",
+      "lat": 25.0899274,
+      "lng": 55.152330799999994
+    },
+    {
+      "name": "Team Yousfi Muay-Thai Combat & Fitness",
+      "lat": 25.083236499999998,
+      "lng": 55.1466308
+    },
+    {
+      "name": "MVMT FIT",
+      "lat": 25.0804375,
+      "lng": 55.144437499999995
+    },
+    {
+      "name": "The Warehouse Gym - Business Bay",
+      "lat": 25.180929,
+      "lng": 55.2697358
+    },
+    {
+      "name": "Generation Iron Gym",
+      "lat": 25.179465,
+      "lng": 55.2688888
+    },
+    {
+      "name": "WE FIT TOGETHER",
+      "lat": 25.1775386,
+      "lng": 55.2742602
+    },
+    {
+      "name": "BARE",
+      "lat": 25.188582999999998,
+      "lng": 55.269534
+    },
+    {
+      "name": "Fitness First Bay Gate Tower, Business Bay",
+      "lat": 25.1888374,
+      "lng": 55.2629563
+    },
+    {
+      "name": "LEAD Academy - Business Bay",
+      "lat": 25.176797699999998,
+      "lng": 55.2721987
+    },
+    {
+      "name": "Defeat Fitness Studio",
+      "lat": 25.190404599999997,
+      "lng": 55.2655995
+    },
+    {
+      "name": "Bay Body Space - Fitness Club",
+      "lat": 25.190580999999998,
+      "lng": 55.271048799999996
+    },
+    {
+      "name": "Gym Private",
+      "lat": 25.192715699999997,
+      "lng": 55.263626699999996
+    },
+    {
+      "name": "Fitness Hacking",
+      "lat": 25.1769663,
+      "lng": 55.271812999999995
+    },
+    {
+      "name": "Veo Manzil",
+      "lat": 25.1908732,
+      "lng": 55.2785461
+    },
+    {
+      "name": "REVL Training Downtown Dubai",
+      "lat": 25.191660499999998,
+      "lng": 55.2696122
+    },
+    {
+      "name": "The Warehouse Gym - DIFC",
+      "lat": 25.2083353,
+      "lng": 55.2777324
+    },
+    {
+      "name": "The Gym Dubai",
+      "lat": 25.158152299999998,
+      "lng": 55.295735300000004
+    },
+    {
+      "name": "BODY TIME DUBAI Business Bay - Downtown, EMS Fitness Training, Eximia & iBody",
+      "lat": 25.184787099999998,
+      "lng": 55.2643103
+    },
+    {
+      "name": "Chromatic Fitness",
+      "lat": 25.1826796,
+      "lng": 55.274175199999995
+    },
+    {
+      "name": "FFW Health & Wellness",
+      "lat": 25.1872908,
+      "lng": 55.2810292
+    },
+    {
+      "name": "Professional Fitness Trainers Dubai",
+      "lat": 25.181243499999997,
+      "lng": 55.2701673
+    },
+    {
+      "name": "OVA Pilates",
+      "lat": 25.1872817,
+      "lng": 55.2609043
+    }
+  ],
+  "parks": [
+    {
+      "name": "Umm Suqeim Night Swimming Beach, Dubai",
+      "lat": 25.1552981,
+      "lng": 55.200537499999996
+    },
+    {
+      "name": "Jumeirah Public Beach 02 - Walking Board",
+      "lat": 25.2068908,
+      "lng": 55.2414358
+    },
+    {
+      "name": "JBR Beach Dubai",
+      "lat": 25.0775333,
+      "lng": 55.1309365
+    },
+    {
+      "name": "Sufouh Beach",
+      "lat": 25.116332999999997,
+      "lng": 55.1677827
+    },
+    {
+      "name": "Dubai Islands Beach by Dubai Retail",
+      "lat": 25.3030041,
+      "lng": 55.3013634
+    },
+    {
+      "name": "Kite Beach",
+      "lat": 25.1647598,
+      "lng": 55.207624599999995
+    },
+    {
+      "name": "Mercato Beach",
+      "lat": 25.2141555,
+      "lng": 55.247186799999994
+    },
+    {
+      "name": "Public Beach",
+      "lat": 25.1483286,
+      "lng": 55.1945091
+    },
+    {
+      "name": "La mer beach",
+      "lat": 25.2266634,
+      "lng": 55.255700499999996
+    },
+    {
+      "name": "Al Mamzar Beach Park",
+      "lat": 25.3183741,
+      "lng": 55.347665299999996
+    },
+    {
+      "name": "Kite beach",
+      "lat": 25.1650123,
+      "lng": 55.20847930000001
+    },
+    {
+      "name": "Palm West Beach by Dubai Retail",
+      "lat": 25.1065625,
+      "lng": 55.1434375
+    },
+    {
+      "name": "Jumeira Public Beach",
+      "lat": 25.227821199999998,
+      "lng": 55.2573438
+    },
+    {
+      "name": "Jumeirah Beach",
+      "lat": 25.1420116,
+      "lng": 55.1882647
+    },
+    {
+      "name": "JEBEL ALI BEACH",
+      "lat": 24.9853438,
+      "lng": 55.0176903
+    },
+    {
+      "name": "Jumeirah Beach Dubai",
+      "lat": 25.1490829,
+      "lng": 55.1945632
+    },
+    {
+      "name": "Jumaira Beach",
+      "lat": 25.166432999999998,
+      "lng": 55.2097388
+    },
+    {
+      "name": "Dubai Beaches, Jumeirah 2",
+      "lat": 25.2056549,
+      "lng": 55.240968099999996
+    }
+  ],
+  "attractions": [
+    {
+      "name": "Aquaventure World",
+      "lat": 25.1324245,
+      "lng": 55.1183099
+    },
+    {
+      "name": "Grand Hyatt Dubai Waterpark",
+      "lat": 25.229989099999997,
+      "lng": 55.3265459
+    },
+    {
+      "name": "Jungle Bay Waterpark",
+      "lat": 25.092827699999997,
+      "lng": 55.147023399999995
+    },
+    {
+      "name": "AquaFun Dubai Water Park - Official",
+      "lat": 25.0783502,
+      "lng": 55.1307319
+    },
+    {
+      "name": "Aqua Parks Leisure",
+      "lat": 25.1671861,
+      "lng": 55.2097128
+    },
+    {
+      "name": "Trident Tower",
+      "lat": 25.1353172,
+      "lng": 55.124600099999995
+    },
+    {
+      "name": "Splashers Cove",
+      "lat": 25.1340875,
+      "lng": 55.123217999999994
+    },
+    {
+      "name": "Splash 'n' Party Kids Waterpark",
+      "lat": 25.159720999999998,
+      "lng": 55.223507
+    },
+    {
+      "name": "Splashers Lagoon",
+      "lat": 25.1344251,
+      "lng": 55.123497699999994
+    },
+    {
+      "name": "IMG Worlds of Adventure",
+      "lat": 25.0823984,
+      "lng": 55.319675000000004
+    },
+    {
+      "name": "Dreamland Aqua Park",
+      "lat": 25.5894393,
+      "lng": 55.660078999999996
+    },
+    {
+      "name": "Just Splash at JA the Resort",
+      "lat": 24.987857700000003,
+      "lng": 55.0243113
+    },
+    {
+      "name": "Leap of Faith",
+      "lat": 25.1342139,
+      "lng": 55.1204396
+    },
+    {
+      "name": "Town Square Water Play",
+      "lat": 25.0037211,
+      "lng": 55.2919773
+    },
+    {
+      "name": "Pearls Kingdom Waterpark",
+      "lat": 25.341512599999998,
+      "lng": 55.379825499999995
+    },
+    {
+      "name": "Splasher's Children's Play Area",
+      "lat": 25.1338217,
+      "lng": 55.119637999999995
+    },
+    {
+      "name": "Adventure Park",
+      "lat": 25.0995153,
+      "lng": 55.240939
+    },
+    {
+      "name": "Fantasy Park is Now Open",
+      "lat": 25.2367529,
+      "lng": 55.2987356
+    },
+    {
+      "name": "Loco Bear Dubai",
+      "lat": 25.140705900000004,
+      "lng": 55.259537400000006
+    },
+    {
+      "name": "Sea Lion Point at Aquaventure World",
+      "lat": 25.1366348,
+      "lng": 55.123543000000005
+    }
+  ],
+  "nightlife": [
+    {
+      "name": "Club One Dubai",
+      "lat": 25.1836496,
+      "lng": 55.256614799999994
+    },
+    {
+      "name": "Ora Club Dubai",
+      "lat": 25.1844774,
+      "lng": 55.254973
+    },
+    {
+      "name": "XO Nightclub",
+      "lat": 25.1871443,
+      "lng": 55.267613
+    },
+    {
+      "name": "Omni Club Dubai Night club",
+      "lat": 25.2289992,
+      "lng": 55.3209137
+    },
+    {
+      "name": "One Music Lounge",
+      "lat": 25.183563099999997,
+      "lng": 55.2565969
+    },
+    {
+      "name": "Papa Dubai Night Club",
+      "lat": 25.184455999999997,
+      "lng": 55.254494199999996
+    },
+    {
+      "name": "Secret Room Dubai",
+      "lat": 25.1957773,
+      "lng": 55.2832486
+    },
+    {
+      "name": "O Dubai - Lounge & Club",
+      "lat": 25.2235674,
+      "lng": 55.2821873
+    },
+    {
+      "name": "BLU Dubai",
+      "lat": 25.184423199999998,
+      "lng": 55.254695899999994
+    },
+    {
+      "name": "La Morenita Dubai",
+      "lat": 25.157899,
+      "lng": 55.300003999999994
+    },
+    {
+      "name": "Yume Night Club Dubai",
+      "lat": 25.187688899999998,
+      "lng": 55.2812518
+    },
+    {
+      "name": "HYPE DXB",
+      "lat": 25.2085919,
+      "lng": 55.2765573
+    },
+    {
+      "name": "SKY2.0 DUBAI",
+      "lat": 25.1873324,
+      "lng": 55.3023822
+    },
+    {
+      "name": "My Table Dubai",
+      "lat": 25.208184000000003,
+      "lng": 55.271854999999995
+    },
+    {
+      "name": "Soho Garden DXB",
+      "lat": 25.1579189,
+      "lng": 55.299987699999996
+    },
+    {
+      "name": "Xo Club Dubai Ayman \u0627\u0643\u0633 \u0627\u0648 \u0643\u0644\u0648\u0628 \u062f\u0628\u064a",
+      "lat": 25.185101399999997,
+      "lng": 55.2690501
+    },
+    {
+      "name": "Golden Night Club \u0633\u0647\u0631\u0627\u062a \u062e\u0644\u064a\u062c\u064a\u0629 \u062f\u0628\u064a",
+      "lat": 25.202831999999997,
+      "lng": 55.277911599999996
+    },
+    {
+      "name": "Level 43 Sky Lounge",
+      "lat": 25.214062499999997,
+      "lng": 55.2760317
+    },
+    {
+      "name": "High Note Pool & Sky Lounge",
+      "lat": 25.2484292,
+      "lng": 55.2837623
+    },
+    {
+      "name": "Voyage by Amelia",
+      "lat": 25.202356299999998,
+      "lng": 55.2714359
+    },
+    {
+      "name": "Monkey Bar Dubai",
+      "lat": 25.2195009,
+      "lng": 55.2845018
+    },
+    {
+      "name": "Alma Music & Art Lounge Dubai",
+      "lat": 25.214253799999998,
+      "lng": 55.282701599999996
+    },
+    {
+      "name": "Lounge at Address Downtown",
+      "lat": 25.1945475,
+      "lng": 55.2791522
+    },
+    {
+      "name": "Thia Skylounge Dubai",
+      "lat": 25.192167599999998,
+      "lng": 55.2807454
+    },
+    {
+      "name": "Salmon Guru Dubai",
+      "lat": 25.188880299999997,
+      "lng": 55.2665182
+    },
+    {
+      "name": "Estrellas Rooftop Lounge - Best Rooftop Lounge Dubai",
+      "lat": 25.2552476,
+      "lng": 55.285163100000005
+    },
+    {
+      "name": "Bliss Lounge",
+      "lat": 25.074060499999998,
+      "lng": 55.128097999999994
+    },
+    {
+      "name": "HYP DUBAI - Rooftop Lounge",
+      "lat": 25.2283433,
+      "lng": 55.282984899999995
+    },
+    {
+      "name": "Windows Bar & Lounge",
+      "lat": 25.2234002,
+      "lng": 55.282402299999994
+    },
+    {
+      "name": "Above Rooftop Lounge",
+      "lat": 25.1999806,
+      "lng": 55.2691497
+    },
+    {
+      "name": "Level 47 Rooftop Bar & Lounge",
+      "lat": 25.2092098,
+      "lng": 55.2748774
+    },
+    {
+      "name": "Amelia Lounge",
+      "lat": 25.2023218,
+      "lng": 55.271491
+    },
+    {
+      "name": "Babylon DIFC",
+      "lat": 25.2140353,
+      "lng": 55.2833289
+    },
+    {
+      "name": "The Ledge Rooftop",
+      "lat": 25.204781099999998,
+      "lng": 55.2756244
+    },
+    {
+      "name": "TT - Rooftop Bar",
+      "lat": 25.097379399999998,
+      "lng": 55.1658663
+    },
+    {
+      "name": "SoBe Dubai - Rooftop Lounge",
+      "lat": 25.1063585,
+      "lng": 55.1113912
+    },
+    {
+      "name": "Treehouse, Taj Dubai",
+      "lat": 25.1924349,
+      "lng": 55.2672788
+    },
+    {
+      "name": "Look Up Rooftop Bar",
+      "lat": 25.2083566,
+      "lng": 55.2608238
+    },
+    {
+      "name": "ZETA Seventy Seven",
+      "lat": 25.072682699999998,
+      "lng": 55.1266445
+    },
+    {
+      "name": "ASCENT -The Rooftop Lounge",
+      "lat": 25.2499853,
+      "lng": 55.311912799999995
+    },
+    {
+      "name": "DECK TOO",
+      "lat": 25.2013516,
+      "lng": 55.270776899999994
+    },
+    {
+      "name": "C\u00c9 LA VI",
+      "lat": 25.202026,
+      "lng": 55.270675499999996
+    }
+  ],
+  "cafes": [
+    {
+      "name": "Risen Caf\u00e9 and Artisanal Bakery, Dubai Marina",
+      "lat": 25.071089999999998,
+      "lng": 55.136330099999995
+    },
+    {
+      "name": "Common Grounds - JBR",
+      "lat": 25.077029099999997,
+      "lng": 55.1323619
+    },
+    {
+      "name": "Inana Cafe & Restaurant",
+      "lat": 25.0718893,
+      "lng": 55.131681
+    },
+    {
+      "name": "Abooz Cafe - Marina",
+      "lat": 25.0798652,
+      "lng": 55.1387662
+    },
+    {
+      "name": "Nargileci Eleven Cafe",
+      "lat": 25.082962,
+      "lng": 55.144334799999996
+    },
+    {
+      "name": "Roast Speciality Coffee, Marina",
+      "lat": 25.0688793,
+      "lng": 55.1302337
+    },
+    {
+      "name": "Charlie & Friends",
+      "lat": 25.0807586,
+      "lng": 55.1371465
+    },
+    {
+      "name": "Jasmira",
+      "lat": 25.0780633,
+      "lng": 55.137728499999994
+    },
+    {
+      "name": "Caf\u00e9 Bateel - Marina Walk, Dubai",
+      "lat": 25.084314199999998,
+      "lng": 55.1480805
+    },
+    {
+      "name": "The lost Restaurant and Specialty coffee",
+      "lat": 25.073113499999998,
+      "lng": 55.133026799999996
+    },
+    {
+      "name": "Bake My Day Dubai Dutch Bakery",
+      "lat": 25.0781432,
+      "lng": 55.133049299999996
+    },
+    {
+      "name": "La Letizia Cafe & Shisha, Hookah Dubai Marina Walk",
+      "lat": 25.0822476,
+      "lng": 55.145409699999995
+    },
+    {
+      "name": "The Acai Spot - Dubai Marina Branch",
+      "lat": 25.0862291,
+      "lng": 55.1472949
+    },
+    {
+      "name": "Counter Culture Caf\u00e9",
+      "lat": 25.0877041,
+      "lng": 55.145877500000005
+    },
+    {
+      "name": "The Coffee Club Dubai Marina Mall",
+      "lat": 25.07642,
+      "lng": 55.139583599999995
+    },
+    {
+      "name": "Lavash Marina - All Day Breakfast & Cafe",
+      "lat": 25.073736399999998,
+      "lng": 55.1324985
+    },
+    {
+      "name": "L'ETO",
+      "lat": 25.0764183,
+      "lng": 55.1404479
+    },
+    {
+      "name": "Roasters Specialty Coffee House Emaar Beachfront",
+      "lat": 25.097585499999997,
+      "lng": 55.1409324
+    },
+    {
+      "name": "Le Pain Quotidien",
+      "lat": 25.0770137,
+      "lng": 55.1396929
+    },
+    {
+      "name": "Lillo's",
+      "lat": 25.0693634,
+      "lng": 55.1291259
+    },
+    {
+      "name": "Roasters Specialty Coffee House Boulevard Downtown",
+      "lat": 25.192192,
+      "lng": 55.2783261
+    },
+    {
+      "name": "Caju Coffee House",
+      "lat": 25.1912935,
+      "lng": 55.278330499999996
+    },
+    {
+      "name": "THE SIX Board Game Cafe - DOWNTOWN",
+      "lat": 25.1981777,
+      "lng": 55.271136899999995
+    },
+    {
+      "name": "BABA ROMA",
+      "lat": 25.1938264,
+      "lng": 55.2695715
+    },
+    {
+      "name": "TEN 11 (The Dubai Mall)",
+      "lat": 25.197344599999997,
+      "lng": 55.2763129
+    },
+    {
+      "name": "Apricot Dubai, Downtown Dubai",
+      "lat": 25.1912059,
+      "lng": 55.2783819
+    },
+    {
+      "name": "Nomad Day Bar",
+      "lat": 25.219448500000002,
+      "lng": 55.2841592
+    },
+    {
+      "name": "Boon Coffee Roasters Downtown",
+      "lat": 25.1958296,
+      "lng": 55.2694645
+    },
+    {
+      "name": "Black Sheep Coffee",
+      "lat": 25.196615299999998,
+      "lng": 55.27809990000001
+    },
+    {
+      "name": "Joe's Caf\u00e9 Dubai",
+      "lat": 25.196285,
+      "lng": 55.2774144
+    },
+    {
+      "name": "The Coffee",
+      "lat": 25.1941958,
+      "lng": 55.2770788
+    },
+    {
+      "name": "BohoX",
+      "lat": 25.1915591,
+      "lng": 55.2762679
+    },
+    {
+      "name": "Coffee Planet - Foundry Downtown",
+      "lat": 25.191933199999998,
+      "lng": 55.2709142
+    },
+    {
+      "name": "Mondoux",
+      "lat": 25.1943068,
+      "lng": 55.2816026
+    },
+    {
+      "name": "Susan's Baking Co & Cafe Dubai - The Best American Cafe & Diner",
+      "lat": 25.1946677,
+      "lng": 55.2830778
+    },
+    {
+      "name": "Twice Cafe",
+      "lat": 25.192850699999997,
+      "lng": 55.269940299999995
+    },
+    {
+      "name": "THE KANA CAFE BUSINESS BAY",
+      "lat": 25.189996999999998,
+      "lng": 55.2841765
+    },
+    {
+      "name": "Tiramisu Cafe L.L.C.",
+      "lat": 25.1914755,
+      "lng": 55.273579999999995
+    },
+    {
+      "name": "AVE Dubai",
+      "lat": 25.1917607,
+      "lng": 55.284363400000004
+    },
+    {
+      "name": "Caf\u00e9 Bateel - Dubai Mall",
+      "lat": 25.195055999999997,
+      "lng": 55.279176
+    },
+    {
+      "name": "Tout De Sweet",
+      "lat": 25.185368399999998,
+      "lng": 55.2389577
+    },
+    {
+      "name": "French Bakery",
+      "lat": 25.110471699999998,
+      "lng": 55.2443086
+    },
+    {
+      "name": "bkry",
+      "lat": 25.1426522,
+      "lng": 55.2245473
+    },
+    {
+      "name": "Bakerist",
+      "lat": 25.103717999999997,
+      "lng": 55.2389015
+    },
+    {
+      "name": "KAYU Bakehouse",
+      "lat": 25.1541508,
+      "lng": 55.2931129
+    },
+    {
+      "name": "Hampstead Bakery and Cafe",
+      "lat": 25.1940387,
+      "lng": 55.281126799999996
+    },
+    {
+      "name": "Bageri Form",
+      "lat": 25.1883494,
+      "lng": 55.296828399999995
+    },
+    {
+      "name": "Bake N More Caf\u00e9 & Factory",
+      "lat": 25.1188123,
+      "lng": 55.2130587
+    },
+    {
+      "name": "Flaky Pastry Croissant Co. City Walk",
+      "lat": 25.2033588,
+      "lng": 55.262623399999995
+    },
+    {
+      "name": "Milk Bakery",
+      "lat": 25.217624999999998,
+      "lng": 55.2603041
+    },
+    {
+      "name": "Risen Caf\u00e9 and Artisanal Bakery, Waterfront",
+      "lat": 25.1829288,
+      "lng": 55.283125999999996
+    },
+    {
+      "name": "Birch Bakery",
+      "lat": 25.119303499999997,
+      "lng": 55.2144876
+    },
+    {
+      "name": "Sven the Bakers Kitchen",
+      "lat": 25.198517799999998,
+      "lng": 55.2651666
+    },
+    {
+      "name": "Risen Caf\u00e9 and Artisanal Bakery, Barsha Heights",
+      "lat": 25.0979785,
+      "lng": 55.178745899999996
+    },
+    {
+      "name": "Artisan Bakers - Umm Suqeim",
+      "lat": 25.145198,
+      "lng": 55.1955378
+    },
+    {
+      "name": "Stay Bakery & Cafe",
+      "lat": 25.1954446,
+      "lng": 55.2461765
+    },
+    {
+      "name": "Sunshine's Sweettooth",
+      "lat": 25.132181199999998,
+      "lng": 55.2475607
+    },
+    {
+      "name": "Cake Bloom",
+      "lat": 25.1649845,
+      "lng": 55.2117985
+    }
+  ],
+  "restaurants": [
+    {
+      "name": "Bombay Borough",
+      "lat": 25.2139289,
+      "lng": 55.2823472
+    },
+    {
+      "name": "Mausam",
+      "lat": 25.195294300000004,
+      "lng": 55.2790228
+    },
+    {
+      "name": "Rang - Dubai Mall",
+      "lat": 25.196615299999998,
+      "lng": 55.27809990000001
+    },
+    {
+      "name": "Indian Delights Restaurant",
+      "lat": 25.246691,
+      "lng": 55.308906
+    },
+    {
+      "name": "Romeo Lane Dubai",
+      "lat": 25.186880499999997,
+      "lng": 55.27164690000001
+    },
+    {
+      "name": "House Of Kabila",
+      "lat": 25.190681,
+      "lng": 55.2662321
+    },
+    {
+      "name": "Life Time Restaurant",
+      "lat": 25.149617499999998,
+      "lng": 55.2457183
+    },
+    {
+      "name": "Sayapatri Star Restaurant-Al Khail Mall, Dubai",
+      "lat": 25.1489539,
+      "lng": 55.246699799999995
+    },
+    {
+      "name": "Atrangi by Ritu Dalmia",
+      "lat": 25.131669,
+      "lng": 55.184704399999994
+    },
+    {
+      "name": "Bombay Bungalow",
+      "lat": 25.0774153,
+      "lng": 55.132236
+    },
+    {
+      "name": "UP Star Restaurant",
+      "lat": 25.1539717,
+      "lng": 55.2439178
+    },
+    {
+      "name": "Rasoi Ghar Restaurant",
+      "lat": 25.2501726,
+      "lng": 55.301986299999996
+    },
+    {
+      "name": "NOOR SAYA Restaurant",
+      "lat": 25.1487823,
+      "lng": 55.24682070000001
+    },
+    {
+      "name": "SANAVS RESTAURANT AND CAFE",
+      "lat": 25.1834432,
+      "lng": 55.260745299999996
+    },
+    {
+      "name": "Amritsr Restaurant Al Karama - Best Indian Restaurant in Dubai",
+      "lat": 25.2478378,
+      "lng": 55.300551899999995
+    },
+    {
+      "name": "INDIKAYA",
+      "lat": 25.208184000000003,
+      "lng": 55.271854999999995
+    },
+    {
+      "name": "Delhi Highway Restaurant Dubai",
+      "lat": 25.247705999999997,
+      "lng": 55.303010199999996
+    },
+    {
+      "name": "Chai Wala Cafe",
+      "lat": 25.151488399999998,
+      "lng": 55.2501925
+    },
+    {
+      "name": "Little Miss India",
+      "lat": 25.109513800000002,
+      "lng": 55.140805199999996
+    },
+    {
+      "name": "Fujiya Downtown - Authentic Japanese Restaurant Dubai",
+      "lat": 25.203021699999997,
+      "lng": 55.2769584
+    },
+    {
+      "name": "Mogiya Authentic Japanese Restaurant",
+      "lat": 25.255793999999998,
+      "lng": 55.3111445
+    },
+    {
+      "name": "Kimuraya Authentic Japanese Restaurant - 1st Branch Business Bay",
+      "lat": 25.1859585,
+      "lng": 55.2639103
+    },
+    {
+      "name": "MaKiRa",
+      "lat": 25.206449400000004,
+      "lng": 55.272896599999996
+    },
+    {
+      "name": "itadaku",
+      "lat": 25.2105568,
+      "lng": 55.255992899999995
+    },
+    {
+      "name": "Mimi Kakushi",
+      "lat": 25.2026719,
+      "lng": 55.240626799999994
+    },
+    {
+      "name": "SOON Izakaya",
+      "lat": 25.074966699999997,
+      "lng": 55.145413
+    },
+    {
+      "name": "KATA Dubai Mall",
+      "lat": 25.196687299999997,
+      "lng": 55.2758768
+    },
+    {
+      "name": "Kimuraya Authentic Japanese Restaurant - 3rd Branch Al Jaddaf",
+      "lat": 25.2113437,
+      "lng": 55.315448700000005
+    },
+    {
+      "name": "Zuma Dubai",
+      "lat": 25.213935,
+      "lng": 55.2833272
+    },
+    {
+      "name": "Kimuraya Authentic Japanese Restaurant - 4th Branch Creek",
+      "lat": 25.2614961,
+      "lng": 55.313812
+    },
+    {
+      "name": "Kimuraya Authentic Japanese Restaurant - 2nd Branch JBR Marina",
+      "lat": 25.0859931,
+      "lng": 55.1411966
+    },
+    {
+      "name": "Gohan",
+      "lat": 25.2177641,
+      "lng": 55.281992699999996
+    },
+    {
+      "name": "Kanpai Restaurant & Lounge",
+      "lat": 25.1947765,
+      "lng": 55.2763972
+    },
+    {
+      "name": "Kokoro Hand Roll Bar (Al Serkal Ave)",
+      "lat": 25.141343499999998,
+      "lng": 55.2262181
+    },
+    {
+      "name": "ROKA Dubai",
+      "lat": 25.1887385,
+      "lng": 55.2670884
+    },
+    {
+      "name": "TOMO",
+      "lat": 25.228164099999997,
+      "lng": 55.320789899999994
+    },
+    {
+      "name": "SushiYaki",
+      "lat": 25.133687600000002,
+      "lng": 55.184818299999996
+    },
+    {
+      "name": "Mogiya Authentic Japanese Restaurant - 2nd Branch Al Barsha",
+      "lat": 25.1146152,
+      "lng": 55.200962999999994
+    },
+    {
+      "name": "Al Beiruti SZR",
+      "lat": 25.1282525,
+      "lng": 55.207938399999996
+    },
+    {
+      "name": "Arabian Tea House Restaurant & Cafe - Al Fahidi, Dubai",
+      "lat": 25.263314200000003,
+      "lng": 55.299735299999995
+    },
+    {
+      "name": "Derwandi",
+      "lat": 25.199431800000003,
+      "lng": 55.2479655
+    },
+    {
+      "name": "AlSafadi Restaurant DIFC",
+      "lat": 25.207494,
+      "lng": 55.273544699999995
+    },
+    {
+      "name": "ZouZou",
+      "lat": 25.1031572,
+      "lng": 55.238225
+    },
+    {
+      "name": "Al Beiruti The Hills",
+      "lat": 25.102280099999998,
+      "lng": 55.240876199999995
+    },
+    {
+      "name": "Al Meshwar Lebanese Restaurant",
+      "lat": 25.158576399999998,
+      "lng": 55.2288502
+    },
+    {
+      "name": "Aroos Damascus Restaurant",
+      "lat": 25.1439037,
+      "lng": 55.2194983
+    },
+    {
+      "name": "Arabian Tea House Restaurant & Caf\u00e9-Mercato Mall, Dubai",
+      "lat": 25.2164939,
+      "lng": 55.2534615
+    },
+    {
+      "name": "Arabian Tea House - Jumeirah Archaeological Site, Dubai",
+      "lat": 25.1983872,
+      "lng": 55.241515799999995
+    },
+    {
+      "name": "Arabeska Restaurant - Souk al Bahar, Dubai Mall - Burj Khalifa View",
+      "lat": 25.193518599999997,
+      "lng": 55.276463899999996
+    },
+    {
+      "name": "Al Makan Restaurant",
+      "lat": 25.133730000000003,
+      "lng": 55.1860992
+    },
+    {
+      "name": "Manaret Beirut Restaurant and Cafe",
+      "lat": 25.043595500000002,
+      "lng": 55.2299321
+    },
+    {
+      "name": "Zou Zou Turkish & Lebanese Restaurant Dubai Mall",
+      "lat": 25.196896199999998,
+      "lng": 55.277029399999996
+    },
+    {
+      "name": "Al Hallab",
+      "lat": 25.1951467,
+      "lng": 55.2790118
+    },
+    {
+      "name": "Three by Eva",
+      "lat": 25.1990148,
+      "lng": 55.2478104
+    },
+    {
+      "name": "MamaBella Ristorante - Best Italian Restaurant in Dubai",
+      "lat": 25.200493500000004,
+      "lng": 55.276741699999995
+    },
+    {
+      "name": "GIA",
+      "lat": 25.197142099999997,
+      "lng": 55.275974299999994
+    },
+    {
+      "name": "BASTA!",
+      "lat": 25.1855142,
+      "lng": 55.2735863
+    },
+    {
+      "name": "Trattoria",
+      "lat": 25.1337886,
+      "lng": 55.184621899999996
+    },
+    {
+      "name": "Carluccio's - Italian Restaurant in Dubai Mall",
+      "lat": 25.196467199999997,
+      "lng": 55.277398
+    },
+    {
+      "name": "Osteria Mario",
+      "lat": 25.1037091,
+      "lng": 55.2388882
+    },
+    {
+      "name": "LUNAROSSA dubai",
+      "lat": 25.186608200000002,
+      "lng": 55.2837265
+    },
+    {
+      "name": "Eataly at The Beach Dubai",
+      "lat": 25.0752913,
+      "lng": 55.1303169
+    },
+    {
+      "name": "Oliva Italian Restaurant",
+      "lat": 25.0792086,
+      "lng": 55.1409638
+    },
+    {
+      "name": "Restaurant - Fi'lia",
+      "lat": 25.18534,
+      "lng": 55.29235
+    },
+    {
+      "name": "Cucina, The Palm",
+      "lat": 25.106764,
+      "lng": 55.1449061
+    },
+    {
+      "name": "Osteria Mario Marina",
+      "lat": 25.0777434,
+      "lng": 55.140746699999994
+    },
+    {
+      "name": "il Pastaio Dubai",
+      "lat": 25.1832203,
+      "lng": 55.254974999999995
+    },
+    {
+      "name": "Cala Vista",
+      "lat": 25.136124,
+      "lng": 55.185385999999994
+    },
+    {
+      "name": "Sagra Italian Pastificio",
+      "lat": 25.1756532,
+      "lng": 55.2202728
+    },
+    {
+      "name": "Ballar\u00f2 Restaurant & Terrace",
+      "lat": 25.225891299999997,
+      "lng": 55.2839749
+    },
+    {
+      "name": "Belcanto Restaurant at Dubai Opera",
+      "lat": 25.1956924,
+      "lng": 55.2716424
+    },
+    {
+      "name": "Eataly",
+      "lat": 25.1959074,
+      "lng": 55.2788092
+    },
+    {
+      "name": "BohoX",
+      "lat": 25.1915591,
+      "lng": 55.2762679
+    },
+    {
+      "name": "Brunch & Cake Jumeirah Islands",
+      "lat": 25.064032299999997,
+      "lng": 55.1467142
+    },
+    {
+      "name": "Into The Jungle Brunch",
+      "lat": 25.2271875,
+      "lng": 55.3428243
+    },
+    {
+      "name": "The Guild",
+      "lat": 25.2118394,
+      "lng": 55.2803258
+    },
+    {
+      "name": "Wanderlust Brunch",
+      "lat": 25.1856725,
+      "lng": 55.258213
+    },
+    {
+      "name": "Lo+Cale",
+      "lat": 25.0753433,
+      "lng": 55.139008200000006
+    },
+    {
+      "name": "Gastro Kitchen",
+      "lat": 25.072805,
+      "lng": 55.12797
+    },
+    {
+      "name": "Hidden Brunch",
+      "lat": 25.1875626,
+      "lng": 55.2813076
+    },
+    {
+      "name": "Brunch & Cake Wasl 51",
+      "lat": 25.217725599999998,
+      "lng": 55.2606894
+    },
+    {
+      "name": "Table Otto - Dubai Mall",
+      "lat": 25.1978673,
+      "lng": 55.2756363
+    },
+    {
+      "name": "Village Bistro",
+      "lat": 25.0553061,
+      "lng": 55.2049321
+    },
+    {
+      "name": "Bubbalicious BRUNCH",
+      "lat": 25.0931681,
+      "lng": 55.1485108
+    },
+    {
+      "name": "La Farine",
+      "lat": 25.1856168,
+      "lng": 55.257978200000004
+    },
+    {
+      "name": "C\u00c9 LA VI",
+      "lat": 25.202026,
+      "lng": 55.270675499999996
+    },
+    {
+      "name": "Giardino Dubai",
+      "lat": 25.2274362,
+      "lng": 55.341844099999996
+    },
+    {
+      "name": "My Square",
+      "lat": 25.1863766,
+      "lng": 55.280424000000004
+    },
+    {
+      "name": "COYA Dubai",
+      "lat": 25.2023883,
+      "lng": 55.2402016
+    }
+  ],
+  "emergency": [
+    {
+      "name": "Al Barsha Police Station",
+      "lat": 25.0782427,
+      "lng": 55.2135525
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - City Walk",
+      "lat": 25.204713599999998,
+      "lng": 55.2627533
+    },
+    {
+      "name": "Dubai Police General Head Quarters",
+      "lat": 25.274319300000002,
+      "lng": 55.3513562
+    },
+    {
+      "name": "Bur Dubai Police Station",
+      "lat": 25.2327174,
+      "lng": 55.2906597
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - Dubai Design District",
+      "lat": 25.187313999999997,
+      "lng": 55.29757600000001
+    },
+    {
+      "name": "Al Raffa Police Station",
+      "lat": 25.2625361,
+      "lng": 55.2900249
+    },
+    {
+      "name": "Ports Police Station",
+      "lat": 25.249156799999998,
+      "lng": 55.277213800000006
+    },
+    {
+      "name": "Dubai Smart Police Station - Umm Suqeim 2 \u0645\u0631\u0643\u0632 \u0627\u0644\u0634\u0631\u0637\u0629 \u0627\u0644\u0630\u0643\u064a - \u0623\u0645 \u0633\u0642\u064a\u0645 2",
+      "lat": 25.149035899999998,
+      "lng": 55.195695199999996
+    },
+    {
+      "name": "Naif Police Station",
+      "lat": 25.2726945,
+      "lng": 55.3053489
+    },
+    {
+      "name": "The main square - Dubai Police Academy",
+      "lat": 25.1253,
+      "lng": 55.194102
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - Arabian Ranches Walk-in",
+      "lat": 25.055677,
+      "lng": 55.270556
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - Muraqqabat",
+      "lat": 25.269696,
+      "lng": 55.329361999999996
+    },
+    {
+      "name": "Al Qusais Police Station",
+      "lat": 25.2651611,
+      "lng": 55.391980800000006
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - Palm Jumeirah",
+      "lat": 25.110324799999997,
+      "lng": 55.142542999999996
+    },
+    {
+      "name": "Smart Police Station - SPS - D3",
+      "lat": 25.187301500000004,
+      "lng": 55.2975743
+    },
+    {
+      "name": "Jebel Ali Police Station",
+      "lat": 25.0030556,
+      "lng": 55.1480556
+    },
+    {
+      "name": "Nad Al Sheba Police Administration Office",
+      "lat": 25.157495400000002,
+      "lng": 55.3239157
+    },
+    {
+      "name": "Dubai Police PSE",
+      "lat": 25.2096208,
+      "lng": 55.255845699999995
+    },
+    {
+      "name": "Dubai Smart Police Station SPS - Al Souq Al Kabeer Walk-in",
+      "lat": 25.2646846,
+      "lng": 55.2934249
+    },
+    {
+      "name": "Dubai Civil Defence General Command Emirates Martyrs Fire Station",
+      "lat": 25.147712,
+      "lng": 55.221519
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Quoz Fire Station",
+      "lat": 25.1559605,
+      "lng": 55.2333438
+    },
+    {
+      "name": "Civil Defence Station",
+      "lat": 25.2023115,
+      "lng": 55.2845982
+    },
+    {
+      "name": "Civil Defense Station Al Karama",
+      "lat": 25.2473019,
+      "lng": 55.307695599999995
+    },
+    {
+      "name": "Dubai Civil Defence General Command Station Al Etihad",
+      "lat": 25.235982,
+      "lng": 55.2785005
+    },
+    {
+      "name": "Dubai Civil Defence General Command Station Port Saeed",
+      "lat": 25.2560736,
+      "lng": 55.3280926
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Barsha Fire Station",
+      "lat": 25.090496899999998,
+      "lng": 55.189248
+    },
+    {
+      "name": "Zabeel Fire station",
+      "lat": 25.201975899999997,
+      "lng": 55.284590099999996
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Rashidiya Station",
+      "lat": 25.2227472,
+      "lng": 55.377097299999996
+    },
+    {
+      "name": "Dubai Civil Defence General Command - Jebel Ali Fire Station",
+      "lat": 24.966685899999998,
+      "lng": 55.0765889
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Aweer Fire Station",
+      "lat": 25.1785805,
+      "lng": 55.3894457
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Marsa Fire Station",
+      "lat": 25.088966,
+      "lng": 55.151638
+    },
+    {
+      "name": "Dubai Civil Defence General Command Nad al Sheba Fire Station",
+      "lat": 25.1457174,
+      "lng": 55.350749199999996
+    },
+    {
+      "name": "Dubai Civil Defence General Command HQ - \u0627\u0644\u0642\u064a\u0627\u062f\u0629 \u0627\u0644\u0639\u0627\u0645\u0629 \u0644\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0645\u062f\u0646\u064a-\u062f\u0628\u064a",
+      "lat": 25.2636875,
+      "lng": 55.3895625
+    },
+    {
+      "name": "Dubai Civil Defence General Command Workshop",
+      "lat": 25.264445799999997,
+      "lng": 55.3906292
+    },
+    {
+      "name": "Civil Defence Station Al Ras - \u0645\u0631\u0643\u0632 \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0645\u062f\u0646\u064a \u0627\u0644\u0631\u0627\u0633",
+      "lat": 25.267736199999998,
+      "lng": 55.2937451
+    },
+    {
+      "name": "Dubai Civil Defence General Command Al Mizhar Fire Station",
+      "lat": 25.2490652,
+      "lng": 55.4535164
+    },
+    {
+      "name": "Main FIRE office Dubai Airports",
+      "lat": 25.2566125,
+      "lng": 55.376234399999994
+    },
+    {
+      "name": "Dubai Civil Defence General Command Dubai Indiustrial Park Fire Station - \u0645\u0631\u0643\u0632 \u0627\u0644\u0642\u064a\u0627\u062f\u0629 \u0627\u0644\u0639\u0627\u0645\u0629 \u0644\u0644\u062f\u0641\u0627\u0639 \u062f\u0628\u064a \u0627\u0644\u0635\u0646\u0627\u0639\u064a\u0629",
+      "lat": 24.8288636,
+      "lng": 55.0762402
+    },
+    {
+      "name": "Dubai Parks Fire Station",
+      "lat": 24.9154151,
+      "lng": 55.0151791
+    }
+  ],
+  "embassies": [
+    {
+      "name": "United States Consulate Dubai",
+      "lat": 25.258499999999998,
+      "lng": 55.3091398
+    },
+    {
+      "name": "General Consulate of Romania in Dubai",
+      "lat": 25.1645017,
+      "lng": 55.232136999999994
+    },
+    {
+      "name": "Philippine Consulate General in Dubai",
+      "lat": 25.2674798,
+      "lng": 55.3952982
+    },
+    {
+      "name": "Consulate-General of the Kingdom of the Netherlands",
+      "lat": 25.0854823,
+      "lng": 55.1417327
+    },
+    {
+      "name": "Consulate General of Germany",
+      "lat": 25.222364,
+      "lng": 55.257228399999995
+    },
+    {
+      "name": "Consulate General of India",
+      "lat": 25.2545951,
+      "lng": 55.3084998
+    },
+    {
+      "name": "Consulate General of Pakistan, Dubai",
+      "lat": 25.2539825,
+      "lng": 55.3072143
+    },
+    {
+      "name": "General Consulate of Rwanda - Dubai",
+      "lat": 25.1643331,
+      "lng": 55.218750799999995
+    },
+    {
+      "name": "Consulate of Kenya",
+      "lat": 25.2033246,
+      "lng": 55.2462125
+    },
+    {
+      "name": "Consulate General of Canada in Dubai",
+      "lat": 25.217699999999997,
+      "lng": 55.2835
+    },
+    {
+      "name": "Denmark consulate dubai",
+      "lat": 25.1457257,
+      "lng": 55.1994392
+    },
+    {
+      "name": "Consulate of Ukraine in Dubai",
+      "lat": 25.175047,
+      "lng": 55.2341968
+    },
+    {
+      "name": "Consulate General of the Russian Federation in Dubai and Northern Emirates",
+      "lat": 25.1575728,
+      "lng": 55.2274373
+    },
+    {
+      "name": "British Embassy",
+      "lat": 25.2617732,
+      "lng": 55.307002999999995
+    },
+    {
+      "name": "Consulate General of Australia & Trade Commission",
+      "lat": 25.251786199999998,
+      "lng": 55.3012303
+    },
+    {
+      "name": "Consulate General of South Africa",
+      "lat": 25.2544507,
+      "lng": 55.3056827
+    },
+    {
+      "name": "Consulate General of Yemen",
+      "lat": 25.255081300000004,
+      "lng": 55.307766
+    },
+    {
+      "name": "Consulate General of Indonesia",
+      "lat": 25.248032,
+      "lng": 55.2807226
+    },
+    {
+      "name": "Consulate General of Saudi Arabia",
+      "lat": 25.2576581,
+      "lng": 55.3099725
+    },
+    {
+      "name": "\u0627\u0644\u0642\u0646\u0635\u0644\u064a\u0629 \u0627\u0644\u0623\u0631\u062f\u0646\u064a\u0629 \u0641\u064a \u062f\u0628\u064a Jordanian Consulate in Dubai",
+      "lat": 25.253792699999998,
+      "lng": 55.3083561
+    }
+  ],
+  "hospitals": [
+    {
+      "name": "Prime Medical Center Jumeirah",
+      "lat": 25.1828269,
+      "lng": 55.2372173
+    },
+    {
+      "name": "Emirates Hospital Jumeirah",
+      "lat": 25.1967543,
+      "lng": 55.236855999999996
+    },
+    {
+      "name": "King's Jumeirah Medical Centre",
+      "lat": 25.162249199999998,
+      "lng": 55.2103968
+    },
+    {
+      "name": "Medcare Medical Centre, Jumeirah",
+      "lat": 25.1655359,
+      "lng": 55.2130454
+    },
+    {
+      "name": "JTS Medical Centre",
+      "lat": 25.239375,
+      "lng": 55.2702588
+    },
+    {
+      "name": "Medcare Hospital Al Safa",
+      "lat": 25.183297099999997,
+      "lng": 55.242662499999994
+    },
+    {
+      "name": "American Hospital Dubai Jumeirah Clinic",
+      "lat": 25.2081287,
+      "lng": 55.2551171
+    },
+    {
+      "name": "GMCClinics Jumeirah (Medical)",
+      "lat": 25.2313519,
+      "lng": 55.263223499999995
+    },
+    {
+      "name": "Dubai London Clinic and Speciality Hospital",
+      "lat": 25.152947,
+      "lng": 55.201472499999994
+    },
+    {
+      "name": "Zia Medical Center",
+      "lat": 25.1656747,
+      "lng": 55.212443099999994
+    },
+    {
+      "name": "Dubai London Hospital",
+      "lat": 25.1547533,
+      "lng": 55.203019
+    },
+    {
+      "name": "dr reuter medical center jumeirah (psychology center)",
+      "lat": 25.1686491,
+      "lng": 55.215405
+    },
+    {
+      "name": "Life GP Clinic - Al Wasl Road, Jumeirah",
+      "lat": 25.212231499999998,
+      "lng": 55.2575713
+    },
+    {
+      "name": "Medwin Medical Center",
+      "lat": 25.181212,
+      "lng": 55.2242883
+    },
+    {
+      "name": "\"Prime Medical Center\" Jumeirah",
+      "lat": 25.2295201,
+      "lng": 55.262015399999996
+    },
+    {
+      "name": "King's College Hospital London - Dubai",
+      "lat": 25.1128115,
+      "lng": 55.254982899999995
+    },
+    {
+      "name": "Medcare Women and Children Hospital",
+      "lat": 25.1611311,
+      "lng": 55.230585
+    },
+    {
+      "name": "Northwest Clinic Day Surgical",
+      "lat": 25.150517600000004,
+      "lng": 55.213017099999995
+    },
+    {
+      "name": "Prime Medical Center - Deira",
+      "lat": 25.2694781,
+      "lng": 55.3221243
+    },
+    {
+      "name": "NMC Medical Center Deira",
+      "lat": 25.2767287,
+      "lng": 55.34616330000001
+    },
+    {
+      "name": "Life Medical Centre - Deira City Centre",
+      "lat": 25.2523135,
+      "lng": 55.3326808
+    },
+    {
+      "name": "MARHABA MEDICAL CENTRE",
+      "lat": 25.2704336,
+      "lng": 55.3159333
+    },
+    {
+      "name": "Grand Infinity Medical Center, Deira",
+      "lat": 25.274707700000004,
+      "lng": 55.3265989
+    },
+    {
+      "name": "Amber Clinics, Al Rigga",
+      "lat": 25.26532,
+      "lng": 55.3213046
+    },
+    {
+      "name": "Aster Clinic, Al Muteena, Deira",
+      "lat": 25.273537599999997,
+      "lng": 55.3214323
+    },
+    {
+      "name": "Al Noor Polyclinic Deira",
+      "lat": 25.275598499999997,
+      "lng": 55.312381699999996
+    },
+    {
+      "name": "Abeer Al Noor Polyclinic Deira",
+      "lat": 25.2761411,
+      "lng": 55.3100941
+    },
+    {
+      "name": "Mediclinic Deira",
+      "lat": 25.250894799999998,
+      "lng": 55.334992299999996
+    },
+    {
+      "name": "Life GP Clinic - Deira, Muraqabat",
+      "lat": 25.2626544,
+      "lng": 55.3272112
+    },
+    {
+      "name": "MED7 Al Shifa Al Khaleeji Medical Center, Deira (Near Hyatt Place Hotel, Muraqqabat)",
+      "lat": 25.2629409,
+      "lng": 55.3287194
+    },
+    {
+      "name": "KIMSHEALTH Medical Center Deira",
+      "lat": 25.2711297,
+      "lng": 55.332335799999996
+    },
+    {
+      "name": "Aster",
+      "lat": 25.149184899999998,
+      "lng": 55.2462495
+    },
+    {
+      "name": "META CLINIC, AL RIGGA - DEIRA",
+      "lat": 25.2677841,
+      "lng": 55.3169085
+    },
+    {
+      "name": "NMC Medical Center, Al Qouz Branch",
+      "lat": 25.149184899999998,
+      "lng": 55.2462495
+    },
+    {
+      "name": "Multi Care Medical Center",
+      "lat": 25.142472899999998,
+      "lng": 55.2504448
+    },
+    {
+      "name": "Dubai Hospital",
+      "lat": 25.2853739,
+      "lng": 55.321634499999995
+    },
+    {
+      "name": "TMC GENERAL CLINIC LLC DUBAI UAE",
+      "lat": 25.273383799999998,
+      "lng": 55.3156374
+    },
+    {
+      "name": "Naif Medical Center",
+      "lat": 25.2748918,
+      "lng": 55.308944
+    }
+  ],
+  "schools": [
+    {
+      "name": "JSS International School",
+      "lat": 25.0658277,
+      "lng": 55.2042511
+    },
+    {
+      "name": "Arcadia British School",
+      "lat": 25.045750299999998,
+      "lng": 55.1826491
+    },
+    {
+      "name": "Dubai Schools Al Barsha",
+      "lat": 25.0815946,
+      "lng": 55.216254899999996
+    },
+    {
+      "name": "Sunmarke School",
+      "lat": 25.0469679,
+      "lng": 55.193292
+    },
+    {
+      "name": "Kids World Nursery in JVC Dubai",
+      "lat": 25.059419,
+      "lng": 55.202791999999995
+    },
+    {
+      "name": "Arcadia British School - Secondary Campus",
+      "lat": 25.0455374,
+      "lng": 55.184055699999995
+    },
+    {
+      "name": "Ladybird Early Learning Centre",
+      "lat": 25.0551064,
+      "lng": 55.21216390000001
+    },
+    {
+      "name": "Erudio Early Childhood Center",
+      "lat": 25.0601392,
+      "lng": 55.2058422
+    },
+    {
+      "name": "Chubby Cheeks Nursery JVC",
+      "lat": 25.0543426,
+      "lng": 55.202943499999996
+    },
+    {
+      "name": "Dhruv Global School, Dubai",
+      "lat": 25.060812499999997,
+      "lng": 55.239687499999995
+    },
+    {
+      "name": "Green Roots Nursery Dubai",
+      "lat": 25.057826100000003,
+      "lng": 55.2163672
+    },
+    {
+      "name": "Little Wonders Nursery Dubai JVC",
+      "lat": 25.066091999999998,
+      "lng": 55.209764199999995
+    },
+    {
+      "name": "Renaissance School - Dubai",
+      "lat": 25.0402193,
+      "lng": 55.2269984
+    },
+    {
+      "name": "school jvc",
+      "lat": 25.047678299999998,
+      "lng": 55.200248900000005
+    },
+    {
+      "name": "JSS International School Football Field",
+      "lat": 25.0665329,
+      "lng": 55.2051173
+    },
+    {
+      "name": "The Wonder Years Early Childhood Centre \u2013 Dubai Sports City",
+      "lat": 25.03931,
+      "lng": 55.2193384
+    },
+    {
+      "name": "Nord Anglia International School Dubai (NAS Dubai)",
+      "lat": 25.0619168,
+      "lng": 55.226870600000005
+    },
+    {
+      "name": "Australian International School DXB",
+      "lat": 25.0603639,
+      "lng": 55.233003700000005
+    },
+    {
+      "name": "The Royal Grammar School Guildford Dubai",
+      "lat": 25.0320275,
+      "lng": 55.229116499999996
+    },
+    {
+      "name": "Victory Heights Primary School",
+      "lat": 25.035183399999998,
+      "lng": 55.222714
+    },
+    {
+      "name": "World Fighting School",
+      "lat": 25.0706091,
+      "lng": 55.1357536
+    },
+    {
+      "name": "Raffles Early Childhood Centre Dubai Marina",
+      "lat": 25.0847551,
+      "lng": 55.148682
+    },
+    {
+      "name": "Clickalt Academy Dubai",
+      "lat": 25.0698715,
+      "lng": 55.12898010000001
+    },
+    {
+      "name": "Blossom Marina Nursery Dubai",
+      "lat": 25.074755099999997,
+      "lng": 55.1337738
+    },
+    {
+      "name": "Toddler Town British Nursery JBR",
+      "lat": 25.074050900000003,
+      "lng": 55.1310729
+    },
+    {
+      "name": "British Orchard Nursery - JBR",
+      "lat": 25.0721179,
+      "lng": 55.130111899999996
+    },
+    {
+      "name": "Monroe's Nursery",
+      "lat": 25.081967199999998,
+      "lng": 55.1404788
+    },
+    {
+      "name": "Willow Children's Nursery - Dubai Marina - Dubai",
+      "lat": 25.0699486,
+      "lng": 55.127438899999994
+    },
+    {
+      "name": "Maple Bear Nursery JBR",
+      "lat": 25.0805549,
+      "lng": 55.1382872
+    },
+    {
+      "name": "Jumeirah International Nurseries",
+      "lat": 25.0774707,
+      "lng": 55.134257
+    },
+    {
+      "name": "Jebel Ali Village Early Childhood Centre - Jumeirah Beach Residence Br.",
+      "lat": 25.076814,
+      "lng": 55.135537899999996
+    },
+    {
+      "name": "THE HOUSE OF LEARNING - Early Childhood Center",
+      "lat": 25.070664299999997,
+      "lng": 55.1258029
+    },
+    {
+      "name": "Galadari Motor Driving Centre, Marina Carrefour",
+      "lat": 25.074637600000003,
+      "lng": 55.138379199999996
+    },
+    {
+      "name": "Dimo's Swimming Academy",
+      "lat": 25.0749723,
+      "lng": 55.138749999999995
+    },
+    {
+      "name": "Little Boots Nursery\u2019s Program by TFA",
+      "lat": 25.077259899999998,
+      "lng": 55.1354165
+    },
+    {
+      "name": "Belhasa Driving Center - (Dubai Marina)",
+      "lat": 25.084783299999998,
+      "lng": 55.148443099999994
+    },
+    {
+      "name": "Hispania Academy Learn Spanish",
+      "lat": 25.0805905,
+      "lng": 55.140302399999996
+    },
+    {
+      "name": "eccs",
+      "lat": 25.072340200000003,
+      "lng": 55.1300968
+    },
+    {
+      "name": "Mosaic Nursery JLT",
+      "lat": 25.079031,
+      "lng": 55.149294
+    },
+    {
+      "name": "Unicorn Universe Training Center",
+      "lat": 25.0809455,
+      "lng": 55.1408254
+    }
+  ],
+  "mosques": [
+    {
+      "name": "Al Rusul Masjid",
+      "lat": 25.2667209,
+      "lng": 55.3099766
+    },
+    {
+      "name": "Khalifa Altajir Mosque (The Green Mosque)",
+      "lat": 25.255245799999997,
+      "lng": 55.328455299999995
+    },
+    {
+      "name": "The late Omar Ali Bin Haider mosque",
+      "lat": 25.2678208,
+      "lng": 55.31841
+    },
+    {
+      "name": "Al Zarooni Al Kabeer Mosque",
+      "lat": 25.273161899999998,
+      "lng": 55.305597
+    },
+    {
+      "name": "Saifee Masjid (Dawoodi Bohra Masjid)",
+      "lat": 25.273618199999998,
+      "lng": 55.3040241
+    },
+    {
+      "name": "Ahmed Majid Al Ghurair Mosque",
+      "lat": 25.2710723,
+      "lng": 55.304932
+    },
+    {
+      "name": "Latifa Mosque",
+      "lat": 25.278052499999998,
+      "lng": 55.3125347
+    },
+    {
+      "name": "Masjid Mona Bint Sultan Al-Otaiba",
+      "lat": 25.261645800000004,
+      "lng": 55.322423699999995
+    },
+    {
+      "name": "Port Saeed Sharqi Mosque",
+      "lat": 25.2626249,
+      "lng": 55.331278
+    },
+    {
+      "name": "Al futtaim masjid",
+      "lat": 25.2764554,
+      "lng": 55.312716099999996
+    },
+    {
+      "name": "Masjid Al Khabeesi",
+      "lat": 25.2660627,
+      "lng": 55.32774930000001
+    },
+    {
+      "name": "Sheikh Hamdan Bin Rashid Al Maktoum Masjid",
+      "lat": 25.2538707,
+      "lng": 55.3345251
+    },
+    {
+      "name": "Fish Roundabout Dubai Mosque",
+      "lat": 25.2712889,
+      "lng": 55.3170735
+    },
+    {
+      "name": "Majid Al Futtaim Masjid",
+      "lat": 25.278590899999998,
+      "lng": 55.331931
+    },
+    {
+      "name": "Grand Bur Dubai Masjid",
+      "lat": 25.2642259,
+      "lng": 55.2967248
+    },
+    {
+      "name": "Thani Bin Abdulla Masjid",
+      "lat": 25.2766697,
+      "lng": 55.309483099999994
+    },
+    {
+      "name": "Port Saeed Masjid",
+      "lat": 25.261944399999997,
+      "lng": 55.3277778
+    },
+    {
+      "name": "Naif-Nasser Abdulla Hussain Mosque",
+      "lat": 25.2710583,
+      "lng": 55.3088601
+    },
+    {
+      "name": "Yaqub Mosque",
+      "lat": 25.260710399999997,
+      "lng": 55.3177832
+    },
+    {
+      "name": "\u062a\u064a\u0627\u0628 \u0627\u0648\u0644\u0627\u062f \u0627\u0645\u062f\u0631\u0645\u0627\u0646",
+      "lat": 25.271369,
+      "lng": 55.2993063
+    },
+    {
+      "name": "Jumeirah Mosque",
+      "lat": 25.2338097,
+      "lng": 55.2654913
+    },
+    {
+      "name": "Al Farooq Omar Bin Al Khattab Mosque",
+      "lat": 25.171575400000002,
+      "lng": 55.2329235
+    },
+    {
+      "name": "Al Safa Mosque",
+      "lat": 25.188626799999998,
+      "lng": 55.239765399999996
+    },
+    {
+      "name": "Fatima Alsayd Mosque \u0645\u0633\u062c\u062f \u0641\u0627\u0637\u0645\u0629 \u0627\u0644\u0633\u064a\u062f",
+      "lat": 25.2235072,
+      "lng": 55.2633102
+    },
+    {
+      "name": "Masjid Rashid Al Hadeeth",
+      "lat": 25.2077198,
+      "lng": 55.2442249
+    },
+    {
+      "name": "Sheikh Mohamed Bin Rashed Al Maktoum Mosque",
+      "lat": 25.191111,
+      "lng": 55.232990199999996
+    },
+    {
+      "name": "Al Manara Mosque",
+      "lat": 25.1673057,
+      "lng": 55.2123316
+    },
+    {
+      "name": "Masjid Al-Sheikh Muhammad bin Rashed",
+      "lat": 25.1764089,
+      "lng": 55.2205264
+    },
+    {
+      "name": "Aisha Um Al Momineen Masjid",
+      "lat": 25.1755343,
+      "lng": 55.228085699999994
+    },
+    {
+      "name": "Jumeirah 3 Park 1 Mosque",
+      "lat": 25.1786061,
+      "lng": 55.2217949
+    }
+  ],
+  "supermarkets": [
+    {
+      "name": "Al Maya Supermarket - Dubai Marina",
+      "lat": 25.070288599999998,
+      "lng": 55.1358785
+    },
+    {
+      "name": "Carrefour market",
+      "lat": 25.0752554,
+      "lng": 55.1380863
+    },
+    {
+      "name": "Waitrose",
+      "lat": 25.0770528,
+      "lng": 55.1404885
+    },
+    {
+      "name": "Spinneys",
+      "lat": 25.0860783,
+      "lng": 55.1482659
+    },
+    {
+      "name": "Marina suites supermarket",
+      "lat": 25.0683828,
+      "lng": 55.133614699999995
+    },
+    {
+      "name": "New W Mart Supermarket Marina Branch - The Torch Tower Marina",
+      "lat": 25.0879311,
+      "lng": 55.1472686
+    },
+    {
+      "name": "Freshmart Supermarket- JBR Marina",
+      "lat": 25.0765005,
+      "lng": 55.135312899999995
+    },
+    {
+      "name": "Beach City Supermarket",
+      "lat": 25.085043199999998,
+      "lng": 55.1424619
+    },
+    {
+      "name": "Carrefour Market",
+      "lat": 25.072080500000002,
+      "lng": 55.1316315
+    },
+    {
+      "name": "allday minimart Marina Plaza - Al Marsa St",
+      "lat": 25.075188699999998,
+      "lng": 55.140199499999994
+    },
+    {
+      "name": "Carrefour Market Marina crown",
+      "lat": 25.0901002,
+      "lng": 55.148172300000006
+    },
+    {
+      "name": "Grandiose- Murjan, Jumeirah Beach Residences (Marsa), Dubai",
+      "lat": 25.0824099,
+      "lng": 55.1389509
+    },
+    {
+      "name": "Better Daily 24 Supermarket",
+      "lat": 25.0845156,
+      "lng": 55.1447833
+    },
+    {
+      "name": "Grandiose- Marina Promenade, Marina (Marsa), Dubai",
+      "lat": 25.0752234,
+      "lng": 55.1331589
+    },
+    {
+      "name": "Fresh Mart Supermarket - Condor Marina Star Residence",
+      "lat": 25.068474499999997,
+      "lng": 55.131557699999995
+    },
+    {
+      "name": "VIVA Supermarket - KG Tower, Marina, Dubai",
+      "lat": 25.0696598,
+      "lng": 55.1273172
+    },
+    {
+      "name": "Choithrams Marina",
+      "lat": 25.068711,
+      "lng": 55.1301078
+    },
+    {
+      "name": "Choithrams Marina Wharf II",
+      "lat": 25.0723131,
+      "lng": 55.132367099999996
+    },
+    {
+      "name": "LuLu Hypermarket - Al Barsha",
+      "lat": 25.1170759,
+      "lng": 55.2069705
+    },
+    {
+      "name": "Carrefour Hypermarket",
+      "lat": 25.1198505,
+      "lng": 55.2023725
+    },
+    {
+      "name": "Union Coop Al Barsha South",
+      "lat": 25.0859638,
+      "lng": 55.2417115
+    },
+    {
+      "name": "Union Coop Al Barsha",
+      "lat": 25.099050000000002,
+      "lng": 55.2046041
+    },
+    {
+      "name": "Freshmart Supermarket- Al Barsha, Behind MOE",
+      "lat": 25.116197099999997,
+      "lng": 55.2049631
+    },
+    {
+      "name": "Al Barsha City Supermarket",
+      "lat": 25.1078239,
+      "lng": 55.1989666
+    },
+    {
+      "name": "VIVA Supermarket - Al Barsha 1, Dubai",
+      "lat": 25.1126294,
+      "lng": 55.1921013
+    },
+    {
+      "name": "GREEN VIEW SUPERMARKET",
+      "lat": 25.1158136,
+      "lng": 55.203267
+    },
+    {
+      "name": "Spinneys Al Barsha",
+      "lat": 25.098682500000002,
+      "lng": 55.2015466
+    },
+    {
+      "name": "Grand Barsha Department Store",
+      "lat": 25.1115116,
+      "lng": 55.2016238
+    },
+    {
+      "name": "Freshmart Supermarket- Al Barsha",
+      "lat": 25.1126695,
+      "lng": 55.2045105
+    },
+    {
+      "name": "Metro Manila Supermarket - Barsha",
+      "lat": 25.116718199999998,
+      "lng": 55.205276500000004
+    },
+    {
+      "name": "GATE 1 to 20 AED- AL BARSHA",
+      "lat": 25.0885076,
+      "lng": 55.192612399999994
+    },
+    {
+      "name": "Grandiose- B1 Mall, Al Barsha First, Dubai",
+      "lat": 25.115216,
+      "lng": 55.201727999999996
+    },
+    {
+      "name": "Nesto Hypermarket - Jumeirah Village Circle",
+      "lat": 25.066709000000003,
+      "lng": 55.2153801
+    },
+    {
+      "name": "STARMART SUPERMARKET JVC",
+      "lat": 25.0534137,
+      "lng": 55.2003127
+    },
+    {
+      "name": "New W Mart Supermarket - JVC",
+      "lat": 25.060948,
+      "lng": 55.202110999999995
+    },
+    {
+      "name": "Choithrams Manhattan Tower JVC",
+      "lat": 25.068939000000004,
+      "lng": 55.207336299999994
+    },
+    {
+      "name": "Al Maya Supermarket JVC",
+      "lat": 25.0473769,
+      "lng": 55.2112834
+    },
+    {
+      "name": "AL MADINA MARKET - JVC",
+      "lat": 25.0520188,
+      "lng": 55.2081167
+    },
+    {
+      "name": "Cart Supermarket JVC",
+      "lat": 25.0539658,
+      "lng": 55.201882899999994
+    },
+    {
+      "name": "ALLDAY supermarket",
+      "lat": 25.066416,
+      "lng": 55.21034230000001
+    },
+    {
+      "name": "RRICH SUPERMARKET JVC",
+      "lat": 25.057999199999998,
+      "lng": 55.210389799999994
+    },
+    {
+      "name": "Bazaar Gourmet",
+      "lat": 25.0599098,
+      "lng": 55.2051199
+    },
+    {
+      "name": "Best in Village supermarket",
+      "lat": 25.0610866,
+      "lng": 55.217487
+    },
+    {
+      "name": "Best Buy Supermarket JVC",
+      "lat": 25.0464508,
+      "lng": 55.2060093
+    },
+    {
+      "name": "Needs Supermarket",
+      "lat": 25.049044799999997,
+      "lng": 55.215097799999995
+    },
+    {
+      "name": "ICEBERG MART",
+      "lat": 25.0648555,
+      "lng": 55.2109242
+    },
+    {
+      "name": "EVER FRESH MART SUPERMARKET",
+      "lat": 25.0669714,
+      "lng": 55.2121308
+    },
+    {
+      "name": "Apple A Day Supermarket LLC",
+      "lat": 25.060674199999998,
+      "lng": 55.2162255
+    },
+    {
+      "name": "Aswaaq Mart - Sydney Tower JVC \u0623\u0633\u0648\u0627\u0642 \u0645\u0627\u0631\u062a",
+      "lat": 25.052557399999998,
+      "lng": 55.2008698
+    },
+    {
+      "name": "aswaaq mart -JVC",
+      "lat": 25.058138,
+      "lng": 55.217333599999996
+    }
+  ],
+  "pharmacies": [
+    {
+      "name": "LIFE Pharmacy - Marina View",
+      "lat": 25.086897000000004,
+      "lng": 55.148358099999996
+    },
+    {
+      "name": "LIFE PHARMACY MARINA",
+      "lat": 25.0690494,
+      "lng": 55.129482
+    },
+    {
+      "name": "Life Pharmacy -1225 - Marina Walk",
+      "lat": 25.0859934,
+      "lng": 55.148279699999996
+    },
+    {
+      "name": "Life Pharmacy 73",
+      "lat": 25.0888509,
+      "lng": 55.1467131
+    },
+    {
+      "name": "LIFE Pharmacy - Mansion Pharmacy",
+      "lat": 25.073869199999997,
+      "lng": 55.1381687
+    },
+    {
+      "name": "Aster Pharmacy - Royal Oceanic Bldg., Dubai Marina (127)",
+      "lat": 25.084341900000002,
+      "lng": 55.141681
+    },
+    {
+      "name": "Pharmacy Life 24 hours Apteka 24 chasa",
+      "lat": 25.0702702,
+      "lng": 55.136047399999995
+    },
+    {
+      "name": "LIFE Pharmacy - La Riviera",
+      "lat": 25.073173999999998,
+      "lng": 55.1384976
+    },
+    {
+      "name": "Supercare Pharmacy - Dubai Marina Mall",
+      "lat": 25.076708099999998,
+      "lng": 55.1406839
+    },
+    {
+      "name": "LIFE Pharmacy - 35",
+      "lat": 25.084930099999998,
+      "lng": 55.1419846
+    },
+    {
+      "name": "Life Pharmacy - Diamond 1 ( Marina )",
+      "lat": 25.080017299999998,
+      "lng": 55.14459960000001
+    },
+    {
+      "name": "Life pharmacy Jbr bahar",
+      "lat": 25.0784003,
+      "lng": 55.135740500000004
+    },
+    {
+      "name": "LIFE Pharmacy - Marsa",
+      "lat": 25.0879276,
+      "lng": 55.148927
+    },
+    {
+      "name": "Life Pharmacy 74 (Br. Of Life Pharmacy LLC)",
+      "lat": 25.0895735,
+      "lng": 55.1478445
+    },
+    {
+      "name": "CHS Community Pharmacy Manchester - Dubai Marina I Online Pharmacy",
+      "lat": 25.0682037,
+      "lng": 55.131839500000005
+    },
+    {
+      "name": "Marina Life Pharmacy - Marina Heights",
+      "lat": 25.0872463,
+      "lng": 55.148194800000006
+    },
+    {
+      "name": "LIFE Pharmacy 3 (DCC)",
+      "lat": 25.2519702,
+      "lng": 55.3328026
+    },
+    {
+      "name": "LIFE Pharmacy - Deira Life",
+      "lat": 25.264367399999998,
+      "lng": 55.3294126
+    },
+    {
+      "name": "Aster Pharmacy - Al Muteena, Deira, next to Aster Clinic (123)",
+      "lat": 25.273549499999998,
+      "lng": 55.3215053
+    },
+    {
+      "name": "Life Pharmacy 83",
+      "lat": 25.276213499999997,
+      "lng": 55.3015429
+    },
+    {
+      "name": "LIFE Pharmacy - Carrefour DCC",
+      "lat": 25.252235199999998,
+      "lng": 55.333692799999994
+    },
+    {
+      "name": "BinSina Pharmacy Nasser Square Deira",
+      "lat": 25.268138999999998,
+      "lng": 55.307767
+    },
+    {
+      "name": "LIFE PHARMACY 52",
+      "lat": 25.252312999999997,
+      "lng": 55.3326925
+    },
+    {
+      "name": "MEDON PHARMACY - Medishop, Naif, Al Murar",
+      "lat": 25.2767061,
+      "lng": 55.3137694
+    },
+    {
+      "name": "LIFE Muraqabat Pharmacy",
+      "lat": 25.2626116,
+      "lng": 55.327173599999995
+    },
+    {
+      "name": "LIFE Pharmacy - Noor Al Shefaa",
+      "lat": 25.2740457,
+      "lng": 55.3072582
+    },
+    {
+      "name": "Aster Pharmacy - Al Rigga Road, Deira (Rashid)",
+      "lat": 25.2646154,
+      "lng": 55.321994499999995
+    },
+    {
+      "name": "City Pharmaceutical Co. (Dubai Showroom)",
+      "lat": 25.263616,
+      "lng": 55.3226845
+    },
+    {
+      "name": "Life Medical Centre - Deira City Centre",
+      "lat": 25.2523135,
+      "lng": 55.3326808
+    },
+    {
+      "name": "Life Pharmacy LCC - Branch 84",
+      "lat": 25.2778606,
+      "lng": 55.3023074
+    },
+    {
+      "name": "LIFE Pharmacy - Deira",
+      "lat": 25.2697798,
+      "lng": 55.3010877
+    },
+    {
+      "name": "LIFE Pharmacy - Al Kanz",
+      "lat": 25.2773173,
+      "lng": 55.327718499999996
+    },
+    {
+      "name": "APOTEC GRAND PHARMACY L.L.C",
+      "lat": 25.277606799999997,
+      "lng": 55.3226272
+    },
+    {
+      "name": "Grand LIFE Pharmacy",
+      "lat": 25.273754999999998,
+      "lng": 55.323437899999995
+    },
+    {
+      "name": "Thumbay Pharmacy - Thumbay Clinic Deira, Dubai",
+      "lat": 25.2746927,
+      "lng": 55.32652
+    },
+    {
+      "name": "Life Pharmacy 130",
+      "lat": 25.2701043,
+      "lng": 55.3199092
+    }
+  ]
+}

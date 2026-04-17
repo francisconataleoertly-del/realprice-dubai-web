@@ -1,0 +1,403 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { ArrowDown, ArrowUp, Minus } from "lucide-react";
+
+interface Opportunity {
+  id: number;
+  zone: string;
+  type: string;
+  rooms: string;
+  area_m2: number;
+  listed_price: number;
+  estimated_price: number;
+  diff_pct: number;
+  signal: "green" | "yellow" | "red";
+  // Radar position (angle in degrees, distance from center 0-1)
+  angle: number;
+  distance: number;
+}
+
+const DEMO_DATA: Opportunity[] = [
+  { id: 1, zone: "Dubai Marina", type: "Apartment", rooms: "1 BR", area_m2: 65, listed_price: 1100000, estimated_price: 1350000, diff_pct: -18.5, signal: "green", angle: 45, distance: 0.6 },
+  { id: 2, zone: "Business Bay", type: "Apartment", rooms: "Studio", area_m2: 42, listed_price: 780000, estimated_price: 820000, diff_pct: -4.9, signal: "yellow", angle: 120, distance: 0.4 },
+  { id: 3, zone: "JVC", type: "Apartment", rooms: "2 BR", area_m2: 110, listed_price: 1250000, estimated_price: 1180000, diff_pct: 5.9, signal: "red", angle: 200, distance: 0.7 },
+  { id: 4, zone: "Palm Jumeirah", type: "Apartment", rooms: "2 BR", area_m2: 145, listed_price: 3200000, estimated_price: 4100000, diff_pct: -22.0, signal: "green", angle: 330, distance: 0.85 },
+  { id: 5, zone: "Downtown Dubai", type: "Apartment", rooms: "1 BR", area_m2: 72, listed_price: 1900000, estimated_price: 1950000, diff_pct: -2.6, signal: "yellow", angle: 80, distance: 0.5 },
+  { id: 6, zone: "Dubai Hills", type: "Villa", rooms: "4 BR", area_m2: 350, listed_price: 5800000, estimated_price: 5200000, diff_pct: 11.5, signal: "red", angle: 260, distance: 0.9 },
+  { id: 7, zone: "Arabian Ranches", type: "Villa", rooms: "3 BR", area_m2: 280, listed_price: 2900000, estimated_price: 3400000, diff_pct: -14.7, signal: "green", angle: 15, distance: 0.75 },
+  { id: 8, zone: "DIFC", type: "Apartment", rooms: "1 BR", area_m2: 80, listed_price: 2100000, estimated_price: 2350000, diff_pct: -10.6, signal: "green", angle: 170, distance: 0.35 },
+  { id: 9, zone: "Motor City", type: "Apartment", rooms: "2 BR", area_m2: 120, listed_price: 1050000, estimated_price: 980000, diff_pct: 7.1, signal: "red", angle: 300, distance: 0.55 },
+  { id: 10, zone: "Al Barsha", type: "Apartment", rooms: "Studio", area_m2: 38, listed_price: 520000, estimated_price: 550000, diff_pct: -5.5, signal: "yellow", angle: 240, distance: 0.45 },
+  { id: 11, zone: "JLT", type: "Apartment", rooms: "1 BR", area_m2: 70, listed_price: 850000, estimated_price: 1020000, diff_pct: -16.7, signal: "green", angle: 95, distance: 0.65 },
+  { id: 12, zone: "Silicon Oasis", type: "Apartment", rooms: "2 BR", area_m2: 95, listed_price: 720000, estimated_price: 680000, diff_pct: 5.9, signal: "red", angle: 150, distance: 0.8 },
+];
+
+const SIGNAL_CONFIG = {
+  green: { color: "#10b981", glow: "rgba(16,185,129,0.6)", label: "Underpriced", icon: ArrowDown },
+  yellow: { color: "#f59e0b", glow: "rgba(245,158,11,0.6)", label: "Fair Value", icon: Minus },
+  red: { color: "#ef4444", glow: "rgba(239,68,68,0.6)", label: "Overpriced", icon: ArrowUp },
+};
+
+const fmt = (n: number) => new Intl.NumberFormat("en-AE", { maximumFractionDigits: 0 }).format(n);
+
+// ── Radar Canvas Component ──────────────────────────────────────
+function RadarDisplay({
+  items,
+  selected,
+  onSelect,
+  filter,
+}: {
+  items: Opportunity[];
+  selected: Opportunity | null;
+  onSelect: (item: Opportunity) => void;
+  filter: string;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sweepAngle = useRef(0);
+  const animRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const size = Math.min(canvas.parentElement!.clientWidth, 500);
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    ctx.scale(dpr, dpr);
+
+    const cx = size / 2;
+    const cy = size / 2;
+    const maxR = size / 2 - 20;
+
+    const filtered = filter === "all" ? items : items.filter((i) => i.signal === filter);
+
+    function draw() {
+      ctx.clearRect(0, 0, size, size);
+
+      // Background
+      ctx.fillStyle = "rgba(10, 10, 15, 0.95)";
+      ctx.fillRect(0, 0, size, size);
+
+      // Grid circles
+      for (let i = 1; i <= 4; i++) {
+        const r = (maxR / 4) * i;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(59, 130, 246, ${i === 4 ? 0.15 : 0.06})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Grid lines (crosshairs)
+      for (let a = 0; a < 360; a += 30) {
+        const rad = (a * Math.PI) / 180;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(rad) * maxR, cy + Math.sin(rad) * maxR);
+        ctx.strokeStyle = "rgba(59, 130, 246, 0.04)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Degree labels
+      ctx.font = "9px monospace";
+      ctx.fillStyle = "rgba(255,255,255,0.1)";
+      ctx.textAlign = "center";
+      for (let a = 0; a < 360; a += 90) {
+        const rad = (a * Math.PI) / 180;
+        const lx = cx + Math.cos(rad) * (maxR + 12);
+        const ly = cy + Math.sin(rad) * (maxR + 12);
+        ctx.fillText(`${a}\u00B0`, lx, ly + 3);
+      }
+
+      // Sweep line
+      const sweepRad = (sweepAngle.current * Math.PI) / 180;
+      const gradient = ctx.createConicalGradient
+        ? null
+        : ctx.createLinearGradient(cx, cy, cx + Math.cos(sweepRad) * maxR, cy + Math.sin(sweepRad) * maxR);
+
+      // Sweep glow (trailing fade)
+      for (let i = 0; i < 30; i++) {
+        const a = sweepAngle.current - i * 1.5;
+        const rad2 = (a * Math.PI) / 180;
+        const alpha = 0.15 * (1 - i / 30);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(rad2) * maxR, cy + Math.sin(rad2) * maxR);
+        ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Main sweep line
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(sweepRad) * maxR, cy + Math.sin(sweepRad) * maxR);
+      ctx.strokeStyle = "rgba(59, 130, 246, 0.5)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "#3b82f6";
+      ctx.fill();
+
+      // Plot items as blips
+      filtered.forEach((item) => {
+        const rad = ((item.angle - 90) * Math.PI) / 180;
+        const r = item.distance * maxR;
+        const x = cx + Math.cos(rad) * r;
+        const y = cy + Math.sin(rad) * r;
+
+        const cfg = SIGNAL_CONFIG[item.signal];
+        const isSelected = selected?.id === item.id;
+
+        // Blip glow
+        if (isSelected) {
+          ctx.beginPath();
+          ctx.arc(x, y, 14, 0, Math.PI * 2);
+          ctx.fillStyle = cfg.glow.replace("0.6", "0.15");
+          ctx.fill();
+        }
+
+        // Ping effect (when sweep passes)
+        const angleDiff = Math.abs(((sweepAngle.current - item.angle + 360) % 360));
+        if (angleDiff < 30) {
+          const pingAlpha = 0.4 * (1 - angleDiff / 30);
+          ctx.beginPath();
+          ctx.arc(x, y, 8 + (30 - angleDiff) * 0.3, 0, Math.PI * 2);
+          ctx.fillStyle = cfg.color + Math.round(pingAlpha * 255).toString(16).padStart(2, "0");
+          ctx.fill();
+        }
+
+        // Blip dot
+        ctx.beginPath();
+        ctx.arc(x, y, isSelected ? 6 : 4, 0, Math.PI * 2);
+        ctx.fillStyle = cfg.color;
+        ctx.fill();
+
+        // Label (only for selected or green opportunities)
+        if (isSelected || item.signal === "green") {
+          ctx.font = isSelected ? "bold 10px monospace" : "9px monospace";
+          ctx.fillStyle = isSelected ? "#ffffff" : "rgba(255,255,255,0.4)";
+          ctx.textAlign = "left";
+          ctx.fillText(item.zone, x + 10, y + 3);
+          if (isSelected) {
+            ctx.font = "9px monospace";
+            ctx.fillStyle = cfg.color;
+            ctx.fillText(`${item.diff_pct > 0 ? "+" : ""}${item.diff_pct.toFixed(1)}%`, x + 10, y + 15);
+          }
+        }
+      });
+
+      // Update sweep
+      sweepAngle.current = (sweepAngle.current + 0.8) % 360;
+      animRef.current = requestAnimationFrame(draw);
+    }
+
+    draw();
+    return () => cancelAnimationFrame(animRef.current);
+  }, [items, selected, filter]);
+
+  // Handle click on canvas to select blip
+  const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const maxR = rect.width / 2 - 20;
+
+    const filtered = filter === "all" ? items : items.filter((i) => i.signal === filter);
+
+    let closest: Opportunity | null = null;
+    let closestDist = 20; // 20px click radius
+
+    filtered.forEach((item) => {
+      const rad = ((item.angle - 90) * Math.PI) / 180;
+      const r = item.distance * maxR;
+      const bx = cx + Math.cos(rad) * r;
+      const by = cy + Math.sin(rad) * r;
+      const dist = Math.sqrt((x - bx) ** 2 + (y - by) ** 2);
+      if (dist < closestDist) {
+        closestDist = dist;
+        closest = item;
+      }
+    });
+
+    if (closest) onSelect(closest);
+  };
+
+  return (
+    <canvas
+      ref={canvasRef}
+      onClick={handleClick}
+      className="cursor-crosshair mx-auto block"
+      style={{ maxWidth: 500, maxHeight: 500 }}
+    />
+  );
+}
+
+// ── Main Section ────────────────────────────────────────────────
+export default function RadarSection() {
+  const [filter, setFilter] = useState("all");
+  const [selected, setSelected] = useState<Opportunity | null>(null);
+
+  const filtered = filter === "all" ? DEMO_DATA : DEMO_DATA.filter((d) => d.signal === filter);
+
+  return (
+    <section id="radar" className="relative min-h-screen overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-cover bg-center bg-fixed" style={{ backgroundImage: "url('/dubai-tower-bg.jpg')" }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/60 via-[#0a0a0f]/75 to-[#0a0a0f]" />
+
+      <div className="relative z-10 px-4 md:px-8 lg:px-16 py-28">
+        <div className="max-w-7xl mx-auto">
+          {/* Section label */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-mono text-[11px] tracking-[0.3em] text-[#3b82f6]/70">03</span>
+            <div className="w-12 h-px bg-[#3b82f6]/30" />
+            <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-white/20">Radar</span>
+          </div>
+
+          <h2 className="text-[clamp(2.2rem,5vw,4.5rem)] font-extralight leading-[0.95] tracking-[-0.03em] text-white mb-4 max-w-3xl">
+            Find underpriced
+            <br />
+            <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">opportunities</span>
+          </h2>
+          <p className="text-white/30 text-[15px] mb-10 max-w-xl">
+            Live radar scanning Dubai properties. Green blips = underpriced vs AI estimate.
+          </p>
+
+          {/* Filters — bento grid */}
+          <div className="inline-grid grid-cols-4 border border-white/[0.06] rounded-lg overflow-hidden bg-white/[0.02] mb-10">
+            {[
+              { key: "all", label: "All" },
+              { key: "green", label: "Opportunities" },
+              { key: "yellow", label: "Fair Value" },
+              { key: "red", label: "Overpriced" },
+            ].map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`px-5 py-2.5 text-[11px] uppercase tracking-wider transition-all duration-300 border-r last:border-r-0 border-white/[0.04] ${
+                  filter === f.key
+                    ? "bg-[#3b82f6]/10 text-white"
+                    : "text-white/30 hover:text-white/50 hover:bg-white/[0.02]"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* Radar display */}
+            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex items-center justify-center">
+              <RadarDisplay items={DEMO_DATA} selected={selected} onSelect={setSelected} filter={filter} />
+            </div>
+
+            {/* Details panel */}
+            <div className="space-y-4">
+              {/* Legend */}
+              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl p-4">
+                <div className="grid grid-cols-3 gap-4">
+                  {(["green", "yellow", "red"] as const).map((sig) => {
+                    const cfg = SIGNAL_CONFIG[sig];
+                    const count = DEMO_DATA.filter((d) => d.signal === sig).length;
+                    return (
+                      <div key={sig} className="text-center">
+                        <div className="w-3 h-3 rounded-full mx-auto mb-1.5" style={{ backgroundColor: cfg.color, boxShadow: `0 0 8px ${cfg.glow}` }} />
+                        <p className="text-[10px] font-mono text-white/30">{cfg.label}</p>
+                        <p className="text-[14px] font-mono text-white">{count}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Selected detail */}
+              {selected && (
+                <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl p-5 space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-lg text-white font-light">{selected.zone}</p>
+                      <p className="text-xs text-white/30">{selected.type} &bull; {selected.rooms} &bull; {selected.area_m2}m&sup2;</p>
+                    </div>
+                    <div className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono"
+                      style={{ backgroundColor: SIGNAL_CONFIG[selected.signal].color + "15", color: SIGNAL_CONFIG[selected.signal].color }}>
+                      {selected.diff_pct > 0 ? <ArrowUp size={12} /> : selected.diff_pct < -5 ? <ArrowDown size={12} /> : <Minus size={12} />}
+                      {Math.abs(selected.diff_pct).toFixed(1)}%
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-[10px] font-mono text-white/25 mb-1">LISTED PRICE</p>
+                      <p className="text-white font-mono">AED {fmt(selected.listed_price)}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-mono text-white/25 mb-1">AI ESTIMATE</p>
+                      <p className="font-mono" style={{ color: SIGNAL_CONFIG[selected.signal].color }}>
+                        AED {fmt(selected.estimated_price)}
+                      </p>
+                    </div>
+                  </div>
+                  {selected.signal === "green" && (
+                    <div className="border-t border-white/[0.06] pt-3">
+                      <p className="text-[11px] text-green-400/70">
+                        Potential saving: <span className="font-mono text-green-400">AED {fmt(selected.estimated_price - selected.listed_price)}</span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Property list */}
+              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl overflow-hidden">
+                <div className="grid grid-cols-5 px-4 py-2 border-b border-white/[0.04] text-[9px] font-mono text-white/20 tracking-wider uppercase">
+                  <span>Zone</span><span>Type</span><span className="text-right">Listed</span><span className="text-right">AI Est.</span><span className="text-right">Diff</span>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto">
+                  {filtered.map((item) => {
+                    const cfg = SIGNAL_CONFIG[item.signal];
+                    const isActive = selected?.id === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setSelected(item)}
+                        className={`w-full grid grid-cols-5 px-4 py-2.5 text-[11px] border-b border-white/[0.02] transition-all hover:bg-white/[0.03] ${
+                          isActive ? "bg-white/[0.05]" : ""
+                        }`}
+                      >
+                        <span className="text-white/60 text-left truncate">{item.zone}</span>
+                        <span className="text-white/30 text-left">{item.rooms}</span>
+                        <span className="text-white/40 font-mono text-right">{fmt(item.listed_price)}</span>
+                        <span className="font-mono text-right" style={{ color: cfg.color }}>{fmt(item.estimated_price)}</span>
+                        <span className="font-mono text-right" style={{ color: cfg.color }}>
+                          {item.diff_pct > 0 ? "+" : ""}{item.diff_pct.toFixed(1)}%
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <p className="text-[10px] text-white/10 font-mono text-center">
+                LIVE FEED &bull; SCANNING {DEMO_DATA.length} PROPERTIES &bull; DEMO DATA
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
