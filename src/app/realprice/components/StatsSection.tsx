@@ -1,13 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useSpring, animate } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 
-// ── Animated number ────────────────────────────────────────────
+// ── Client-only wrapper to prevent SSR hydration mismatch ─────
+function ClientOnly({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return <>{children}</>;
+}
+
+// ── Animated counter ───────────────────────────────────────────
 function CountUp({
   target,
   format = "int",
-  duration = 2.2,
+  duration = 2.4,
   delay = 0,
 }: {
   target: number;
@@ -16,9 +24,8 @@ function CountUp({
   delay?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-20%" });
+  const inView = useInView(ref, { once: true, margin: "-15%" });
   const [value, setValue] = useState(0);
-  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (!inView) return;
@@ -27,7 +34,6 @@ function CountUp({
       delay,
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => setValue(v),
-      onComplete: () => setDone(true),
     });
     return () => controls.stop();
   }, [inView, target, duration, delay]);
@@ -41,104 +47,62 @@ function CountUp({
       ? value.toFixed(1)
       : Math.round(value).toLocaleString();
 
-  return (
-    <span
-      ref={ref}
-      className={`inline-block transition-all duration-500 ${
-        done ? "drop-shadow-[0_0_12px_rgba(59,130,246,0.4)]" : ""
-      }`}
-    >
-      {formatted}
-    </span>
-  );
+  return <span ref={ref}>{formatted}</span>;
 }
 
-// ── Circular progress ring ─────────────────────────────────────
-function ProgressRing({ percentage, size = 280 }: { percentage: number; size?: number }) {
-  const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-20%" });
-  const progress = useMotionValue(0);
-  const dashOffset = useSpring(progress, { stiffness: 40, damping: 20 });
-  const [dashArray, setDashArray] = useState(0);
-
-  const radius = (size - 40) / 2;
+// ── Elegant progress ring ─────────────────────────────────────
+function ProgressRing({ percentage, size = 320 }: { percentage: number; size?: number }) {
+  const ref = useRef<SVGCircleElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15%" });
+  const radius = (size - 56) / 2;
   const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
-    setDashArray(circumference);
-    if (inView) {
-      progress.set((percentage / 100) * circumference);
-    }
-  }, [inView, percentage, circumference, progress]);
-
-  useEffect(() => {
-    return dashOffset.on("change", (v) => {
-      if (ref.current) {
-        const circle = ref.current.querySelector(".progress-circle") as SVGCircleElement;
-        if (circle) circle.style.strokeDashoffset = String(circumference - v);
-      }
-    });
-  }, [circumference, dashOffset]);
+    if (!inView || !ref.current) return;
+    const circle = ref.current;
+    circle.style.transition = "stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1)";
+    circle.style.strokeDashoffset = String(circumference * (1 - percentage / 100));
+  }, [inView, percentage, circumference]);
 
   return (
-    <svg ref={ref} width={size} height={size} className="absolute inset-0 m-auto">
-      <defs>
-        <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.2" />
-        </linearGradient>
-      </defs>
+    <svg width={size} height={size} className="absolute inset-0 m-auto" style={{ overflow: "visible" }}>
+      {/* Outer decorative ring */}
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius + 18}
+        stroke="rgba(255,255,255,0.03)"
+        strokeWidth={0.5}
+        fill="none"
+      />
       {/* Track */}
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        stroke="rgba(255,255,255,0.04)"
-        strokeWidth={1.5}
+        stroke="rgba(255,255,255,0.05)"
+        strokeWidth={1}
         fill="none"
       />
-      {/* Progress */}
+      {/* Progress — refined */}
       <circle
-        className="progress-circle"
+        ref={ref}
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        stroke="url(#ringGradient)"
-        strokeWidth={2}
+        stroke="rgba(255,255,255,0.85)"
+        strokeWidth={1.5}
         fill="none"
         strokeLinecap="round"
-        strokeDasharray={dashArray}
-        strokeDashoffset={dashArray}
+        strokeDasharray={circumference}
+        strokeDashoffset={circumference}
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
-        style={{ filter: "drop-shadow(0 0 12px rgba(59,130,246,0.5))" }}
       />
-      {/* Tick marks */}
-      {Array.from({ length: 60 }).map((_, i) => {
-        const angle = (i / 60) * Math.PI * 2 - Math.PI / 2;
-        const isMajor = i % 5 === 0;
-        const r1 = radius + 8;
-        const r2 = radius + (isMajor ? 14 : 11);
-        const x1 = size / 2 + Math.cos(angle) * r1;
-        const y1 = size / 2 + Math.sin(angle) * r1;
-        const x2 = size / 2 + Math.cos(angle) * r2;
-        const y2 = size / 2 + Math.sin(angle) * r2;
-        return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke={isMajor ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)"}
-            strokeWidth={isMajor ? 1.2 : 0.8}
-          />
-        );
-      })}
     </svg>
   );
 }
 
-// ── Constellation particle background ───────────────────────────
+// ── Subtle constellation — client only ───────────────────────
 function Constellation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -158,36 +122,34 @@ function Constellation() {
     resize();
     window.addEventListener("resize", resize);
 
-    const w = () => canvas.offsetWidth;
-    const h = () => canvas.offsetHeight;
-
-    const particles = Array.from({ length: 40 }, () => ({
-      x: Math.random() * w(),
-      y: Math.random() * h(),
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
+    const particles = Array.from({ length: 28 }, () => ({
+      x: Math.random() * canvas.offsetWidth,
+      y: Math.random() * canvas.offsetHeight,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
     }));
 
     const draw = () => {
-      ctx.clearRect(0, 0, w(), h());
-      // Update
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > w()) p.vx *= -1;
-        if (p.y < 0 || p.y > h()) p.vy *= -1;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
       });
 
-      // Connect near particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 140) {
-            const alpha = (1 - d / 140) * 0.15;
-            ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
-            ctx.lineWidth = 0.6;
+          if (d < 180) {
+            const alpha = (1 - d / 180) * 0.08;
+            ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -196,11 +158,10 @@ function Constellation() {
         }
       }
 
-      // Draw particles
       particles.forEach((p) => {
-        ctx.fillStyle = "rgba(59,130,246,0.4)";
+        ctx.fillStyle = "rgba(255,255,255,0.25)";
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 0.9, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -217,128 +178,159 @@ function Constellation() {
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
 }
 
-// ── Stats section ──────────────────────────────────────────────
+// ── Main component ─────────────────────────────────────────────
 export default function StatsSection() {
   return (
-    <section className="relative px-6 md:px-12 lg:px-24 py-28 border-y border-white/[0.04] overflow-hidden">
-      {/* Constellation background */}
-      <Constellation />
+    <section className="relative px-6 md:px-12 lg:px-24 py-32 border-y border-white/[0.04] overflow-hidden bg-[#080810]">
+      <ClientOnly>
+        <Constellation />
+      </ClientOnly>
 
       <div className="relative max-w-7xl mx-auto">
-        {/* Section tag */}
+        {/* Editorial section header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 0.6 }}
-          className="flex items-center gap-4 mb-16"
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
         >
-          <div className="w-8 h-px bg-[#3b82f6]/50" />
-          <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/30">
-            Platform Coverage
-          </span>
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">
+              Chapter II
+            </span>
+            <div className="w-12 h-px bg-white/20" />
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">
+              Coverage
+            </span>
+          </div>
+          <h2 className="font-['Fraunces'] text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.02em] text-white max-w-3xl">
+            Built on a decade of
+            <span className="italic font-extralight text-white/40"> Dubai </span>
+            real estate data.
+          </h2>
         </motion.div>
 
-        {/* Bento grid — asymmetric */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* HERO: R² accuracy with ring */}
+        {/* Asymmetric bento grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/[0.04]">
+          {/* HERO — R² card (spans 5 cols) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-20%" }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:row-span-2 relative bg-gradient-to-br from-[#3b82f6]/[0.06] to-transparent border border-white/[0.06] rounded-3xl p-10 flex flex-col justify-between min-h-[440px] overflow-hidden group hover:border-[#3b82f6]/20 transition-colors duration-500"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 lg:row-span-2 relative bg-[#0a0a0f] p-10 md:p-12 flex flex-col justify-between min-h-[500px] overflow-hidden group"
           >
-            {/* Header */}
-            <div className="relative z-10 flex items-start justify-between">
-              <div>
-                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-[#3b82f6]/70 mb-2">
-                  Primary KPI
-                </p>
-                <p className="font-mono text-[11px] text-white/40">Model Accuracy &bull; R&sup2;</p>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                <span className="font-mono text-[9px] tracking-wider text-green-400">LIVE</span>
-              </div>
+            {/* Subtle radial gradient background */}
+            <div
+              className="absolute inset-0 opacity-40"
+              style={{
+                background: "radial-gradient(circle at 50% 60%, rgba(255,255,255,0.04) 0%, transparent 60%)",
+              }}
+            />
+
+            {/* Top — editorial label */}
+            <div className="relative z-10">
+              <p className="font-['Fraunces'] text-[14px] italic font-light text-white/40 mb-1">
+                No. 01
+              </p>
+              <p className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/50">
+                Primary Accuracy Metric
+              </p>
             </div>
 
-            {/* Ring + number */}
-            <div className="relative flex items-center justify-center my-8" style={{ height: 280 }}>
-              <ProgressRing percentage={88.9} size={280} />
+            {/* Ring + number — center */}
+            <div className="relative flex items-center justify-center my-8" style={{ height: 340 }}>
+              <ClientOnly>
+                <ProgressRing percentage={88.9} size={340} />
+              </ClientOnly>
               <div className="relative z-10 text-center">
-                <p className="font-['Epilogue'] text-[clamp(4rem,8vw,7rem)] font-extralight tracking-[-0.04em] text-white leading-none">
+                <p className="font-['Fraunces'] text-[clamp(5rem,9vw,8rem)] font-extralight tracking-[-0.04em] text-white leading-[0.9]">
                   <CountUp target={88.9} format="decimal" />
-                  <span className="text-[#3b82f6]/70 text-[0.5em] ml-1">%</span>
                 </p>
-                <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/30 mt-3">
-                  Confidence Index
+                <p className="font-mono text-[9px] tracking-[0.4em] uppercase text-white/35 mt-4">
+                  R-Squared &middot; Confidence
                 </p>
               </div>
             </div>
 
-            {/* Footer metrics */}
-            <div className="relative z-10 grid grid-cols-3 gap-4 pt-6 border-t border-white/[0.04]">
-              <div>
-                <p className="font-mono text-[9px] tracking-widest uppercase text-white/25">MAPE</p>
-                <p className="font-mono text-[13px] text-white/70 mt-0.5">12.7%</p>
-              </div>
-              <div>
-                <p className="font-mono text-[9px] tracking-widest uppercase text-white/25">W/ 10%</p>
-                <p className="font-mono text-[13px] text-white/70 mt-0.5">58.1%</p>
-              </div>
-              <div>
-                <p className="font-mono text-[9px] tracking-widest uppercase text-white/25">W/ 20%</p>
-                <p className="font-mono text-[13px] text-white/70 mt-0.5">81.6%</p>
-              </div>
+            {/* Bottom — supporting metrics */}
+            <div className="relative z-10 grid grid-cols-3 gap-6 pt-6 border-t border-white/[0.04]">
+              {[
+                { label: "Mean Error", value: "12.7%" },
+                { label: "Within 10%", value: "58.1%" },
+                { label: "Within 20%", value: "81.6%" },
+              ].map((m, i) => (
+                <div key={i}>
+                  <p className="font-mono text-[8px] tracking-[0.3em] uppercase text-white/30 mb-1.5">
+                    {m.label}
+                  </p>
+                  <p className="font-['Fraunces'] text-[20px] font-light text-white/80">{m.value}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* SIDE STATS */}
+          {/* SIDE STATS — 7 cols split in 3 rows */}
           {[
-            { value: 234079, label: "Transactions Analyzed", format: "compact" as const, delay: 0.1 },
-            { value: 110, label: "Zones Covered", format: "int" as const, delay: 0.2 },
-            { value: 921, label: "Points of Interest", format: "int" as const, delay: 0.3 },
+            { value: 234079, label: "Transactions Analyzed", format: "compact" as const, num: "02" },
+            { value: 110, label: "Zones Covered", format: "int" as const, num: "03" },
+            { value: 921, label: "Points of Interest", format: "int" as const, num: "04" },
           ].map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-20%" }}
-              transition={{ duration: 0.7, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-2 bg-white/[0.02] border border-white/[0.06] rounded-3xl p-8 flex items-center justify-between group hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500"
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.8, delay: 0.1 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-7 relative bg-[#0a0a0f] p-10 md:p-12 flex items-center justify-between overflow-hidden group hover:bg-[#0d0d14] transition-colors duration-700"
             >
-              <div>
-                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-white/30 mb-3">
-                  {stat.label}
+              {/* Left — number */}
+              <div className="flex items-baseline gap-6 md:gap-10">
+                <p className="font-['Fraunces'] text-[14px] italic font-light text-white/25">
+                  No. {stat.num}
                 </p>
-                <p className="font-['Epilogue'] text-[clamp(2.5rem,5vw,4rem)] font-extralight tracking-[-0.03em] text-white leading-none">
-                  <CountUp target={stat.value} format={stat.format} delay={stat.delay} />
+                <p className="font-['Fraunces'] text-[clamp(2.5rem,5vw,4.5rem)] font-extralight tracking-[-0.03em] text-white leading-none">
+                  <CountUp target={stat.value} format={stat.format} delay={0.1 + i * 0.1} />
                 </p>
               </div>
-              {/* Animated bar indicator */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true, margin: "-20%" }}
-                transition={{ duration: 1.2, delay: stat.delay + 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="hidden md:block w-24 h-px bg-gradient-to-r from-[#3b82f6]/60 to-transparent origin-left"
-              />
+
+              {/* Right — label */}
+              <div className="text-right">
+                <p className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/40">
+                  {stat.label}
+                </p>
+                {/* Hover: line reveal */}
+                <div className="h-px w-16 ml-auto mt-3 bg-white/10 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/50 -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-out" />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Tagline */}
-        <motion.p
+        {/* Footer — editorial note */}
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-16 text-center text-white/25 text-[13px] font-light max-w-2xl mx-auto leading-relaxed"
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-20 flex items-center justify-between"
         >
-          A real-time market intelligence platform trained on a decade of Dubai real estate data
-          &mdash; updated daily.
-        </motion.p>
+          <p className="font-['Fraunces'] italic font-light text-white/30 text-[15px] leading-relaxed max-w-md">
+            &ldquo;Signal over noise. Every figure is sourced from verified DLD
+            transactions and updated daily.&rdquo;
+          </p>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/25">
+              Updated
+            </span>
+            <div className="w-1 h-1 rounded-full bg-white/40" />
+            <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/40">
+              Daily
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

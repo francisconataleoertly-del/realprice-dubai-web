@@ -94,27 +94,39 @@ export default function ValorarSection() {
       {/* Content */}
       <div className={`relative z-10 px-6 md:px-12 lg:px-24 py-32 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-        {/* Section number */}
-        <div className="flex items-center gap-4 mb-10">
-          <span className="font-mono text-[11px] tracking-[0.3em] text-[#3b82f6]/70">01</span>
-          <div className="w-12 h-px bg-[#3b82f6]/30" />
-          <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-white/20">Valuation</span>
-        </div>
+        {/* Editorial section header */}
+        <div className="mb-16">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Chapter III</span>
+            <div className="w-12 h-px bg-white/20" />
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Valuation</span>
+          </div>
 
-        {/* Heading */}
-        <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extralight leading-[0.95] tracking-[-0.03em] text-white mb-16 max-w-4xl">
-          Know the real value
-          <br />
-          <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">
-            of your property
-          </span>
-        </h2>
+          <h2 className="font-['Fraunces'] text-[clamp(2.5rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.02em] text-white max-w-4xl">
+            Know the real value
+            <br />
+            <span className="italic font-extralight text-white/40">of your property.</span>
+          </h2>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* ── LEFT: Form ── */}
           <div>
-            {/* Glass card */}
-            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 md:p-10 space-y-7">
+            {/* Editorial form panel — no glassmorphism, proper borders */}
+            <div className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-10 md:p-12 space-y-7">
+              {/* Top corner marks — editorial framing */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/20" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/20" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-white/20" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-white/20" />
+
+              {/* Form header */}
+              <div className="pb-2 border-b border-white/[0.04] mb-2">
+                <p className="font-['Fraunces'] italic text-[13px] font-light text-white/40 mb-1">Form No. 001</p>
+                <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-white/30">
+                  Instant AVM Request
+                </p>
+              </div>
 
               {/* Address */}
               <div>
@@ -215,11 +227,13 @@ export default function ValorarSection() {
               <button
                 onClick={submit}
                 disabled={loading}
-                className="w-full py-4 bg-[#3b82f6] text-white text-[13px] tracking-[0.2em] uppercase rounded-xl
-                  hover:bg-[#2563eb] hover:shadow-[0_0_40px_rgba(59,130,246,0.25)] disabled:opacity-40
-                  transition-all duration-500 mt-2"
+                className="group relative w-full py-5 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium
+                  hover:bg-white/90 disabled:opacity-40 transition-all duration-500 mt-4 overflow-hidden"
               >
-                {loading ? "Calculating..." : "Get Valuation \u2192"}
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  {loading ? "Calculating..." : "Request Valuation"}
+                  {!loading && <span className="transition-transform duration-500 group-hover:translate-x-1.5">&rarr;</span>}
+                </span>
               </button>
             </div>
           </div>
@@ -233,15 +247,19 @@ export default function ValorarSection() {
             )}
 
             {result && (
-              <div className={`w-full space-y-8 transition-all duration-700 ${result ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-                {/* Big price */}
+              <div className="w-full space-y-10 animate-[fadeInUp_0.8s_cubic-bezier(0.22,1,0.36,1)]">
+                {/* Editorial price header */}
                 <div>
-                  <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/25 mb-4">Estimated Value</p>
-                  <p className="text-[clamp(2.5rem,5vw,4.5rem)] font-extralight leading-none tracking-tight text-white">
-                    <span className="text-white/30 text-[0.5em] mr-1">AED</span>
+                  <div className="flex items-center gap-3 mb-5">
+                    <p className="font-['Fraunces'] italic text-[13px] font-light text-white/40">Result</p>
+                    <div className="flex-1 h-px bg-white/[0.08]" />
+                    <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30">Estimated Value</p>
+                  </div>
+                  <p className="font-['Fraunces'] text-[clamp(2.5rem,5.5vw,5rem)] font-extralight leading-[0.9] tracking-[-0.03em] text-white">
+                    <span className="font-mono font-light text-white/25 text-[0.35em] mr-3 align-top mt-6 inline-block">AED</span>
                     {fmt(result.predicted_aed)}
                   </p>
-                  <p className="font-mono text-[14px] text-white/15 mt-3">
+                  <p className="font-mono text-[13px] text-white/20 mt-4 tracking-wider">
                     USD {fmt(result.predicted_usd)}
                   </p>
                 </div>
@@ -284,27 +302,35 @@ export default function ValorarSection() {
 
             {!result && !error && (
               <div className="w-full h-full min-h-[400px] flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full border border-white/[0.06] flex items-center justify-center">
-                    <span className="text-white/10 text-2xl">&rarr;</span>
-                  </div>
-                  <p className="text-white/10 text-[14px] max-w-[200px] mx-auto leading-relaxed">
-                    Your valuation will appear here
+                <div className="text-center space-y-6">
+                  <p className="font-['Fraunces'] italic text-white/15 text-[20px] font-light max-w-[280px] mx-auto leading-[1.4]">
+                    Complete the form to receive an estimated value.
                   </p>
+                  <div className="w-8 h-px bg-white/10 mx-auto" />
+                  <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-white/15">Awaiting input</p>
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Model accuracy badge */}
-        <div className="mt-20 flex items-center gap-6 text-white/10">
-          <div className="w-20 h-px bg-white/[0.06]" />
-          <span className="font-mono text-[10px] tracking-[0.2em]">
-            MODEL ACCURACY: R&sup2; 0.889 &bull; MAPE 12.7% &bull; 81.6% WITHIN 20%
-          </span>
+        {/* Editorial footer — elegant metric strip */}
+        <div className="mt-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-white/[0.04]">
+          <p className="font-['Fraunces'] italic font-light text-white/30 text-[13px]">
+            Trained on 234,079 verified DLD transactions &mdash; updated daily.
+          </p>
+          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/25">
+            R&sup2; 0.889 &middot; MAPE 12.7% &middot; 81.6% Within 20%
+          </p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </section>
   );
 }
