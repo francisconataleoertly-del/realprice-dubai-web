@@ -1,9 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { ChevronDown, Loader2, TrendingUp as TrendUpIcon, TrendingDown } from "lucide-react";
+import CountUp from "react-countup";
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip as ReTooltip, ResponsiveContainer, PieChart, Pie, Cell,
+} from "recharts";
 
 const API = "https://web-production-9051f.up.railway.app";
+
+// Verdict calculator
+function getVerdict(gy: number, cashFlow: number, appreciation: number) {
+  const score = gy * 2 + (cashFlow > 0 ? 3 : -2) + appreciation * 0.5;
+  if (score >= 15) return { label: "STRONG BUY", color: "#10b981", glow: "rgba(16,185,129,0.4)", desc: "Excellent investment fundamentals." };
+  if (score >= 10) return { label: "BUY", color: "#3b82f6", glow: "rgba(59,130,246,0.4)", desc: "Solid opportunity — worth consideration." };
+  if (score >= 6) return { label: "HOLD", color: "#f59e0b", glow: "rgba(245,158,11,0.4)", desc: "Average returns — evaluate alternatives." };
+  return { label: "RISKY", color: "#ef4444", glow: "rgba(239,68,68,0.4)", desc: "Poor risk/reward — reconsider." };
+}
 
 const ROOMS = ["Studio", "1 B/R", "2 B/R", "3 B/R", "4 B/R", "5 B/R"];
 
@@ -94,21 +108,28 @@ export default function InversionSection() {
 
       <div className="relative z-10 px-4 md:px-8 lg:px-16 py-28">
       <div className="max-w-6xl mx-auto">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-10">
-          <span className="font-mono text-[11px] tracking-[0.3em] text-[#3b82f6]/70">04</span>
-          <div className="w-12 h-px bg-[#3b82f6]/30" />
-          <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-white/20">Investment</span>
-        </div>
-
-        <h2 className="text-[clamp(2.2rem,5vw,4.5rem)] font-extralight leading-[0.95] tracking-[-0.03em] text-white mb-4 max-w-3xl">
-          Calculate your
-          <br />
-          <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">return on investment</span>
-        </h2>
-        <p className="text-white/30 text-[15px] mb-12 max-w-xl">
-          Full ROI analysis with real Dubai acquisition costs, rental yields, and appreciation projections.
-        </p>
+        {/* Editorial section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.8 }}
+          className="mb-16"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Chapter IV</span>
+            <div className="w-12 h-px bg-white/20" />
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Investment</span>
+          </div>
+          <h2 className="font-['Fraunces'] text-[clamp(2.5rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.02em] text-white max-w-4xl">
+            Calculate your
+            <br />
+            <span className="italic font-extralight text-white/40">return on investment.</span>
+          </h2>
+          <p className="font-['Fraunces'] italic text-white/30 text-[14px] mt-6 max-w-xl">
+            Acquisition costs, yields, and decade-long projections &mdash; ranked and scored by the model.
+          </p>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Inputs */}
@@ -182,9 +203,100 @@ export default function InversionSection() {
             {error && <div className="p-4 rounded border border-red-500/20 bg-red-500/5 text-red-400 text-sm">{error}</div>}
 
             {result && (
-              <>
-                {/* Key metrics */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
+                className="space-y-4"
+              >
+                {/* VERDICT BADGE — animated, glowing */}
+                {(() => {
+                  const verdict = getVerdict(
+                    result.rental_income.gross_yield_pct,
+                    result.cash_flow.monthly_cash_flow_aed,
+                    form.annual_appreciation_pct
+                  );
+                  return (
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, scale: 0.85 },
+                        visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+                      }}
+                      className="relative overflow-hidden rounded-2xl border p-6 flex items-center justify-between gap-6"
+                      style={{
+                        borderColor: verdict.color + "30",
+                        background: `linear-gradient(135deg, ${verdict.color}08 0%, transparent 60%)`,
+                      }}
+                    >
+                      {/* Pulsing glow */}
+                      <motion.div
+                        animate={{ opacity: [0.3, 0.6, 0.3] }}
+                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -inset-12 rounded-full blur-3xl pointer-events-none"
+                        style={{ background: verdict.glow }}
+                      />
+                      <div className="relative flex items-center gap-5">
+                        <div className="flex flex-col items-center">
+                          <motion.div
+                            initial={{ rotate: -180, scale: 0 }}
+                            animate={{ rotate: 0, scale: 1 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                            className="w-14 h-14 rounded-full flex items-center justify-center border-2"
+                            style={{ borderColor: verdict.color, boxShadow: `0 0 30px ${verdict.glow}` }}
+                          >
+                            <span className="w-3 h-3 rounded-full animate-pulse" style={{ background: verdict.color }} />
+                          </motion.div>
+                        </div>
+                        <div>
+                          <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-white/40 mb-1">AI Verdict</p>
+                          <p className="font-['Fraunces'] text-[28px] font-light tracking-tight" style={{ color: verdict.color }}>
+                            {verdict.label}
+                          </p>
+                          <p className="text-[12px] text-white/50 mt-0.5">{verdict.desc}</p>
+                        </div>
+                      </div>
+                      <div className="relative text-right hidden md:block">
+                        <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30 mb-1">Gross Yield</p>
+                        <p className="font-['Fraunces'] text-[36px] font-extralight" style={{ color: verdict.color }}>
+                          <CountUp end={result.rental_income.gross_yield_pct} decimals={1} duration={1.5} suffix="%" />
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })()}
+
+                {/* Key metrics — stagger */}
+                <motion.div
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }}
+                  className="grid grid-cols-2 md:grid-cols-4 gap-3"
+                >
+                  {[
+                    { label: "Property Value", value: result.property.estimated_value_aed, color: "text-white", mono: true },
+                    { label: "Gross Yield", value: result.rental_income.gross_yield_pct, color: "text-green-400", suffix: "%", decimals: 1 },
+                    { label: "Annual Rent", value: result.rental_income.annual_rent_aed, color: "text-white", mono: true },
+                    { label: "Cash Flow / mo", value: result.cash_flow.monthly_cash_flow_aed, color: result.cash_flow.monthly_cash_flow_aed >= 0 ? "text-green-400" : "text-red-400", mono: true },
+                  ].map((m, i) => (
+                    <motion.div
+                      key={i}
+                      variants={{
+                        hidden: { opacity: 0, y: 15 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+                      }}
+                      className="p-4 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm"
+                    >
+                      <p className="text-xs text-white/30 mb-1">{m.label}</p>
+                      <p className={`text-lg font-mono ${m.color}`}>
+                        <CountUp end={m.value} duration={1.6} separator="," decimals={m.decimals || 0} suffix={m.suffix || ""} />
+                      </p>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {/* --- hidden marker for original content below --- */}
+                <motion.div
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+                  className="hidden"
+                >
                   <div className="p-4 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm">
                     <p className="text-xs text-white/30 mb-1">Property Value</p>
                     <p className="text-lg font-mono text-white">{fmt(result.property.estimated_value_aed)}</p>
@@ -203,73 +315,167 @@ export default function InversionSection() {
                       {fmt(result.cash_flow.monthly_cash_flow_aed)}
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Acquisition costs */}
-                <div className="p-5 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm">
-                  <p className="text-xs text-white/30 tracking-wider uppercase mb-3">Acquisition & Financing</p>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-white/40">DLD Fee (4%)</span>
-                      <span className="text-white font-mono">AED {fmt(result.acquisition_costs.dld_fee_4pct_aed)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/40">Agency (2%)</span>
-                      <span className="text-white font-mono">AED {fmt(result.acquisition_costs.agency_fee_2pct_aed)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/40">Total Acquisition</span>
-                      <span className="text-amber-400 font-mono">AED {fmt(result.acquisition_costs.total_acquisition_aed)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/40">Down Payment</span>
-                      <span className="text-white font-mono">AED {fmt(result.financing.down_payment_aed)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/40">Mortgage Amount</span>
-                      <span className="text-white font-mono">AED {fmt(result.financing.mortgage_amount_aed)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/40">Monthly Payment</span>
-                      <span className="text-white font-mono">AED {fmt(result.financing.monthly_payment_aed)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Projection chart */}
-                {result.projections && result.projections.length > 0 && (
+                {/* Donut chart + costs side by side */}
+                <motion.div
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.2 } } }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-3"
+                >
+                  {/* Donut chart — cost breakdown */}
                   <div className="p-5 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm">
-                    <p className="text-xs text-white/30 tracking-wider uppercase mb-4">
-                      {result.projections.length}-Year Projection
-                    </p>
-                    <div className="flex items-end gap-1 h-36">
-                      {result.projections.map((p) => {
-                        const maxVal = result.projections[result.projections.length - 1].property_value_aed;
-                        const height = (p.property_value_aed / maxVal) * 100;
-                        const positive = p.total_return_pct >= 0;
-                        return (
-                          <div key={p.year} className="flex-1 group relative">
-                            <div
-                              className={`w-full rounded-t transition-colors cursor-pointer ${
-                                positive ? "bg-[#3b82f6]/30 hover:bg-[#3b82f6]/60" : "bg-red-500/30 hover:bg-red-500/60"
-                              }`}
-                              style={{ height: `${height}%` }}
-                            />
-                            <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#1a1a24] border border-white/10 rounded px-2 py-1 text-[10px] text-white whitespace-nowrap z-10 pointer-events-none">
-                              Y{p.year}: AED {fmt(p.property_value_aed)}
-                              <br />
-                              Return: {p.total_return_pct.toFixed(1)}%
-                            </div>
-                            {p.year % 2 === 0 && (
-                              <p className="text-[9px] text-white/20 text-center mt-1">{p.year}</p>
-                            )}
+                    <p className="text-xs text-white/30 tracking-wider uppercase mb-4">Cost Breakdown</p>
+                    <div className="flex items-center">
+                      <div className="w-[140px] h-[140px] shrink-0">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { name: "Purchase", value: result.property.estimated_value_aed },
+                                { name: "DLD 4%", value: result.acquisition_costs.dld_fee_4pct_aed },
+                                { name: "Agency 2%", value: result.acquisition_costs.agency_fee_2pct_aed },
+                                { name: "Other Fees", value: Math.max(0, result.acquisition_costs.total_acquisition_aed - result.property.estimated_value_aed - result.acquisition_costs.dld_fee_4pct_aed - result.acquisition_costs.agency_fee_2pct_aed) },
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={38}
+                              outerRadius={58}
+                              paddingAngle={2}
+                              dataKey="value"
+                              animationDuration={1200}
+                              animationBegin={200}
+                            >
+                              {["#3b82f6", "#f59e0b", "#8b5cf6", "#64748b"].map((c, i) => (
+                                <Cell key={i} fill={c} stroke="none" />
+                              ))}
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <div className="flex-1 ml-4 space-y-1.5 text-[11px]">
+                        {[
+                          { label: "Purchase", value: result.property.estimated_value_aed, color: "#3b82f6" },
+                          { label: "DLD 4%", value: result.acquisition_costs.dld_fee_4pct_aed, color: "#f59e0b" },
+                          { label: "Agency 2%", value: result.acquisition_costs.agency_fee_2pct_aed, color: "#8b5cf6" },
+                        ].map((x, i) => (
+                          <div key={i} className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{ background: x.color }} />
+                            <span className="text-white/40 flex-1">{x.label}</span>
+                            <span className="font-mono text-white/70">{fmt(x.value)}</span>
                           </div>
-                        );
-                      })}
+                        ))}
+                        <div className="pt-2 border-t border-white/[0.06] flex items-center gap-2">
+                          <span className="text-white/40 flex-1">Total</span>
+                          <span className="font-mono text-amber-400">{fmt(result.acquisition_costs.total_acquisition_aed)}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Financing details */}
+                  <div className="p-5 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm">
+                    <p className="text-xs text-white/30 tracking-wider uppercase mb-4">Financing</p>
+                    <div className="space-y-2.5 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-white/40">Down Payment</span>
+                        <span className="text-white font-mono"><CountUp end={result.financing.down_payment_aed} duration={1.6} separator="," /></span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-white/40">Mortgage Amount</span>
+                        <span className="text-white font-mono"><CountUp end={result.financing.mortgage_amount_aed} duration={1.6} separator="," /></span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-white/40">Monthly Payment</span>
+                        <span className="text-white font-mono"><CountUp end={result.financing.monthly_payment_aed} duration={1.6} separator="," /></span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t border-white/[0.06]">
+                        <span className="text-white/40">Cash on Cash</span>
+                        <span className="text-green-400 font-mono">
+                          {((result.cash_flow.annual_cash_flow_aed / result.financing.down_payment_aed) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Interactive projection chart — Recharts */}
+                {result.projections && result.projections.length > 0 && (
+                  <motion.div
+                    variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } } }}
+                    className="p-6 rounded-lg border border-white/5 bg-white/[0.03] backdrop-blur-sm"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-xs text-white/30 tracking-wider uppercase mb-1">
+                          {result.projections.length}-Year Value Projection
+                        </p>
+                        <p className="font-['Fraunces'] italic text-[12px] text-white/20">Hover to inspect each year</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-[#3b82f6]" />
+                        <span className="font-mono text-[10px] tracking-wider text-white/30">Property Value</span>
+                      </div>
+                    </div>
+                    <div className="h-48">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={result.projections} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+                          <defs>
+                            <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stopColor="#3b82f6" stopOpacity={1} />
+                              <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.3} />
+                            </linearGradient>
+                          </defs>
+                          <XAxis
+                            dataKey="year"
+                            stroke="rgba(255,255,255,0.1)"
+                            tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10, fontFamily: "monospace" }}
+                            tickFormatter={(v) => `Y${v}`}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <YAxis
+                            stroke="rgba(255,255,255,0.1)"
+                            tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10, fontFamily: "monospace" }}
+                            tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <ReTooltip
+                            contentStyle={{
+                              background: "#1a1a24",
+                              border: "1px solid rgba(255,255,255,0.1)",
+                              borderRadius: "6px",
+                              fontSize: "11px",
+                              fontFamily: "monospace",
+                            }}
+                            labelFormatter={(v) => `Year ${v}`}
+                            formatter={(v: number, _n, ctx: any) => {
+                              const ret = ctx.payload.total_return_pct;
+                              return [`AED ${fmt(v)} (${ret.toFixed(1)}%)`, "Value"];
+                            }}
+                            cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="property_value_aed"
+                            stroke="url(#lineGradient)"
+                            strokeWidth={2.5}
+                            dot={{ fill: "#3b82f6", r: 3, strokeWidth: 0 }}
+                            activeDot={{ fill: "#fff", r: 6, stroke: "#3b82f6", strokeWidth: 2 }}
+                            animationDuration={1500}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/[0.06] text-xs">
+                      <span className="text-white/30">Total return after {result.projections.length}y</span>
+                      <span className="font-mono text-green-400">
+                        +{result.projections[result.projections.length - 1].total_return_pct.toFixed(1)}%
+                      </span>
+                    </div>
+                  </motion.div>
                 )}
-              </>
+              </motion.div>
             )}
 
             {!result && !error && (
