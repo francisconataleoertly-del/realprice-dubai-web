@@ -132,71 +132,172 @@ export default function InversionSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Inputs */}
-          <div className="space-y-4">
+          {/* ── INPUTS PANEL — editorial framed ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 0.8 }}
+            className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-8 space-y-7"
+          >
+            {/* Corner frame marks */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/20" />
+            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/20" />
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-white/20" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-white/20" />
+
+            {/* Form header */}
+            <div className="pb-2 border-b border-white/[0.04] mb-2">
+              <p className="font-['Fraunces'] italic text-[13px] font-light text-white/40 mb-1">Calculator No. 001</p>
+              <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-white/30">ROI Simulation</p>
+            </div>
+
+            {/* Zone */}
             <div>
-              <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">Zone</label>
+              <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Zone</label>
               <div className="relative">
                 <select value={form.zona} onChange={(e) => setForm({ ...form, zona: e.target.value })}
-                  className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white appearance-none focus:border-[#3b82f6] focus:outline-none">
-                  {zones.map((z) => <option key={z}>{z}</option>)}
+                  className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white focus:border-white/40 outline-none transition-all duration-500 appearance-none cursor-pointer pr-8">
+                  {zones.map((z) => <option key={z} value={z} className="bg-[#111]">{z}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-3 top-3 text-white/30 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-0 top-1 text-white/30 pointer-events-none" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+
+            {/* Rooms + Area */}
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">Rooms</label>
+                <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Rooms</label>
                 <div className="relative">
                   <select value={form.rooms} onChange={(e) => setForm({ ...form, rooms: e.target.value })}
-                    className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white appearance-none focus:border-[#3b82f6] focus:outline-none">
-                    {ROOMS.map((r) => <option key={r}>{r}</option>)}
+                    className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white focus:border-white/40 outline-none appearance-none cursor-pointer pr-6">
+                    {ROOMS.map((r) => <option key={r} value={r} className="bg-[#111]">{r}</option>)}
                   </select>
-                  <ChevronDown size={14} className="absolute right-3 top-3 text-white/30 pointer-events-none" />
+                  <ChevronDown size={12} className="absolute right-0 top-1 text-white/30 pointer-events-none" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">Area m&sup2;</label>
+                <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Area m&sup2;</label>
                 <input type="number" value={form.area_m2} onChange={(e) => setForm({ ...form, area_m2: Number(e.target.value) })}
-                  className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white focus:border-[#3b82f6] focus:outline-none" />
+                  className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none" />
               </div>
             </div>
-            <div>
-              <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">
-                Mortgage: {form.mortgage_pct}%
-              </label>
-              <input type="range" min={0} max={80} value={form.mortgage_pct}
-                onChange={(e) => setForm({ ...form, mortgage_pct: Number(e.target.value) })}
-                className="w-full accent-[#3b82f6]" />
+
+            {/* ── VISUAL MORTGAGE SLIDER ── */}
+            <div className="pt-2">
+              <div className="flex items-baseline justify-between mb-3">
+                <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35">Mortgage Financing</label>
+                <motion.p
+                  key={form.mortgage_pct}
+                  initial={{ scale: 0.85, opacity: 0.5 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="font-['Fraunces'] text-[28px] font-extralight text-white leading-none"
+                >
+                  {form.mortgage_pct}
+                  <span className="text-[14px] text-white/40 ml-1">%</span>
+                </motion.p>
+              </div>
+
+              {/* Custom track */}
+              <div className="relative h-10 flex items-center">
+                {/* Visual track */}
+                <div className="absolute inset-x-0 h-[2px] bg-white/[0.06] rounded-full" />
+                <motion.div
+                  animate={{ width: `${(form.mortgage_pct / 80) * 100}%` }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="absolute left-0 h-[2px] rounded-full bg-gradient-to-r from-white/60 to-white/90"
+                />
+                {/* Tick marks */}
+                <div className="absolute inset-x-0 flex justify-between">
+                  {[0, 25, 50, 75].map((t) => (
+                    <div
+                      key={t}
+                      className={`w-px h-2 transition-colors duration-300 ${form.mortgage_pct >= t ? "bg-white/40" : "bg-white/10"}`}
+                    />
+                  ))}
+                </div>
+                {/* Thumb */}
+                <motion.div
+                  animate={{ left: `${(form.mortgage_pct / 80) * 100}%` }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="absolute w-4 h-4 -translate-x-1/2 rounded-full bg-white border-2 border-[#0a0a0f] pointer-events-none"
+                  style={{ boxShadow: "0 0 16px rgba(255,255,255,0.5)" }}
+                />
+                {/* Range input (transparent overlay) */}
+                <input
+                  type="range"
+                  min={0}
+                  max={80}
+                  value={form.mortgage_pct}
+                  onChange={(e) => setForm({ ...form, mortgage_pct: Number(e.target.value) })}
+                  className="absolute inset-0 w-full opacity-0 cursor-pointer"
+                />
+              </div>
+
+              <div className="flex justify-between mt-1 font-mono text-[9px] text-white/20">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span className="text-white/40">MAX 80%</span>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+
+            {/* Rate + Hold years */}
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">Rate %</label>
-                <input type="number" step={0.1} value={form.mortgage_rate_pct}
-                  onChange={(e) => setForm({ ...form, mortgage_rate_pct: Number(e.target.value) })}
-                  className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white focus:border-[#3b82f6] focus:outline-none" />
+                <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Rate</label>
+                <div className="flex items-baseline gap-1">
+                  <input type="number" step={0.1} value={form.mortgage_rate_pct}
+                    onChange={(e) => setForm({ ...form, mortgage_rate_pct: Number(e.target.value) })}
+                    className="flex-1 bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none" />
+                  <span className="text-white/30 text-sm">%</span>
+                </div>
               </div>
               <div>
-                <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">Hold Years</label>
-                <input type="number" value={form.hold_years}
-                  onChange={(e) => setForm({ ...form, hold_years: Number(e.target.value) })}
-                  className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white focus:border-[#3b82f6] focus:outline-none" />
+                <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Hold</label>
+                <div className="flex items-baseline gap-1">
+                  <input type="number" value={form.hold_years}
+                    onChange={(e) => setForm({ ...form, hold_years: Number(e.target.value) })}
+                    className="flex-1 bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none" />
+                  <span className="text-white/30 text-sm">yrs</span>
+                </div>
               </div>
             </div>
+
+            {/* Appreciation */}
             <div>
-              <label className="block text-xs text-white/40 tracking-wider uppercase mb-1.5">
-                Appreciation %/yr
-              </label>
-              <input type="number" step={0.5} value={form.annual_appreciation_pct}
-                onChange={(e) => setForm({ ...form, annual_appreciation_pct: Number(e.target.value) })}
-                className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded px-3 py-2.5 text-sm text-white focus:border-[#3b82f6] focus:outline-none" />
+              <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2 block">Annual Appreciation</label>
+              <div className="flex items-baseline gap-1">
+                <input type="number" step={0.5} value={form.annual_appreciation_pct}
+                  onChange={(e) => setForm({ ...form, annual_appreciation_pct: Number(e.target.value) })}
+                  className="flex-1 bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none" />
+                <span className="text-white/30 text-sm">%/yr</span>
+              </div>
             </div>
-            <button onClick={calculate} disabled={loading}
-              className="w-full py-3.5 bg-[#3b82f6] text-white text-sm tracking-[0.15em] uppercase font-medium rounded hover:bg-[#2563eb] disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
-              {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? "Calculating..." : "Calculate ROI"}
+
+            {/* Submit — white premium */}
+            <button
+              onClick={calculate}
+              disabled={loading}
+              className="group relative w-full py-5 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-white/90 disabled:opacity-40 transition-all duration-500 overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                {loading ? (
+                  <>
+                    <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="inline-block w-4 h-4 border border-[#0a0a0f] border-t-transparent rounded-full" />
+                    Calculating...
+                  </>
+                ) : (
+                  <>
+                    Run Simulation
+                    <span className="transition-transform duration-500 group-hover:translate-x-1.5">&rarr;</span>
+                  </>
+                )}
+              </span>
             </button>
-          </div>
+          </motion.div>
 
           {/* Results */}
           <div className="lg:col-span-2 space-y-4">
