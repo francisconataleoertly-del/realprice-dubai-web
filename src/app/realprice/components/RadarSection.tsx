@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
 interface Opportunity {
@@ -262,108 +263,178 @@ export default function RadarSection() {
 
       <div className="relative z-10 px-4 md:px-8 lg:px-16 py-28">
         <div className="max-w-7xl mx-auto">
-          {/* Section label */}
-          <div className="flex items-center gap-4 mb-10">
-            <span className="font-mono text-[11px] tracking-[0.3em] text-[#3b82f6]/70">03</span>
-            <div className="w-12 h-px bg-[#3b82f6]/30" />
-            <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-white/20">Radar</span>
-          </div>
+          {/* Editorial header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Chapter V</span>
+              <div className="w-12 h-px bg-white/20" />
+              <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Opportunity Radar</span>
+            </div>
 
-          <h2 className="text-[clamp(2.2rem,5vw,4.5rem)] font-extralight leading-[0.95] tracking-[-0.03em] text-white mb-4 max-w-3xl">
-            Find underpriced
-            <br />
-            <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">opportunities</span>
-          </h2>
-          <p className="text-white/30 text-[15px] mb-10 max-w-xl">
-            Live radar scanning Dubai properties. Green blips = underpriced vs AI estimate.
-          </p>
+            <h2 className="font-['Fraunces'] text-[clamp(2.5rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.02em] text-white max-w-4xl">
+              Find underpriced
+              <br />
+              <span className="italic font-extralight text-white/40">opportunities.</span>
+            </h2>
+            <p className="font-['Fraunces'] italic text-white/30 text-[14px] mt-6 max-w-xl">
+              Live scanning every listing &mdash; green blips signal price below AI estimate.
+            </p>
+          </motion.div>
 
-          {/* Filters — bento grid */}
-          <div className="inline-grid grid-cols-4 border border-white/[0.06] rounded-lg overflow-hidden bg-white/[0.02] mb-10">
-            {[
-              { key: "all", label: "All" },
-              { key: "green", label: "Opportunities" },
-              { key: "yellow", label: "Fair Value" },
-              { key: "red", label: "Overpriced" },
-            ].map((f) => (
-              <button
-                key={f.key}
-                onClick={() => setFilter(f.key)}
-                className={`px-5 py-2.5 text-[11px] uppercase tracking-wider transition-all duration-300 border-r last:border-r-0 border-white/[0.04] ${
-                  filter === f.key
-                    ? "bg-[#3b82f6]/10 text-white"
-                    : "text-white/30 hover:text-white/50 hover:bg-white/[0.02]"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+          {/* Filters — editorial style */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mb-10 flex items-center gap-4"
+          >
+            <p className="font-['Fraunces'] italic text-[13px] font-light text-white/40 shrink-0">Filter</p>
+            <div className="flex-1 h-px bg-white/[0.06]" />
+            <div className="inline-grid grid-cols-4 border border-white/[0.06] overflow-hidden">
+              {[
+                { key: "all", label: "All" },
+                { key: "green", label: "Opportunities" },
+                { key: "yellow", label: "Fair" },
+                { key: "red", label: "Overpriced" },
+              ].map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
+                  className={`relative px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] transition-all duration-300 border-r last:border-r-0 border-white/[0.04] ${
+                    filter === f.key ? "bg-white/[0.06] text-white" : "text-white/30 hover:text-white/50 hover:bg-white/[0.02]"
+                  }`}
+                >
+                  {f.label}
+                  {filter === f.key && (
+                    <motion.span
+                      layoutId="radar-filter"
+                      className="absolute bottom-0 left-0 right-0 h-px bg-white"
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Radar display */}
-            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex items-center justify-center">
-              <RadarDisplay items={DEMO_DATA} selected={selected} onSelect={setSelected} filter={filter} />
-            </div>
+            {/* Radar display — editorial framed */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+            >
+              <div className="absolute -top-2 -left-2 w-6 h-6 border-t border-l border-white/25 z-10" />
+              <div className="absolute -top-2 -right-2 w-6 h-6 border-t border-r border-white/25 z-10" />
+              <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b border-l border-white/25 z-10" />
+              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b border-r border-white/25 z-10" />
+
+              <div className="relative bg-[#0a0a0f]/80 backdrop-blur-sm border border-white/[0.04] p-6 flex items-center justify-center">
+                <RadarDisplay items={DEMO_DATA} selected={selected} onSelect={setSelected} filter={filter} />
+
+                {/* Corner labels */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 px-2 py-1 bg-[#0a0a0f]/70 border border-white/10">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/50">Scanning</span>
+                </div>
+                <div className="absolute bottom-4 right-4 px-2 py-1 bg-[#0a0a0f]/70 border border-white/10">
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30">360&deg;</span>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Details panel */}
             <div className="space-y-4">
-              {/* Legend */}
-              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl p-4">
-                <div className="grid grid-cols-3 gap-4">
+              {/* Legend — editorial */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-15%" }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-5"
+              >
+                <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/20" />
+                <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/20" />
+                <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30 mb-4">Signal Distribution</p>
+                <div className="grid grid-cols-3 gap-6">
                   {(["green", "yellow", "red"] as const).map((sig) => {
                     const cfg = SIGNAL_CONFIG[sig];
                     const count = DEMO_DATA.filter((d) => d.signal === sig).length;
                     return (
                       <div key={sig} className="text-center">
-                        <div className="w-3 h-3 rounded-full mx-auto mb-1.5" style={{ backgroundColor: cfg.color, boxShadow: `0 0 8px ${cfg.glow}` }} />
-                        <p className="text-[10px] font-mono text-white/30">{cfg.label}</p>
-                        <p className="text-[14px] font-mono text-white">{count}</p>
+                        <div className="w-2 h-2 rounded-full mx-auto mb-2" style={{ backgroundColor: cfg.color, boxShadow: `0 0 12px ${cfg.glow}` }} />
+                        <p className="font-['Fraunces'] text-[32px] font-extralight text-white leading-none">{count}</p>
+                        <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mt-1.5">{cfg.label}</p>
                       </div>
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Selected detail */}
               {selected && (
-                <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl p-5 space-y-4">
+                <motion.div
+                  key={selected.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-5 space-y-4"
+                >
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-lg text-white font-light">{selected.zone}</p>
-                      <p className="text-xs text-white/30">{selected.type} &bull; {selected.rooms} &bull; {selected.area_m2}m&sup2;</p>
+                      <p className="font-['Fraunces'] italic text-[12px] font-light text-white/40 mb-1">Selected</p>
+                      <p className="font-['Fraunces'] text-[22px] font-light text-white tracking-tight leading-none">{selected.zone}</p>
+                      <p className="font-mono text-[10px] text-white/30 mt-1.5 tracking-wider">
+                        {selected.type} &middot; {selected.rooms} &middot; {selected.area_m2}m&sup2;
+                      </p>
                     </div>
-                    <div className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono"
-                      style={{ backgroundColor: SIGNAL_CONFIG[selected.signal].color + "15", color: SIGNAL_CONFIG[selected.signal].color }}>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono border"
+                      style={{ borderColor: SIGNAL_CONFIG[selected.signal].color + "40", color: SIGNAL_CONFIG[selected.signal].color }}>
                       {selected.diff_pct > 0 ? <ArrowUp size={12} /> : selected.diff_pct < -5 ? <ArrowDown size={12} /> : <Minus size={12} />}
                       {Math.abs(selected.diff_pct).toFixed(1)}%
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-6 pt-3 border-t border-white/[0.06]">
                     <div>
-                      <p className="text-[10px] font-mono text-white/25 mb-1">LISTED PRICE</p>
-                      <p className="text-white font-mono">AED {fmt(selected.listed_price)}</p>
+                      <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-1">Listed</p>
+                      <p className="font-['Fraunces'] text-[20px] font-extralight text-white">
+                        <span className="text-white/30 text-[0.6em] mr-1">AED</span>{fmt(selected.listed_price)}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-mono text-white/25 mb-1">AI ESTIMATE</p>
-                      <p className="font-mono" style={{ color: SIGNAL_CONFIG[selected.signal].color }}>
-                        AED {fmt(selected.estimated_price)}
+                      <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-1">AI Estimate</p>
+                      <p className="font-['Fraunces'] text-[20px] font-extralight" style={{ color: SIGNAL_CONFIG[selected.signal].color }}>
+                        <span className="text-white/30 text-[0.6em] mr-1">AED</span>{fmt(selected.estimated_price)}
                       </p>
                     </div>
                   </div>
                   {selected.signal === "green" && (
-                    <div className="border-t border-white/[0.06] pt-3">
-                      <p className="text-[11px] text-green-400/70">
-                        Potential saving: <span className="font-mono text-green-400">AED {fmt(selected.estimated_price - selected.listed_price)}</span>
-                      </p>
+                    <div className="border-t border-white/[0.06] pt-3 flex items-center justify-between">
+                      <p className="font-['Fraunces'] italic text-[12px] text-green-400/60">Potential saving</p>
+                      <p className="font-mono text-[14px] text-green-400">AED {fmt(selected.estimated_price - selected.listed_price)}</p>
                     </div>
                   )}
-                </div>
+                </motion.div>
               )}
 
-              {/* Property list */}
-              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-xl overflow-hidden">
-                <div className="grid grid-cols-5 px-4 py-2 border-b border-white/[0.04] text-[9px] font-mono text-white/20 tracking-wider uppercase">
+              {/* Property list — editorial table */}
+              <div className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] overflow-hidden">
+                <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/20" />
+                <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/20" />
+                <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
+                  <p className="font-['Fraunces'] italic text-[12px] font-light text-white/40">All Properties</p>
+                  <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/25">{filtered.length} results</p>
+                </div>
+                <div className="grid grid-cols-5 px-4 py-2 border-b border-white/[0.04] text-[9px] font-mono text-white/20 tracking-[0.2em] uppercase">
                   <span>Zone</span><span>Type</span><span className="text-right">Listed</span><span className="text-right">AI Est.</span><span className="text-right">Diff</span>
                 </div>
                 <div className="max-h-[300px] overflow-y-auto">
@@ -391,9 +462,15 @@ export default function RadarSection() {
                 </div>
               </div>
 
-              <p className="text-[10px] text-white/10 font-mono text-center">
-                LIVE FEED &bull; SCANNING {DEMO_DATA.length} PROPERTIES &bull; DEMO DATA
-              </p>
+              <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
+                <p className="font-['Fraunces'] italic text-[11px] text-white/20">
+                  Live feed &middot; scanning {DEMO_DATA.length} properties
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1 h-1 rounded-full bg-white/40 animate-pulse" />
+                  <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/25">Demo Data</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

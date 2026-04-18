@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Map as MapIcon } from "lucide-react";
+import { motion } from "framer-motion";
 import GoogleMap, { type MapLayer } from "./GoogleMap";
 import { LAYER_DEFS as POI_LAYERS } from "./dubaiPOIs";
 
@@ -126,107 +126,218 @@ export default function MapSection() {
 
       <div className="relative z-10 px-4 md:px-8 lg:px-16 py-28">
       <div className="max-w-7xl mx-auto">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-10">
-          <span className="font-mono text-[11px] tracking-[0.3em] text-[#3b82f6]/70">02</span>
-          <div className="w-12 h-px bg-[#3b82f6]/30" />
-          <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-white/20">Map</span>
-        </div>
+        {/* Editorial header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.8 }}
+          className="mb-16"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Chapter II</span>
+            <div className="w-12 h-px bg-white/20" />
+            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/35">Cartography</span>
+          </div>
 
-        <h2 className="text-[clamp(2.2rem,5vw,4.5rem)] font-extralight leading-[0.95] tracking-[-0.03em] text-white mb-4 max-w-3xl">
-          Explore Dubai
-          <br />
-          <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">by the numbers</span>
-        </h2>
-        <p className="text-white/30 text-[15px] mb-10 max-w-xl">
-          <span className="font-mono text-[13px] text-[#3b82f6]/60">{zones.length}</span> zones &bull;{" "}
-          <span className="font-mono text-[13px] text-[#3b82f6]/60">{POI_LAYERS.reduce((a, l) => a + l.items.length, 0)}</span> points of interest
-        </p>
+          <h2 className="font-['Fraunces'] text-[clamp(2.5rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.02em] text-white max-w-4xl">
+            Explore Dubai
+            <br />
+            <span className="italic font-extralight text-white/40">by the numbers.</span>
+          </h2>
 
-        {/* Map in glass card */}
-        <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden">
-          <GoogleMap zones={zones} layers={layers} onSelect={setSelectedZone} />
-        </div>
+          <div className="mt-8 flex items-center gap-8 text-[13px]">
+            <div className="flex items-baseline gap-2">
+              <span className="font-['Fraunces'] text-[28px] font-extralight text-white">{zones.length}</span>
+              <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30">zones</span>
+            </div>
+            <div className="w-px h-6 bg-white/10" />
+            <div className="flex items-baseline gap-2">
+              <span className="font-['Fraunces'] text-[28px] font-extralight text-white">
+                {POI_LAYERS.reduce((a, l) => a + l.items.length, 0)}
+              </span>
+              <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30">points of interest</span>
+            </div>
+            <div className="w-px h-6 bg-white/10" />
+            <div className="flex items-baseline gap-2">
+              <span className="font-['Fraunces'] text-[28px] font-extralight text-white">{POI_LAYERS.length}</span>
+              <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30">layers</span>
+            </div>
+          </div>
+        </motion.div>
 
-        {/* Layer toggles — clean grid below map */}
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 mt-4 mb-6 border border-white/5 rounded-lg overflow-hidden bg-[#0d0d14]">
-          {POI_LAYERS.map((def, i) => {
-            const active = activeLayers.has(def.key);
-            return (
-              <button
-                key={def.key}
-                onClick={() => toggleLayer(def.key)}
-                className={`flex items-center justify-center gap-1.5 px-2 py-2.5 text-center transition-all duration-200 border-r border-b border-white/[0.04] ${
-                  active
-                    ? "bg-white/[0.06]"
-                    : "hover:bg-white/[0.03]"
-                }`}
-              >
-                <div
-                  className={`w-2 h-2 rounded-full shrink-0 transition-opacity ${active ? "opacity-100" : "opacity-20"}`}
-                  style={{ backgroundColor: def.color }}
-                />
-                <span className={`text-[11px] tracking-wide ${active ? "text-white" : "text-white/25"}`}>
-                  {def.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Map in editorial frame */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.9, delay: 0.1 }}
+          className="relative"
+        >
+          {/* Corner frame marks */}
+          <div className="absolute -top-2 -left-2 w-8 h-8 border-t border-l border-white/25 z-10" />
+          <div className="absolute -top-2 -right-2 w-8 h-8 border-t border-r border-white/25 z-10" />
+          <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b border-l border-white/25 z-10" />
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b border-r border-white/25 z-10" />
+
+          <div className="relative overflow-hidden">
+            <GoogleMap zones={zones} layers={layers} onSelect={setSelectedZone} />
+
+            {/* Corner map label */}
+            <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-[#0a0a0f]/80 backdrop-blur-sm border border-white/10">
+              <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/50">Live</span>
+            </div>
+            <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 bg-[#0a0a0f]/80 backdrop-blur-sm border border-white/10">
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/40">
+                25.15 N / 55.25 E
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Layer toggles — editorial grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-8 mb-8"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <p className="font-['Fraunces'] italic text-[13px] font-light text-white/40">Layers</p>
+            <div className="flex-1 h-px bg-white/[0.06]" />
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30">
+              {activeLayers.size} / {POI_LAYERS.length} Active
+            </p>
+          </div>
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 border border-white/[0.06] overflow-hidden">
+            {POI_LAYERS.map((def) => {
+              const active = activeLayers.has(def.key);
+              return (
+                <button
+                  key={def.key}
+                  onClick={() => toggleLayer(def.key)}
+                  className={`relative flex items-center justify-center gap-2 px-2 py-3 text-center transition-all duration-300 border-r border-b border-white/[0.04] group ${
+                    active ? "bg-white/[0.06]" : "hover:bg-white/[0.03]"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-300 ${
+                      active ? "opacity-100 scale-110" : "opacity-15 scale-100"
+                    }`}
+                    style={{ backgroundColor: def.color, boxShadow: active ? `0 0 8px ${def.color}80` : "none" }}
+                  />
+                  <span className={`text-[10px] tracking-wide transition-colors duration-300 ${active ? "text-white" : "text-white/25"}`}>
+                    {def.label}
+                  </span>
+                  {active && (
+                    <motion.span
+                      layoutId="layer-underline"
+                      className="absolute bottom-0 left-0 right-0 h-px"
+                      style={{ backgroundColor: def.color }}
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
 
         {/* Zone details + price legend */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Price legend */}
-          <div className="p-3 rounded-lg border border-white/5 bg-[#0d0d14]">
-            <p className="text-[10px] text-white/30 tracking-wider uppercase mb-2">Zone Prices (AED/sqft)</p>
-            <div className="flex flex-wrap gap-x-4 gap-y-1">
+          <div className="relative p-4 bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08]">
+            <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/20" />
+            <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/20" />
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/30 mb-3">Price &mdash; AED/sqft</p>
+            <div className="space-y-1.5">
               {[
-                { color: "#ef4444", label: ">2.5K" },
-                { color: "#f59e0b", label: "1.5-2.5K" },
-                { color: "#3b82f6", label: "0.8-1.5K" },
-                { color: "#10b981", label: "<800" },
+                { color: "#ef4444", label: "Over 2,500", range: ">2.5K" },
+                { color: "#f59e0b", label: "1,500 - 2,500", range: "1.5-2.5K" },
+                { color: "#3b82f6", label: "800 - 1,500", range: "0.8-1.5K" },
+                { color: "#10b981", label: "Under 800", range: "<800" },
               ].map((l) => (
-                <div key={l.color} className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: l.color }} />
-                  <span className="text-[10px] text-white/40">{l.label}</span>
+                <div key={l.color} className="flex items-center justify-between text-[11px]">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: l.color }} />
+                    <span className="text-white/50">{l.label}</span>
+                  </div>
+                  <span className="font-mono text-white/30">{l.range}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Selected zone details */}
+          {/* Selected zone — editorial */}
           {selectedZone ? (
-            <div className="md:col-span-2 p-3 rounded-lg border border-[#3b82f6]/20 bg-[#3b82f6]/5">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-white">{selectedZone.name}</p>
+            <motion.div
+              key={selectedZone.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="md:col-span-2 relative p-5 bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08]"
+            >
+              <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/20" />
+              <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/20" />
+
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="font-['Fraunces'] italic text-[12px] font-light text-white/40 mb-1">Selected Zone</p>
+                  <p className="font-['Fraunces'] text-[22px] font-light text-white tracking-tight leading-none">{selectedZone.name}</p>
+                </div>
                 {selectedZone.psf ? (
-                  <span className="text-xs text-white font-mono">AED {fmt(selectedZone.psf)}/sqft</span>
+                  <div className="text-right">
+                    <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-0.5">Median PSF</p>
+                    <p className="font-['Fraunces'] text-[20px] font-extralight text-white">
+                      <span className="text-white/30 text-[0.6em] mr-1">AED</span>{fmt(selectedZone.psf)}
+                    </p>
+                  </div>
                 ) : null}
               </div>
-              {loadingStats && <p className="text-xs text-white/20 animate-pulse">Loading stats...</p>}
+
+              {loadingStats && (
+                <div className="space-y-2">
+                  <div className="h-4 w-32 bg-white/[0.04] rounded animate-pulse" />
+                  <div className="h-3 w-full bg-white/[0.04] rounded animate-pulse" />
+                </div>
+              )}
+
               {zoneStats?.data && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-white/[0.06]">
                   <div>
-                    <p className="text-white/30 mb-0.5">Transactions</p>
-                    <p className="text-white font-mono">{zoneStats.data.total_transactions}</p>
+                    <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-1">Transactions</p>
+                    <p className="font-['Fraunces'] text-[22px] font-extralight text-white">
+                      {zoneStats.data.total_transactions}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-white/30 mb-0.5">Median</p>
-                    <p className="text-white font-mono">AED {fmt(zoneStats.data.median_price)}</p>
+                    <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-1">Median</p>
+                    <p className="font-['Fraunces'] text-[22px] font-extralight text-white">
+                      <span className="text-white/30 text-[0.55em] mr-1">AED</span>
+                      {zoneStats.data.median_price >= 1000000 ? (zoneStats.data.median_price / 1000000).toFixed(1) + "M" : fmt(zoneStats.data.median_price)}
+                    </p>
                   </div>
                   {zoneStats.data.recent_transactions?.slice(0, 2).map((tx, i) => (
                     <div key={i}>
-                      <p className="text-white/30 mb-0.5 truncate">{tx.building}</p>
-                      <p className="text-white font-mono text-[11px]">AED {fmt(tx.price_aed)}</p>
-                      <p className="text-white/20 text-[10px]">{tx.rooms} &bull; {tx.area_m2}m&sup2;</p>
+                      <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/30 mb-1 truncate">{tx.building}</p>
+                      <p className="font-['Fraunces'] text-[16px] font-extralight text-white leading-tight">
+                        <span className="text-white/30 text-[0.65em] mr-1">AED</span>{fmt(tx.price_aed)}
+                      </p>
+                      <p className="font-mono text-[9px] text-white/20 mt-0.5">{tx.rooms} &middot; {tx.area_m2}m&sup2;</p>
                     </div>
                   ))}
                 </div>
               )}
-            </div>
+            </motion.div>
           ) : (
-            <div className="md:col-span-2 p-3 rounded-lg border border-dashed border-white/5 flex items-center justify-center">
-              <p className="text-xs text-white/15">Click a zone on the map to see details</p>
+            <div className="md:col-span-2 relative p-8 border-t border-b border-white/[0.04] flex items-center justify-center">
+              <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/10" />
+              <div className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/10" />
+              <p className="font-['Fraunces'] italic text-white/20 text-[15px] font-light">
+                Click a zone on the map to reveal details.
+              </p>
             </div>
           )}
         </div>
