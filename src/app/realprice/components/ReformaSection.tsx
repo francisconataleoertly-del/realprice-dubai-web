@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Check, ChevronDown, Info, Loader2 } from "lucide-react";
 
 const API = "https://web-production-9051f.up.railway.app";
@@ -9,17 +10,17 @@ type Level = "basic" | "mid" | "premium" | "luxury";
 const LEVELS: Level[] = ["basic", "mid", "premium", "luxury"];
 const LEVEL_LABELS: Record<Level, string> = { basic: "Basic", mid: "Mid", premium: "Premium", luxury: "Luxury" };
 
-const CATEGORY_META: Record<string, { label: string; unit: "per_unit" | "per_m2" | "fixed" }> = {
-  kitchen: { label: "Kitchen", unit: "fixed" },
-  bathroom: { label: "Bathroom (per unit)", unit: "per_unit" },
-  flooring_m2: { label: "Flooring", unit: "per_m2" },
-  painting_m2: { label: "Paint & Walls", unit: "per_m2" },
-  ac: { label: "AC System", unit: "fixed" },
-  electrical: { label: "Electrical", unit: "fixed" },
-  plumbing: { label: "Plumbing", unit: "fixed" },
-  windows: { label: "Windows & Doors", unit: "fixed" },
-  wardrobes: { label: "Wardrobes", unit: "fixed" },
-  balcony: { label: "Balcony / Terrace", unit: "fixed" },
+const CATEGORY_META: Record<string, { label: string; unit: "per_unit" | "per_m2" | "fixed"; image: string; caption: string }> = {
+  kitchen: { label: "Kitchen", unit: "fixed", image: "/renovation/kitchen.jpg", caption: "Cabinets, counters, appliances & finishes" },
+  bathroom: { label: "Bathroom (per unit)", unit: "per_unit", image: "/renovation/bathroom.jpg", caption: "Tiles, fixtures, sanitaryware & showers" },
+  flooring_m2: { label: "Flooring", unit: "per_m2", image: "/renovation/flooring.jpg", caption: "Wood, porcelain, marble & parquet" },
+  painting_m2: { label: "Paint & Walls", unit: "per_m2", image: "/renovation/painting.jpg", caption: "Paint, wallpaper, plaster & panels" },
+  ac: { label: "AC System", unit: "fixed", image: "/renovation/ac.jpg", caption: "Split units, ducted systems & VRF" },
+  electrical: { label: "Electrical", unit: "fixed", image: "/renovation/electrical.jpg", caption: "Panels, switches, lighting & smart systems" },
+  plumbing: { label: "Plumbing", unit: "fixed", image: "/renovation/plumbing.jpg", caption: "Pipes, taps, water heaters & filters" },
+  windows: { label: "Windows & Doors", unit: "fixed", image: "/renovation/windows.jpg", caption: "Glass, frames, doors & hardware" },
+  wardrobes: { label: "Wardrobes", unit: "fixed", image: "/renovation/wardrobes.jpg", caption: "Closets, walk-ins, built-ins & storage" },
+  balcony: { label: "Balcony / Terrace", unit: "fixed", image: "/renovation/balcony.jpg", caption: "Decking, furniture & outdoor finishes" },
 };
 
 interface RenovationData {
@@ -213,17 +214,44 @@ export default function ReformaSection() {
                           </button>
                         </div>
                         {isExpanded && (
-                          <div className="px-4 pb-3 grid grid-cols-4 gap-1.5">
-                            {LEVELS.map((lvl) => {
-                              const [lo, hi] = levels[lvl];
-                              return (
-                                <div key={lvl} className={`p-2 rounded text-center ${tier === lvl ? "bg-[#3b82f6]/10 border border-[#3b82f6]/30" : "bg-white/[0.02]"}`}>
-                                  <p className={`text-[10px] uppercase tracking-wider ${tier === lvl ? "text-[#3b82f6]" : "text-white/30"}`}>{LEVEL_LABELS[lvl]}</p>
-                                  <p className="font-mono text-[9px] text-white/40 mt-1">{fmt(lo)}-{fmt(hi)}</p>
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                            className="px-4 pb-4 space-y-3"
+                          >
+                            {/* Material preview image */}
+                            <div className="relative overflow-hidden rounded border border-white/[0.08] h-32 group/img">
+                              <div
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover/img:scale-105"
+                                style={{ backgroundImage: `url(${meta.image})` }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/30 to-transparent" />
+                              <div className="absolute bottom-2 left-3 right-3 flex items-end justify-between">
+                                <div>
+                                  <p className="font-['Fraunces'] italic text-[11px] font-light text-white/60">Material reference</p>
+                                  <p className="font-mono text-[9px] tracking-[0.25em] uppercase text-white/40 mt-0.5">
+                                    {meta.caption}
+                                  </p>
                                 </div>
-                              );
-                            })}
-                          </div>
+                                <div className="w-2 h-2 rounded-full bg-white/60 shadow-[0_0_6px_rgba(255,255,255,0.5)]" />
+                              </div>
+                            </div>
+
+                            {/* Level cards */}
+                            <div className="grid grid-cols-4 gap-1.5">
+                              {LEVELS.map((lvl) => {
+                                const [lo, hi] = levels[lvl];
+                                return (
+                                  <div key={lvl} className={`p-2 rounded text-center ${tier === lvl ? "bg-[#3b82f6]/10 border border-[#3b82f6]/30" : "bg-white/[0.02]"}`}>
+                                    <p className={`text-[10px] uppercase tracking-wider ${tier === lvl ? "text-[#3b82f6]" : "text-white/30"}`}>{LEVEL_LABELS[lvl]}</p>
+                                    <p className="font-mono text-[9px] text-white/40 mt-1">{fmt(lo)}-{fmt(hi)}</p>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
                         )}
                       </div>
                     );
