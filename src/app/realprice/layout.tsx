@@ -15,10 +15,13 @@ export default function RealPriceLayout({
   return (
     <>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
         body > nav:first-of-type { display: none !important; }
         body { background: #0a0a0f !important; color: #e5e5e5 !important; }
         main { padding: 0 !important; margin: 0 !important; }
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+        /* Override Tailwind font-mono with JetBrains Mono — refined, tech-editorial */
+        .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; font-feature-settings: 'ss01', 'ss02', 'cv05', 'cv10'; }
+        body { font-family: 'Inter', system-ui, sans-serif; }
       `}</style>
       {children}
     </>
