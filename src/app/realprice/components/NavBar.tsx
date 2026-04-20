@@ -45,48 +45,84 @@ export default function NavBar() {
   };
 
   return (
-    <nav
-      className={`fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
-        scrolled ? "opacity-100" : "opacity-100"
-      }`}
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+      className="fixed top-5 md:top-7 left-1/2 -translate-x-1/2 z-50"
     >
-      {/* Floating pill — centered */}
+      {/* Glow halo (subtle) */}
       <div
-        className={`relative flex items-center gap-1 px-2 py-1.5 rounded-full border transition-all duration-500 ${
+        className={`absolute -inset-3 rounded-full blur-xl transition-opacity duration-700 pointer-events-none ${
+          scrolled ? "opacity-40" : "opacity-20"
+        }`}
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* The pill */}
+      <div
+        className={`relative flex items-center rounded-full border backdrop-blur-2xl transition-all duration-700 ${
           scrolled
-            ? "bg-[#0a0a0f]/80 backdrop-blur-xl border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-            : "bg-[#0a0a0f]/40 backdrop-blur-md border-white/[0.06]"
+            ? "bg-[#0a0a0f]/75 border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            : "bg-[#0a0a0f]/35 border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
         }`}
       >
-        {NAV_ITEMS.map(({ id, label }) => {
-          const isActive = active === id;
-          return (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              className="relative px-4 md:px-5 py-2 group"
-            >
-              {/* Active background pill */}
-              {isActive && (
-                <motion.div
-                  layoutId="nav-pill"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                  className="absolute inset-0 rounded-full bg-white"
-                />
-              )}
-              <span
-                className={`relative text-[12px] md:text-[13px] tracking-wide font-medium transition-colors duration-300 ${
-                  isActive
-                    ? "text-[#0a0a0f]"
-                    : "text-white/60 group-hover:text-white"
-                }`}
+        {/* Left brand mark */}
+        <div className="pl-5 pr-4 py-2 flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
+          <span className="font-['Fraunces'] text-[13px] font-light italic text-white/90 tracking-tight leading-none">
+            rp
+          </span>
+        </div>
+
+        {/* Divider */}
+        <div className="w-px h-5 bg-white/[0.08]" />
+
+        {/* Nav items */}
+        <div className="flex items-center px-1">
+          {NAV_ITEMS.map(({ id, label }) => {
+            const isActive = active === id;
+            return (
+              <button
+                key={id}
+                onClick={() => scrollTo(id)}
+                className="relative px-4 md:px-5 py-2.5 group"
               >
-                {label}
-              </span>
-            </button>
-          );
-        })}
+                <span
+                  className={`relative text-[12px] tracking-[0.01em] transition-colors duration-300 ${
+                    isActive
+                      ? "text-white font-medium"
+                      : "text-white/45 group-hover:text-white/85 font-normal"
+                  }`}
+                >
+                  {label}
+                </span>
+
+                {/* Active dot indicator — tiny below */}
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active-dot"
+                    transition={{ type: "spring", stiffness: 380, damping: 28 }}
+                    className="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-1 h-1 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)]"
+                  />
+                )}
+
+                {/* Hover background — very subtle */}
+                <span
+                  className={`absolute inset-1 rounded-full transition-opacity duration-300 pointer-events-none ${
+                    isActive
+                      ? "opacity-0"
+                      : "opacity-0 group-hover:opacity-100 bg-white/[0.04]"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
