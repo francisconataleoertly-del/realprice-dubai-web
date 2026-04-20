@@ -9,10 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@21st-sdk/agent": "^0.0.16",
-    "@21st-sdk/nextjs": "^0.0.11",
-    "@21st-sdk/node": "^0.0.9",
-    "@21st-sdk/react": "^0.1.4",
     "@ai-sdk/react": "^3.0.161",
     "ai": "^6.0.159",
     "leaflet": "^1.9.4",
