@@ -51,21 +51,7 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10" />
       <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(10,10,15,0.35) 80%)" }} />
 
-      {/* Editorial frame — top left corner monogram */}
-      <div className="absolute top-24 left-6 md:left-12 lg:left-24 z-20 flex items-center gap-3">
-        <div className="flex flex-col">
-          <span className="font-['Fraunces'] text-[22px] font-light tracking-tight text-white leading-none italic">
-            RP
-          </span>
-          <span className="font-mono text-[8px] tracking-[0.3em] text-white/30 mt-1">REAL PRICE</span>
-        </div>
-        <div className="w-px h-8 bg-white/15 ml-2" />
-        <span className="font-mono text-[9px] tracking-[0.3em] text-white/40">
-          VOL.01 &nbsp;&mdash;&nbsp; 2026
-        </span>
-      </div>
-
-      {/* Right side — issue number */}
+      {/* Right side — subtle location */}
       <div className="absolute top-24 right-6 md:right-12 lg:right-24 z-20 text-right">
         <span className="font-mono text-[9px] tracking-[0.3em] text-white/30">DUBAI / UAE</span>
       </div>
@@ -73,11 +59,11 @@ export default function HeroCarousel() {
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-start justify-center px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
         <div className="max-w-4xl">
-          {/* Subtle tag — no blue dot */}
+          {/* Subtle tag */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-6 h-px bg-white/30" />
             <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/50">
-              Chapter I &nbsp;/&nbsp; Valuation
+              AI-Powered Valuation
             </span>
           </div>
 
@@ -117,21 +103,11 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* Bottom frame */}
+      {/* Bottom frame — centered dots + scroll indicator */}
       <div className="absolute bottom-10 left-6 md:left-12 lg:left-24 right-6 md:right-12 lg:right-24 z-20 flex items-end justify-between">
-        {/* Slide counter — editorial */}
-        <div className="flex items-center gap-4">
-          <span className="font-['Fraunces'] text-[36px] font-light text-white/70 tabular-nums italic leading-none">
-            {String(current + 1).padStart(2, "0")}
-          </span>
-          <div className="w-20 h-px bg-white/15" />
-          <span className="font-mono text-[11px] text-white/25 tabular-nums">
-            / {String(SLIDES.length).padStart(2, "0")}
-          </span>
-        </div>
-
+        <div className="flex-1" />
         {/* Center dots */}
-        <div className="hidden md:flex gap-1.5 absolute left-1/2 -translate-x-1/2">
+        <div className="hidden md:flex gap-1.5">
           {SLIDES.map((_, i) => (
             <button
               key={i}
@@ -145,7 +121,7 @@ export default function HeroCarousel() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="flex items-center gap-3">
+        <div className="flex-1 flex items-center justify-end gap-3">
           <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/30">
             Scroll
           </span>
