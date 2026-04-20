@@ -51,21 +51,9 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10" />
       <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(10,10,15,0.35) 80%)" }} />
 
-      {/* Right side — subtle location */}
-      <div className="absolute top-24 right-6 md:right-12 lg:right-24 z-20 text-right">
-        <span className="font-mono text-[9px] tracking-[0.3em] text-white/30">DUBAI / UAE</span>
-      </div>
-
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-start justify-center px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
         <div className="max-w-4xl">
-          {/* Subtle tag */}
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-6 h-px bg-white/30" />
-            <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-white/50">
-              AI-Powered Valuation
-            </span>
-          </div>
 
           {/* Serif editorial headline */}
           <h1 className="font-['Fraunces'] font-light tracking-[-0.02em] leading-[0.95] text-white mb-10">
