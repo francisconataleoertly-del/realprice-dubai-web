@@ -62,6 +62,7 @@ function RadarDisplay({
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const context = ctx;
 
     const dpr = window.devicePixelRatio || 1;
     const size = Math.min(canvas.parentElement!.clientWidth, 500);
@@ -78,76 +79,72 @@ function RadarDisplay({
     const filtered = filter === "all" ? items : items.filter((i) => i.signal === filter);
 
     function draw() {
-      ctx.clearRect(0, 0, size, size);
+      context.clearRect(0, 0, size, size);
 
       // Background
-      ctx.fillStyle = "rgba(10, 10, 15, 0.95)";
-      ctx.fillRect(0, 0, size, size);
+      context.fillStyle = "rgba(10, 10, 15, 0.95)";
+      context.fillRect(0, 0, size, size);
 
       // Grid circles
       for (let i = 1; i <= 4; i++) {
         const r = (maxR / 4) * i;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(59, 130, 246, ${i === 4 ? 0.15 : 0.06})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        context.beginPath();
+        context.arc(cx, cy, r, 0, Math.PI * 2);
+        context.strokeStyle = `rgba(59, 130, 246, ${i === 4 ? 0.15 : 0.06})`;
+        context.lineWidth = 1;
+        context.stroke();
       }
 
       // Grid lines (crosshairs)
       for (let a = 0; a < 360; a += 30) {
         const rad = (a * Math.PI) / 180;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx + Math.cos(rad) * maxR, cy + Math.sin(rad) * maxR);
-        ctx.strokeStyle = "rgba(59, 130, 246, 0.04)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        context.beginPath();
+        context.moveTo(cx, cy);
+        context.lineTo(cx + Math.cos(rad) * maxR, cy + Math.sin(rad) * maxR);
+        context.strokeStyle = "rgba(59, 130, 246, 0.04)";
+        context.lineWidth = 1;
+        context.stroke();
       }
 
       // Degree labels
-      ctx.font = "9px monospace";
-      ctx.fillStyle = "rgba(255,255,255,0.1)";
-      ctx.textAlign = "center";
+      context.font = "9px monospace";
+      context.fillStyle = "rgba(255,255,255,0.1)";
+      context.textAlign = "center";
       for (let a = 0; a < 360; a += 90) {
         const rad = (a * Math.PI) / 180;
         const lx = cx + Math.cos(rad) * (maxR + 12);
         const ly = cy + Math.sin(rad) * (maxR + 12);
-        ctx.fillText(`${a}\u00B0`, lx, ly + 3);
+        context.fillText(`${a}\u00B0`, lx, ly + 3);
       }
 
       // Sweep line
       const sweepRad = (sweepAngle.current * Math.PI) / 180;
-      const gradient = ctx.createConicalGradient
-        ? null
-        : ctx.createLinearGradient(cx, cy, cx + Math.cos(sweepRad) * maxR, cy + Math.sin(sweepRad) * maxR);
-
       // Sweep glow (trailing fade)
       for (let i = 0; i < 30; i++) {
         const a = sweepAngle.current - i * 1.5;
         const rad2 = (a * Math.PI) / 180;
         const alpha = 0.15 * (1 - i / 30);
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx + Math.cos(rad2) * maxR, cy + Math.sin(rad2) * maxR);
-        ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        context.beginPath();
+        context.moveTo(cx, cy);
+        context.lineTo(cx + Math.cos(rad2) * maxR, cy + Math.sin(rad2) * maxR);
+        context.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+        context.lineWidth = 2;
+        context.stroke();
       }
 
       // Main sweep line
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(sweepRad) * maxR, cy + Math.sin(sweepRad) * maxR);
-      ctx.strokeStyle = "rgba(59, 130, 246, 0.5)";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      context.beginPath();
+      context.moveTo(cx, cy);
+      context.lineTo(cx + Math.cos(sweepRad) * maxR, cy + Math.sin(sweepRad) * maxR);
+      context.strokeStyle = "rgba(59, 130, 246, 0.5)";
+      context.lineWidth = 2;
+      context.stroke();
 
       // Center dot
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-      ctx.fillStyle = "#3b82f6";
-      ctx.fill();
+      context.beginPath();
+      context.arc(cx, cy, 3, 0, Math.PI * 2);
+      context.fillStyle = "#3b82f6";
+      context.fill();
 
       // Plot items as blips
       filtered.forEach((item) => {
@@ -161,38 +158,38 @@ function RadarDisplay({
 
         // Blip glow
         if (isSelected) {
-          ctx.beginPath();
-          ctx.arc(x, y, 14, 0, Math.PI * 2);
-          ctx.fillStyle = cfg.glow.replace("0.6", "0.15");
-          ctx.fill();
+          context.beginPath();
+          context.arc(x, y, 14, 0, Math.PI * 2);
+          context.fillStyle = cfg.glow.replace("0.6", "0.15");
+          context.fill();
         }
 
         // Ping effect (when sweep passes)
         const angleDiff = Math.abs(((sweepAngle.current - item.angle + 360) % 360));
         if (angleDiff < 30) {
           const pingAlpha = 0.4 * (1 - angleDiff / 30);
-          ctx.beginPath();
-          ctx.arc(x, y, 8 + (30 - angleDiff) * 0.3, 0, Math.PI * 2);
-          ctx.fillStyle = cfg.color + Math.round(pingAlpha * 255).toString(16).padStart(2, "0");
-          ctx.fill();
+          context.beginPath();
+          context.arc(x, y, 8 + (30 - angleDiff) * 0.3, 0, Math.PI * 2);
+          context.fillStyle = cfg.color + Math.round(pingAlpha * 255).toString(16).padStart(2, "0");
+          context.fill();
         }
 
         // Blip dot
-        ctx.beginPath();
-        ctx.arc(x, y, isSelected ? 6 : 4, 0, Math.PI * 2);
-        ctx.fillStyle = cfg.color;
-        ctx.fill();
+        context.beginPath();
+        context.arc(x, y, isSelected ? 6 : 4, 0, Math.PI * 2);
+        context.fillStyle = cfg.color;
+        context.fill();
 
         // Label (only for selected or green opportunities)
         if (isSelected || item.signal === "green") {
-          ctx.font = isSelected ? "bold 10px monospace" : "9px monospace";
-          ctx.fillStyle = isSelected ? "#ffffff" : "rgba(255,255,255,0.4)";
-          ctx.textAlign = "left";
-          ctx.fillText(item.zone, x + 10, y + 3);
+          context.font = isSelected ? "bold 10px monospace" : "9px monospace";
+          context.fillStyle = isSelected ? "#ffffff" : "rgba(255,255,255,0.4)";
+          context.textAlign = "left";
+          context.fillText(item.zone, x + 10, y + 3);
           if (isSelected) {
-            ctx.font = "9px monospace";
-            ctx.fillStyle = cfg.color;
-            ctx.fillText(`${item.diff_pct > 0 ? "+" : ""}${item.diff_pct.toFixed(1)}%`, x + 10, y + 15);
+            context.font = "9px monospace";
+            context.fillStyle = cfg.color;
+            context.fillText(`${item.diff_pct > 0 ? "+" : ""}${item.diff_pct.toFixed(1)}%`, x + 10, y + 15);
           }
         }
       });

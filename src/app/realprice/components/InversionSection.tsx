@@ -549,10 +549,17 @@ export default function InversionSection() {
                               fontSize: "11px",
                               fontFamily: "monospace",
                             }}
-                            labelFormatter={(v) => `Year ${v}`}
-                            formatter={(v: number, _n, ctx: any) => {
-                              const ret = ctx.payload.total_return_pct;
-                              return [`AED ${fmt(v)} (${ret.toFixed(1)}%)`, "Value"];
+                            labelFormatter={(v) => `Year ${String(v)}`}
+                            formatter={(value, _name, item) => {
+                              const amount = typeof value === "number" ? value : Number(value ?? 0);
+                              const payload =
+                                item && typeof item === "object" && "payload" in item
+                                  ? (item as { payload?: { total_return_pct?: number } }).payload
+                                  : undefined;
+                              const totalReturnPct =
+                                typeof payload?.total_return_pct === "number" ? payload.total_return_pct : 0;
+
+                              return [`AED ${fmt(amount)} (${totalReturnPct.toFixed(1)}%)`, "Value"];
                             }}
                             cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1 }}
                           />
