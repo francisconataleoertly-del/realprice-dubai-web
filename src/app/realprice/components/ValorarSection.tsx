@@ -6,7 +6,10 @@ import { MapPin, Check } from "lucide-react";
 import CountUp from "react-countup";
 import { useGoogleMaps } from "./GoogleMapsLoader";
 
-const API = "https://web-production-9051f.up.railway.app";
+const API =
+  process.env.NEXT_PUBLIC_NEXOPROP_API_BASE_URL ||
+  process.env.NEXT_PUBLIC_REALPRICE_API_BASE_URL ||
+  "https://web-production-9051f.up.railway.app";
 
 const TYPES = [
   { value: "Flat", label: "Apartment" },

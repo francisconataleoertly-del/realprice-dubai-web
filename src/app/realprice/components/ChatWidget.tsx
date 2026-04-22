@@ -36,7 +36,7 @@ export default function ChatWidget() {
             AI Assistant
           </p>
           <p className="text-white text-[14px] font-light mt-2">
-            RealPrice Dubai
+            NexoProp Dubai
           </p>
           <p className="text-white/60 text-sm mt-4">
             Chat coming soon.

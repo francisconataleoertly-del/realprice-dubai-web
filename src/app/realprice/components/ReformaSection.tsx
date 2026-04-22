@@ -130,7 +130,7 @@ export default function ReformaSection() {
           <br />
           <span className="bg-gradient-to-r from-white/40 to-white/15 bg-clip-text text-transparent">renovation costs</span>
         </h2>
-        <p className="text-white/30 text-[15px] mb-12 max-w-xl">Live rates via RealPrice API. Select categories &mdash; estimate updates instantly.</p>
+        <p className="text-white/30 text-[15px] mb-12 max-w-xl">Live rates via NexoProp API. Select categories &mdash; estimate updates instantly.</p>
 
         {!data ? (
           <div className="flex items-center gap-3 text-white/30">
@@ -386,7 +386,7 @@ export default function ReformaSection() {
               <div className="flex items-start gap-2 p-3 rounded border border-white/[0.04]">
                 <Info size={12} className="text-white/20 mt-0.5 shrink-0" />
                 <p className="text-[10px] text-white/20 leading-relaxed">
-                  Live estimates from RealPrice API. Permits required for structural changes. Get 3+ licensed contractor quotes.
+                  Live estimates from NexoProp API. Permits required for structural changes. Get 3+ licensed contractor quotes.
                 </p>
               </div>
             </div>

@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RealPrice Dubai - Property Valuation",
+  title: "NexoProp Dubai - Property Valuation",
   description:
-    "AI-powered Automated Valuation Model for Dubai residential real estate",
+    "NexoProp: AI-powered Automated Valuation Model for Dubai residential real estate",
 };
 
 export default function RootLayout({

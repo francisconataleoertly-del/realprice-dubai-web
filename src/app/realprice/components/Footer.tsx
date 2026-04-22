@@ -12,7 +12,7 @@ const LINKS = {
     { label: "About", href: "#" },
     { label: "Methodology", href: "#" },
     { label: "API Access", href: "#" },
-    { label: "Contact", href: "mailto:hello@realprice.ae" },
+    { label: "Contact", href: "mailto:hello@nexoprop.ae" },
   ],
   Legal: [
     { label: "Terms", href: "#" },
@@ -28,7 +28,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
           <h2 className="font-['Epilogue'] text-[clamp(3rem,10vw,10rem)] font-extralight tracking-[-0.04em] leading-none text-white/[0.04]">
-            RealPrice
+            NexoProp
           </h2>
         </div>
 
@@ -39,18 +39,18 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-5">
               <div className="w-2 h-2 rounded-full bg-[#3b82f6]" />
               <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white">
-                Real<span className="text-[#3b82f6]">Price</span>
+                Nexo<span className="text-[#3b82f6]">Prop</span>
               </span>
             </div>
             <p className="text-white/40 text-[14px] font-light leading-relaxed max-w-xs mb-6">
-              AI-powered automated valuation platform for Dubai real estate.
+              NexoProp is an AI-powered automated valuation platform for Dubai real estate.
               Instant estimates, live market intelligence.
             </p>
             <a
-              href="mailto:hello@realprice.ae"
+              href="mailto:hello@nexoprop.ae"
               className="font-mono text-[12px] text-white/50 hover:text-white transition-colors border-b border-white/10 hover:border-white/30 pb-0.5"
             >
-              hello@realprice.ae
+              hello@nexoprop.ae
             </a>
           </div>
 
@@ -79,7 +79,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-white/[0.04]">
           <div className="flex items-center gap-6 text-white/25 font-mono text-[10px] tracking-wider">
-            <span>&copy; 2026 REALPRICE</span>
+            <span>&copy; 2026 NEXOPROP</span>
             <span className="hidden md:inline">&bull;</span>
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />

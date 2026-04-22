@@ -59,7 +59,7 @@ export default function HeroCarousel() {
           <h1 className="font-['Fraunces'] font-light tracking-[-0.02em] leading-[0.95] text-white mb-10">
             <span className="block text-[clamp(3.2rem,9vw,8rem)]">Know the</span>
             <span className="block text-[clamp(3.2rem,9vw,8rem)] italic font-extralight text-white/40">
-              real price.
+              true value.
             </span>
           </h1>
 
