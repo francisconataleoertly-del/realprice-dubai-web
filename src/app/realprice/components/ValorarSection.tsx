@@ -73,6 +73,19 @@ interface ZonesPayload {
   aliases?: Record<string, string>;
 }
 
+interface FormState {
+  zona: string;
+  rooms: string | null;
+  area_m2: string;
+  is_freehold: boolean | null;
+  is_offplan: boolean | null;
+  has_parking: boolean | null;
+  property_type: string | null;
+  building_name: string | null;
+  year: string;
+  quarter: number;
+}
+
 type GoogleAddressComponent =
   | google.maps.GeocoderAddressComponent
   | google.maps.places.AddressComponent;
@@ -119,40 +132,45 @@ function normalizeText(value: string) {
     .trim();
 }
 
-function AnimatedToggle({
-  on,
+function TriStateToggle({
+  value,
   onChange,
-  labelOn,
-  labelOff,
+  label,
+  yesLabel,
+  noLabel,
 }: {
-  on: boolean;
-  onChange: () => void;
-  labelOn: string;
-  labelOff: string;
+  value: boolean | null;
+  onChange: (value: boolean | null) => void;
+  label: string;
+  yesLabel: string;
+  noLabel: string;
 }) {
   return (
-    <button onClick={onChange} className="flex items-center gap-3 group" type="button">
-      <div
-        className={`relative w-10 h-5 rounded-full border transition-colors duration-300 ${
-          on ? "border-white/40 bg-white/[0.08]" : "border-white/10 bg-white/[0.02]"
-        }`}
-      >
-        <motion.div
-          animate={{ x: on ? 20 : 2 }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          className={`absolute top-[2px] w-[14px] h-[14px] rounded-full transition-colors duration-300 ${
-            on ? "bg-white" : "bg-white/30"
-          }`}
-        />
+    <div className="space-y-2">
+      <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 block">
+        {label}
+      </label>
+      <div className="grid grid-cols-3 border border-white/[0.08] rounded-lg overflow-hidden">
+        {[
+          { label: "-", value: null },
+          { label: yesLabel, value: true },
+          { label: noLabel, value: false },
+        ].map((option) => (
+          <button
+            key={`${label}-${option.label}`}
+            type="button"
+            onClick={() => onChange(option.value)}
+            className={`py-3 text-[10px] md:text-[11px] tracking-[0.18em] uppercase transition-all duration-300 border-r last:border-r-0 border-white/[0.04] ${
+              value === option.value
+                ? "bg-white text-[#0a0a0f]"
+                : "text-white/30 hover:bg-white/[0.04] hover:text-white/60"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
-      <span
-        className={`font-mono text-[11px] tracking-[0.2em] uppercase transition-colors ${
-          on ? "text-white/90" : "text-white/30"
-        }`}
-      >
-        {on ? labelOn : labelOff}
-      </span>
-    </button>
+    </div>
   );
 }
 
@@ -205,16 +223,16 @@ export default function ValorarSection() {
   const [focused, setFocused] = useState(false);
   const [resolvingAddress, setResolvingAddress] = useState(false);
 
-  const [form, setForm] = useState({
-    zona: "Dubai Marina",
-    rooms: "1 B/R",
-    area_m2: 75,
-    is_freehold: true,
-    is_offplan: false,
-    has_parking: true,
-    property_type: "Flat",
-    building_name: null as string | null,
-    year: currentYear,
+  const [form, setForm] = useState<FormState>({
+    zona: "",
+    rooms: null,
+    area_m2: "",
+    is_freehold: null,
+    is_offplan: null,
+    has_parking: null,
+    property_type: null,
+    building_name: null,
+    year: "",
     quarter: currentQuarter,
   });
 
@@ -233,6 +251,13 @@ export default function ValorarSection() {
       ])
     );
   }, [zoneAliases, zoneOptions]);
+
+  const canSubmit =
+    Boolean(form.zona) &&
+    Boolean(form.property_type) &&
+    Boolean(form.rooms) &&
+    Boolean(form.area_m2) &&
+    Number(form.area_m2) >= 20;
 
   const resolveZoneFromSignals = (signals: string[]) => {
     const directMap = new Map<string, string>();
@@ -298,9 +323,11 @@ export default function ValorarSection() {
     setAddressText(formattedAddress);
     setAddressSelected(true);
     setError("");
+    setResult(null);
+    setComparables([]);
     setForm((prev) => ({
       ...prev,
-      zona: matchedZone || prev.zona,
+      zona: matchedZone || prev.zona || "",
       building_name: buildingName || prev.building_name,
     }));
   };
@@ -411,16 +438,35 @@ export default function ValorarSection() {
   }, [googleLoaded, allZoneCandidates]);
 
   const submit = async () => {
+    if (!canSubmit) {
+      setError("Add property type, rooms and area to get a real valuation.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setResult(null);
     setComparables([]);
 
     try {
+      const payload: Record<string, unknown> = {
+        zona: form.zona,
+        rooms: form.rooms,
+        area_m2: Number(form.area_m2),
+        quarter: currentQuarter,
+      };
+
+      if (form.property_type) payload.property_type = form.property_type;
+      if (form.building_name) payload.building_name = form.building_name;
+      if (form.is_freehold !== null) payload.is_freehold = form.is_freehold;
+      if (form.is_offplan !== null) payload.is_offplan = form.is_offplan;
+      if (form.has_parking !== null) payload.has_parking = form.has_parking;
+      payload.year = form.year ? Number(form.year) : currentYear;
+
       const response = await fetch(`${API}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -527,6 +573,9 @@ export default function ValorarSection() {
               onChange={(event) => {
                 setAddressSelected(false);
                 setAddressText(event.target.value);
+                setResult(null);
+                setComparables([]);
+                setError("");
               }}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
@@ -623,6 +672,9 @@ export default function ValorarSection() {
                         }
                         className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white focus:border-white/40 outline-none transition-all duration-500 appearance-none cursor-pointer"
                       >
+                        <option value="" className="bg-[#111]">
+                          -
+                        </option>
                         {zoneOptions.map((zone) => (
                           <option key={zone} value={zone} className="bg-[#111]">
                             {zone}
@@ -658,7 +710,23 @@ export default function ValorarSection() {
                     <label className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-3 block">
                       Type
                     </label>
-                    <div className="grid grid-cols-3 border border-white/[0.08] rounded-lg overflow-hidden">
+                    <div className="grid grid-cols-4 border border-white/[0.08] rounded-lg overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((prev) => ({
+                            ...prev,
+                            property_type: null,
+                          }))
+                        }
+                        className={`py-3 text-[12px] tracking-wide transition-all duration-300 border-r border-white/[0.04] ${
+                          !form.property_type
+                            ? "bg-white text-[#0a0a0f]"
+                            : "text-white/30 hover:bg-white/[0.04] hover:text-white/60"
+                        }`}
+                      >
+                        -
+                      </button>
                       {TYPES.map((type) => (
                         <button
                           key={type.value}
@@ -693,12 +761,18 @@ export default function ValorarSection() {
                         Rooms
                       </label>
                       <select
-                        value={form.rooms}
+                        value={form.rooms || ""}
                         onChange={(e) =>
-                          setForm((prev) => ({ ...prev, rooms: e.target.value }))
+                          setForm((prev) => ({
+                            ...prev,
+                            rooms: e.target.value || null,
+                          }))
                         }
                         className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white focus:border-white/40 outline-none appearance-none cursor-pointer"
                       >
+                        <option value="" className="bg-[#111]">
+                          -
+                        </option>
                         {ROOMS.map((room) => (
                           <option key={room} value={room} className="bg-[#111]">
                             {room}
@@ -718,10 +792,11 @@ export default function ValorarSection() {
                         onChange={(e) =>
                           setForm((prev) => ({
                             ...prev,
-                            area_m2: Number(e.target.value),
+                            area_m2: e.target.value,
                           }))
                         }
-                        className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none"
+                        placeholder="-"
+                        className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono placeholder-white/20 focus:border-white/40 outline-none"
                       />
                     </div>
                     <div>
@@ -734,10 +809,11 @@ export default function ValorarSection() {
                         onChange={(e) =>
                           setForm((prev) => ({
                             ...prev,
-                            year: Number(e.target.value),
+                            year: e.target.value,
                           }))
                         }
-                        className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono focus:border-white/40 outline-none"
+                        placeholder="-"
+                        className="w-full bg-transparent border-b border-white/[0.1] pb-3 text-[15px] text-white font-mono placeholder-white/20 focus:border-white/40 outline-none"
                       />
                     </div>
                   </motion.div>
@@ -749,38 +825,46 @@ export default function ValorarSection() {
                     }}
                     className="space-y-4 pt-2"
                   >
-                    <AnimatedToggle
-                      on={form.is_freehold}
-                      onChange={() =>
+                    <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-white/20">
+                      Optional details stay neutral until you choose them.
+                    </p>
+                    <TriStateToggle
+                      value={form.is_freehold}
+                      onChange={(value) =>
                         setForm((prev) => ({
                           ...prev,
-                          is_freehold: !prev.is_freehold,
+                          is_freehold: value,
                         }))
                       }
-                      labelOn="Freehold"
-                      labelOff="Leasehold"
+                      label="Ownership"
+                      yesLabel="Freehold"
+                      noLabel="Leasehold"
                     />
-                    <AnimatedToggle
-                      on={!form.is_offplan}
-                      onChange={() =>
+                    <TriStateToggle
+                      value={
+                        form.is_offplan === null ? null : !form.is_offplan
+                      }
+                      onChange={(value) =>
                         setForm((prev) => ({
                           ...prev,
-                          is_offplan: !prev.is_offplan,
+                          is_offplan: value === null ? null : !value,
                         }))
                       }
-                      labelOn="Ready"
-                      labelOff="Off-Plan"
+                      label="Status"
+                      yesLabel="Ready"
+                      noLabel="Off-Plan"
                     />
-                    <AnimatedToggle
-                      on={form.has_parking}
-                      onChange={() =>
+                    <TriStateToggle
+                      value={form.has_parking}
+                      onChange={(value) =>
                         setForm((prev) => ({
                           ...prev,
-                          has_parking: !prev.has_parking,
+                          has_parking: value,
                         }))
                       }
-                      labelOn="Parking Included"
-                      labelOff="No Parking"
+                      label="Parking"
+                      yesLabel="Included"
+                      noLabel="No Parking"
                     />
                   </motion.div>
 
@@ -790,7 +874,7 @@ export default function ValorarSection() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
                     }}
                     onClick={submit}
-                    disabled={loading || !form.zona}
+                    disabled={loading || !canSubmit}
                     type="button"
                     className="group relative w-full py-5 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-white/90 disabled:opacity-40 transition-all duration-500 overflow-hidden"
                   >
@@ -824,6 +908,14 @@ export default function ValorarSection() {
                   {error && (
                     <div className="w-full border-l-2 border-red-500/50 pl-4 py-2">
                       <p className="font-mono text-[12px] text-red-400">{error}</p>
+                    </div>
+                  )}
+
+                  {!error && !result && (
+                    <div className="w-full border-l-2 border-white/[0.08] pl-4 py-2">
+                      <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">
+                        We resolved the address. Add type, rooms and area to value the property.
+                      </p>
                     </div>
                   )}
 
