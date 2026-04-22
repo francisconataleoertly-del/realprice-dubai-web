@@ -40,10 +40,10 @@ export default function RealPricePage() {
       {/* Footer */}
       <footer className="px-4 md:px-8 py-16 border-t border-white/5 text-center">
         <p className="text-xs text-white/15 tracking-widest uppercase">
-          NexoProp &mdash; AI-Powered Property Valuation
+          FonatProp &mdash; AI-Powered Property Valuation
         </p>
         <p className="text-[10px] text-white/8 mt-2">
-          &copy; 2026 NexoProp. All rights reserved.
+          &copy; 2026 FonatProp. All rights reserved.
         </p>
       </footer>
     </div>

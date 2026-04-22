@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
-
 export const metadata: Metadata = {
   title: "FonatProp | AI-Powered Property Valuation for Dubai",
   description:
     "FonatProp: AI-powered automated valuation model for Dubai real estate. Instant property estimates, market insights, and investment analytics.",
 };
 
-export default function RealPriceLayout({
+export default function FonatPropLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -19,7 +18,6 @@ export default function RealPriceLayout({
         body > nav:first-of-type { display: none !important; }
         body { background: #0a0a0f !important; color: #e5e5e5 !important; }
         main { padding: 0 !important; margin: 0 !important; }
-        /* Override Tailwind font-mono with JetBrains Mono — refined, tech-editorial */
         .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; font-feature-settings: 'ss01', 'ss02', 'cv05', 'cv10'; }
         body { font-family: 'Inter', system-ui, sans-serif; }
       `}</style>

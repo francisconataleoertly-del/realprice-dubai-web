@@ -22,7 +22,7 @@ export default function Navbar() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center">
               <Building2 className="w-5 h-5 text-background" />
             </div>
-            <span className="text-xl font-bold gold-text">NexoProp</span>
+            <span className="text-xl font-bold gold-text">FonatProp</span>
             <span className="text-xs text-muted font-medium px-2 py-0.5 rounded-full border border-card-border">
               DUBAI
             </span>

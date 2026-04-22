@@ -64,7 +64,7 @@ export default function GoogleMap({
     mapInstance.current = new google.maps.Map(mapRef.current, {
       center: { lat: 25.15, lng: 55.25 },
       zoom: 11,
-      mapId: "nexoprop_dark",
+      mapId: "fonatprop_dark",
       disableDefaultUI: true,
       zoomControl: true,
       zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },

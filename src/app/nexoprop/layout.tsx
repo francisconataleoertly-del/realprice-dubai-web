@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "NexoProp | AI-Powered Property Valuation for Dubai",
+  title: "FonatProp | AI-Powered Property Valuation for Dubai",
   description:
-    "NexoProp: AI-powered automated valuation model for Dubai real estate. Instant property estimates, market insights, and investment analytics.",
+    "FonatProp: AI-powered automated valuation model for Dubai real estate. Instant property estimates, market insights, and investment analytics.",
 };
 
-export default function NexoPropLayout({
+export default function LegacyNexoPropLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
