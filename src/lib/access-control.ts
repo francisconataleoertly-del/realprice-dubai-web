@@ -98,7 +98,7 @@ export function resolveSessionFromUser(user: User | null | undefined): FonatProp
     coercePlan(userMeta.plan) ||
     (coerceRole(appMeta.role) === "admin" || coerceRole(userMeta.role) === "admin"
       ? "pro"
-      : "member");
+      : "pro");
 
   if (inferredRole === "admin" && inferredPlan !== "pro") {
     inferredPlan = "pro";

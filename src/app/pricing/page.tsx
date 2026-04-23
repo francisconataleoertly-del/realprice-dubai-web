@@ -12,14 +12,14 @@ const plans = [
   },
   {
     name: "Member",
-    price: "Login",
-    description: "For signed-in visitors and agents exploring the platform.",
-    features: ["Map", "Radar", "Private app access"],
+    price: "Current",
+    description: "Temporary open access for any logged-in account.",
+    features: ["Full private app", "Valuation", "Radar", "Investment"],
   },
   {
     name: "Pro Agency",
     price: "$200/mo+",
-    description: "For agencies using FonatProp as a real operating surface.",
+    description: "Planned paid tier once billing and entitlements go live.",
     features: [
       "Valuation",
       "Investment",
@@ -87,7 +87,7 @@ export default function PricingPage() {
           <p className="text-[14px] leading-7 text-white/60">
             Supabase-backed authentication is in place. Billing and automatic
             entitlements come next, so today every signed-in account can enter
-            the private app while Pro-only surfaces still stay gated by plan.
+            the full private app while we finish the paid plan wiring.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link

@@ -73,19 +73,19 @@ function LoginPageContent() {
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-8 text-white/52">
             The public landing stays open to everyone. Signed-in members can use
-            Map and Radar. Pro agencies unlock Valuation, Investment and
-            Renovation. The admin command center stays separate.
+            the private product today while billing is still being wired. The
+            admin command center stays separate.
           </p>
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
                 label: "Member",
-                description: "Map and Radar",
+                description: "Signed-in product access for now",
               },
               {
                 label: "Pro",
-                description: "Valuation, Investment and Renovation",
+                description: "Will later gate paid agency workflows",
               },
               {
                 label: "Admin",
@@ -224,9 +224,11 @@ function LoginPageContent() {
               Live Auth Structure
             </p>
             <p className="text-[13px] leading-7 text-white/60">
-              Authentication now runs through Supabase. Signed-in users default
-              to <span className="text-white">member</span>. Later we can wire
-              paid plans and admin roles through metadata or billing sync.
+              Authentication now runs through Supabase. Until billing goes live,
+              every signed-in account is treated as{" "}
+              <span className="text-white">pro</span> so you can use the full
+              product. Later we can wire paid plans and admin roles through
+              metadata or billing sync.
             </p>
           </div>
 
