@@ -65,6 +65,7 @@ type ProfileRow = {
   property_type: string;
   rooms: string;
   area_m2: number;
+  median_price_aed?: number;
   latest_date?: string;
   is_freehold?: boolean;
   is_offplan?: boolean;
@@ -253,6 +254,44 @@ function adjustInferredConfidence(
   return Math.max(0.1, Math.min(0.32, pct));
 }
 
+function blendProfileAnchor(
+  predictedAed: number,
+  source: string,
+  profileMedianPriceAed: number | undefined,
+  supportCount: number,
+  recentCount: number,
+  dominancePct: number
+) {
+  if (!profileMedianPriceAed) {
+    return { predictedAed, weight: 0 };
+  }
+
+  let weight =
+    source === "building"
+      ? supportCount >= 20
+        ? 0.58
+        : 0.48
+      : source === "project"
+        ? supportCount >= 20
+          ? 0.42
+          : 0.32
+        : supportCount >= 50
+          ? 0.28
+          : 0.2;
+
+  if (recentCount >= 3) weight += 0.06;
+  else if (recentCount === 0) weight -= 0.04;
+
+  if (dominancePct >= 65) weight += 0.04;
+  else if (dominancePct < 40) weight -= 0.06;
+
+  weight = Math.max(0.08, Math.min(0.72, weight));
+  return {
+    predictedAed: (1 - weight) * predictedAed + weight * profileMedianPriceAed,
+    weight,
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -317,7 +356,15 @@ export async function POST(request: Request) {
       profile.dominance_pct || 0
     );
 
-    const predictedAed = Number(upstreamData.predicted_aed || 0);
+    const anchorBlend = blendProfileAnchor(
+      Number(upstreamData.predicted_aed || 0),
+      source,
+      profile.median_price_aed as number | undefined,
+      profile.count || 0,
+      profile.recent_count || 0,
+      profile.dominance_pct || 0
+    );
+    const predictedAed = Number(anchorBlend.predictedAed || 0);
     const response = {
       ...upstreamData,
       zona: resolvedZone,
@@ -329,6 +376,10 @@ export async function POST(request: Request) {
       confidence_high_aed: Math.round(predictedAed * (1 + confidencePct)),
       resolved_zone: upstreamData.resolved_zone || resolvedZone,
       resolved_building: upstreamData.resolved_building || resolvedBuilding || body.building_name || null,
+      calibration_method:
+        anchorBlend.weight > 0
+          ? `${upstreamData.calibration_method || "model_only"}+profile_anchor`
+          : upstreamData.calibration_method,
       valuation_mode: `address_inferred_${source}_profile`,
       inference_source: source,
       inferred_details_used: true,
