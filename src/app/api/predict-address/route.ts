@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { DEFAULT_FEATURE_FLAGS, canAccessFeature, parseSessionFromCookieStore } from "@/lib/access-control";
+import { DEFAULT_FEATURE_FLAGS, canAccessFeature } from "@/lib/access-control";
+import { getServerAccessSession } from "@/lib/supabase/access";
 
 const UPSTREAM_API =
   process.env.NEXT_PUBLIC_FONATPROP_API_BASE_URL ||
@@ -296,8 +296,17 @@ function blendProfileAnchor(
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const session = parseSessionFromCookieStore(cookieStore);
+    const { configured, session } = await getServerAccessSession();
+    if (!configured) {
+      return NextResponse.json(
+        {
+          detail:
+            "Supabase auth is not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY first.",
+        },
+        { status: 503 }
+      );
+    }
+
     if (!canAccessFeature(session, "valuation", DEFAULT_FEATURE_FLAGS)) {
       const status = session.authenticated ? 402 : 401;
       return NextResponse.json(

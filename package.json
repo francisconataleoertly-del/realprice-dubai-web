@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.161",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.104.1",
     "ai": "^6.0.159",
     "framer-motion": "^12.38.0",
     "leaflet": "^1.9.4",

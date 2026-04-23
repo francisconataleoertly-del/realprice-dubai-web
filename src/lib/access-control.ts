@@ -1,3 +1,5 @@
+import type { User } from "@supabase/supabase-js";
+
 export type FonatPropPlan = "guest" | "member" | "pro";
 export type FonatPropRole = "guest" | "user" | "admin";
 export type FonatPropFeature =
@@ -44,16 +46,7 @@ export const DEFAULT_FEATURE_FLAGS: FonatPropFeatureFlags = {
 };
 
 export const ACCESS_STORAGE_KEYS = {
-  session: "fonatprop.session",
   flags: "fonatprop.flags",
-} as const;
-
-export const ACCESS_COOKIE_KEYS = {
-  authenticated: "fonatprop_auth",
-  plan: "fonatprop_plan",
-  role: "fonatprop_role",
-  email: "fonatprop_email",
-  name: "fonatprop_name",
 } as const;
 
 export const FEATURE_LABELS: Record<FonatPropFeature, string> = {
@@ -66,39 +59,64 @@ export const FEATURE_LABELS: Record<FonatPropFeature, string> = {
   admin: "Admin Command Center",
 };
 
-export function normalizeEmail(email: string) {
+function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
-export function derivePreviewAccess(email: string) {
-  const normalized = normalizeEmail(email);
+function coercePlan(value: unknown): FonatPropPlan | null {
+  if (value === "guest" || value === "member" || value === "pro") {
+    return value;
+  }
+  return null;
+}
 
-  if (
-    normalized.includes("+admin") ||
-    normalized.startsWith("admin@") ||
-    normalized.endsWith("@fonatprop.com") ||
-    normalized.endsWith("@fonatprop.ae")
-  ) {
-    return {
-      plan: "pro" as FonatPropPlan,
-      role: "admin" as FonatPropRole,
-    };
+function coerceRole(value: unknown): FonatPropRole | null {
+  if (value === "guest" || value === "user" || value === "admin") {
+    return value;
+  }
+  return null;
+}
+
+export function resolveSessionFromUser(user: User | null | undefined): FonatPropSession {
+  if (!user?.email) {
+    return DEFAULT_SESSION;
   }
 
-  if (
-    normalized.includes("+pro") ||
-    normalized.startsWith("pro@") ||
-    normalized.includes("agency")
-  ) {
-    return {
-      plan: "pro" as FonatPropPlan,
-      role: "user" as FonatPropRole,
-    };
+  const email = normalizeEmail(user.email);
+  const appMeta = user.app_metadata || {};
+  const userMeta = user.user_metadata || {};
+
+  const inferredRole =
+    coerceRole(appMeta.role) ||
+    coerceRole(userMeta.role) ||
+    (email.endsWith("@fonatprop.com") || email.endsWith("@fonatprop.ae")
+      ? "admin"
+      : "user");
+
+  let inferredPlan =
+    coercePlan(appMeta.plan) ||
+    coercePlan(userMeta.plan) ||
+    (coerceRole(appMeta.role) === "admin" || coerceRole(userMeta.role) === "admin"
+      ? "pro"
+      : "member");
+
+  if (inferredRole === "admin" && inferredPlan !== "pro") {
+    inferredPlan = "pro";
   }
+
+  const rawName =
+    (typeof userMeta.full_name === "string" && userMeta.full_name) ||
+    (typeof userMeta.name === "string" && userMeta.name) ||
+    (typeof appMeta.name === "string" && appMeta.name) ||
+    "";
 
   return {
-    plan: "member" as FonatPropPlan,
-    role: "user" as FonatPropRole,
+    authenticated: true,
+    plan: inferredPlan,
+    role: inferredRole,
+    email,
+    name: rawName.trim(),
+    loginAt: user.last_sign_in_at || null,
   };
 }
 
@@ -183,7 +201,7 @@ export function getGateMessaging(
       tone: "upgrade" as const,
       title: `${featureLabel} is a Pro surface`,
       description:
-        "Your member session can explore the app and use Map and Radar, but valuation, investment and renovation stay behind the Pro plan until billing goes live.",
+        "Your member account can explore the app and use Map and Radar, but valuation, investment and renovation stay behind the Pro plan until billing goes live.",
       primaryLabel: "Upgrade plan",
       secondaryLabel: "Open app",
     };
@@ -206,32 +224,5 @@ export function getGateMessaging(
     description: "This surface is ready to use.",
     primaryLabel: "Open",
     secondaryLabel: "",
-  };
-}
-
-type CookieReader = {
-  get: (name: string) => { value: string } | undefined;
-};
-
-export function parseSessionFromCookieStore(
-  cookies: CookieReader
-): FonatPropSession {
-  const authenticated = cookies.get(ACCESS_COOKIE_KEYS.authenticated)?.value === "1";
-  const planValue = cookies.get(ACCESS_COOKIE_KEYS.plan)?.value as FonatPropPlan | undefined;
-  const roleValue = cookies.get(ACCESS_COOKIE_KEYS.role)?.value as FonatPropRole | undefined;
-  const email = decodeURIComponent(cookies.get(ACCESS_COOKIE_KEYS.email)?.value || "");
-  const name = decodeURIComponent(cookies.get(ACCESS_COOKIE_KEYS.name)?.value || "");
-
-  if (!authenticated) {
-    return DEFAULT_SESSION;
-  }
-
-  return {
-    authenticated: true,
-    plan: planValue || "member",
-    role: roleValue || "user",
-    email,
-    name,
-    loginAt: null,
   };
 }

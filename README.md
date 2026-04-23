@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FonatProp Web
 
-## Getting Started
+FonatProp is the production Next.js frontend that powers `fonatprop.com`.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` and fill the values.
 
-## Learn More
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
+NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=
+NEXT_PUBLIC_FONATPROP_API_BASE_URL=https://web-production-9051f.up.railway.app
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase auth
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The app now uses Supabase auth for:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/login`
+- `/app`
+- `/admin`
+- protected proxy routes under `/api/fonatprop/*`
+- protected address-first valuation under `/api/predict-address`
 
-## Deploy on Vercel
+### Access rules
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Public landing: everyone
+- Signed-in member: Map + Radar + private app
+- Pro: Valuation + Investment + Renovation
+- Admin: `/admin`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Today, plan and role are derived from Supabase metadata when present:
+
+- `app_metadata.plan` or `user_metadata.plan` -> `member | pro`
+- `app_metadata.role` or `user_metadata.role` -> `user | admin`
+
+Fallbacks:
+
+- authenticated users default to `member`
+- emails ending in `@fonatprop.com` or `@fonatprop.ae` are treated as `admin`
+
+## Vercel setup
+
+Add these env vars in Vercel before expecting auth to work live:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+- `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID`
+- `NEXT_PUBLIC_FONATPROP_API_BASE_URL`
+
+## Notes
+
+- Billing and paid entitlements can be added later without changing the route split.
+- The live data proxy now runs server-side instead of exposing Railway directly from every browser request.

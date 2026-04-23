@@ -13,10 +13,10 @@ export default function SessionRail({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { hydrated, session, signOut } = useAccess();
+  const { authConfigured, hydrated, session, signOut } = useAccess();
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut();
     router.push("/fonatprop");
   };
 
@@ -35,9 +35,11 @@ export default function SessionRail({
             <p className="text-[14px] text-white/80">
               {!hydrated
                 ? "Checking session..."
-                : session.authenticated
-                  ? `${session.name || session.email} · ${session.plan.toUpperCase()}`
-                  : "Guest session"}
+                : !authConfigured
+                  ? "Supabase setup required"
+                  : session.authenticated
+                    ? `${session.name || session.email} · ${session.plan.toUpperCase()}`
+                    : "Guest session"}
             </p>
           </div>
 
@@ -98,7 +100,7 @@ export default function SessionRail({
 
               <button
                 type="button"
-                onClick={handleSignOut}
+                onClick={() => void handleSignOut()}
                 className="inline-flex items-center gap-2 rounded-xl border border-white/12 px-3 py-2 text-[11px] uppercase tracking-[0.2em] text-white/55 hover:text-white transition-colors"
               >
                 <LogOut size={13} />

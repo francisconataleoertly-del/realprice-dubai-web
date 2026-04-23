@@ -82,12 +82,12 @@ export default function PricingPage() {
 
         <div className="mt-10 rounded-[28px] border border-[#3b82f6]/15 bg-[#3b82f6]/[0.05] px-6 py-6">
           <p className="font-mono text-[10px] tracking-[0.28em] uppercase text-[#7fb3ff] mb-2">
-            Before Billing Goes Live
+            Auth Is Now Ready
           </p>
           <p className="text-[14px] leading-7 text-white/60">
-            Today we are scaffolding plans, route protection and feature gates.
-            Secure billing and Supabase-backed entitlements come next, so the
-            structure we are shipping now can slot into real accounts tomorrow.
+            Supabase-backed authentication is in place. Billing and automatic
+            entitlements come next, so today every signed-in account can enter
+            the private app while Pro-only surfaces still stay gated by plan.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link

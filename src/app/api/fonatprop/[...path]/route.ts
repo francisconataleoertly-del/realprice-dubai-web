@@ -1,12 +1,11 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
   DEFAULT_FEATURE_FLAGS,
   canAccessFeature,
-  parseSessionFromCookieStore,
   type FonatPropFeature,
 } from "@/lib/access-control";
+import { getServerAccessSession } from "@/lib/supabase/access";
 
 const UPSTREAM_API =
   process.env.NEXT_PUBLIC_FONATPROP_API_BASE_URL ||
@@ -50,8 +49,16 @@ async function forward(request: NextRequest, method: "GET" | "POST") {
   const path = segments.replace(/^\/+/, "");
   const feature = getFeatureForPath(path);
 
-  const cookieStore = await cookies();
-  const session = parseSessionFromCookieStore(cookieStore);
+  const { configured, session } = await getServerAccessSession();
+  if (!configured) {
+    return NextResponse.json(
+      {
+        detail:
+          "Supabase auth is not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY first.",
+      },
+      { status: 503 }
+    );
+  }
 
   if (!canAccessFeature(session, feature, DEFAULT_FEATURE_FLAGS)) {
     const status = session.authenticated ? 402 : 401;
