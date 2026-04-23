@@ -56,6 +56,17 @@ interface Result {
   confidence_high_aed: number;
   property_type: string;
   model_version: string;
+  inference_source?: string;
+  inferred_details_used?: boolean;
+  source_support_count?: number;
+  source_recent_count?: number;
+  source_dominance_pct?: number;
+  inferred_is_freehold?: boolean;
+  inferred_is_offplan?: boolean;
+  inferred_has_parking?: boolean;
+  resolved_zone?: string;
+  resolved_building?: string;
+  valuation_mode?: string;
 }
 
 interface Comparable {
@@ -258,6 +269,10 @@ export default function ValorarSection() {
     Boolean(form.rooms) &&
     Boolean(form.area_m2) &&
     Number(form.area_m2) >= 20;
+  const canInferFromAddress = Boolean(
+    addressSelected && (form.zona || form.building_name || addressText)
+  );
+  const canRequest = canSubmit || canInferFromAddress;
 
   const resolveZoneFromSignals = (signals: string[]) => {
     const directMap = new Map<string, string>();
@@ -438,8 +453,8 @@ export default function ValorarSection() {
   }, [googleLoaded, allZoneCandidates]);
 
   const submit = async () => {
-    if (!canSubmit) {
-      setError("Add property type, rooms and area to get a real valuation.");
+    if (!canRequest) {
+      setError("Start with a Dubai address to request a valuation.");
       return;
     }
 
@@ -449,21 +464,23 @@ export default function ValorarSection() {
     setComparables([]);
 
     try {
+      const useAddressInference = !canSubmit;
       const payload: Record<string, unknown> = {
-        zona: form.zona,
-        rooms: form.rooms,
-        area_m2: Number(form.area_m2),
+        zona: form.zona || undefined,
+        building_name: form.building_name || undefined,
         quarter: currentQuarter,
       };
 
+      if (form.rooms) payload.rooms = form.rooms;
+      if (form.area_m2) payload.area_m2 = Number(form.area_m2);
       if (form.property_type) payload.property_type = form.property_type;
-      if (form.building_name) payload.building_name = form.building_name;
       if (form.is_freehold !== null) payload.is_freehold = form.is_freehold;
       if (form.is_offplan !== null) payload.is_offplan = form.is_offplan;
       if (form.has_parking !== null) payload.has_parking = form.has_parking;
       payload.year = form.year ? Number(form.year) : currentYear;
+      if (useAddressInference) payload.address = addressText;
 
-      const response = await fetch(`${API}/predict`, {
+      const response = await fetch(`${API}/${useAddressInference ? "predict-address" : "predict"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -476,14 +493,35 @@ export default function ValorarSection() {
 
       const data = await response.json();
       setResult(data);
+      setForm((prev) => ({
+        ...prev,
+        zona: data.resolved_zone || data.zona || prev.zona,
+        building_name: data.resolved_building || prev.building_name,
+        property_type: prev.property_type || data.property_type || null,
+        rooms: prev.rooms || data.rooms || null,
+        area_m2: prev.area_m2 || String(data.area_m2 ?? ""),
+        year: prev.year || String(payload.year || currentYear),
+        is_freehold:
+          prev.is_freehold !== null
+            ? prev.is_freehold
+            : data.inferred_is_freehold ?? prev.is_freehold,
+        is_offplan:
+          prev.is_offplan !== null
+            ? prev.is_offplan
+            : data.inferred_is_offplan ?? prev.is_offplan,
+        has_parking:
+          prev.has_parking !== null
+            ? prev.has_parking
+            : data.inferred_has_parking ?? prev.has_parking,
+      }));
 
       fetch(`${API}/comparables`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          zona: form.zona,
-          rooms: form.rooms,
-          property_type: form.property_type,
+          zona: data.resolved_zone || data.zona,
+          rooms: data.rooms,
+          property_type: data.property_type,
           limit: 5,
         }),
       })
@@ -874,7 +912,7 @@ export default function ValorarSection() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
                     }}
                     onClick={submit}
-                    disabled={loading || !canSubmit}
+                    disabled={loading || !canRequest}
                     type="button"
                     className="group relative w-full py-5 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-white/90 disabled:opacity-40 transition-all duration-500 overflow-hidden"
                   >
@@ -894,7 +932,7 @@ export default function ValorarSection() {
                         </>
                       ) : (
                         <>
-                          Request Valuation
+                          {canSubmit ? "Request Valuation" : "Value from Address"}
                           <span className="transition-transform duration-500 group-hover:translate-x-1.5">
                             &rarr;
                           </span>
@@ -914,7 +952,9 @@ export default function ValorarSection() {
                   {!error && !result && (
                     <div className="w-full border-l-2 border-white/[0.08] pl-4 py-2">
                       <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">
-                        We resolved the address. Add type, rooms and area to value the property.
+                        {canSubmit
+                          ? "Manual details are ready. Request the valuation when you want."
+                          : "We can infer property details from the address, building and recent market evidence."}
                       </p>
                     </div>
                   )}
@@ -960,6 +1000,11 @@ export default function ValorarSection() {
                               separator=","
                             />
                           </p>
+                          {result.inference_source && (
+                            <p className="mt-4 font-mono text-[10px] tracking-[0.24em] uppercase text-white/35">
+                              Inferred from {result.inference_source} evidence · {result.property_type} · {result.rooms} · {fmt(result.area_m2)} m²
+                            </p>
+                          )}
                         </div>
 
                         <div>
