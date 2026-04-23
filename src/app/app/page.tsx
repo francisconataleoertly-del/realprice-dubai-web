@@ -2,6 +2,6 @@
 
 import FonatPropExperience from "@/components/fonatprop/FonatPropExperience";
 
-export default function FonatPropPage() {
-  return <FonatPropExperience surface="public" />;
+export default function PrivateAppPage() {
+  return <FonatPropExperience surface="private" />;
 }

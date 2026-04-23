@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronDown, Info, Loader2 } from "lucide-react";
 
-const API = "https://web-production-9051f.up.railway.app";
+const API = "/api/fonatprop";
 
 type Level = "basic" | "mid" | "premium" | "luxury";
 const LEVELS: Level[] = ["basic", "mid", "premium", "luxury"];
@@ -63,7 +63,13 @@ export default function ReformaSection() {
   useEffect(() => {
     fetch(`${API}/renovation`)
       .then((r) => r.json())
-      .then((d) => setData(d))
+      .then((d) => {
+        if (d?.types && d?.categories && d?.permits && d?.timelines) {
+          setData(d);
+        } else {
+          setData(null);
+        }
+      })
       .catch(() => {});
   }, []);
 

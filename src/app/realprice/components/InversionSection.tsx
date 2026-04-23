@@ -8,7 +8,7 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip as ReTooltip, ResponsiveContainer, PieChart, Pie, Cell,
 } from "recharts";
 
-const API = "https://web-production-9051f.up.railway.app";
+const API = "/api/fonatprop";
 
 // Verdict calculator
 function getVerdict(gy: number, cashFlow: number, appreciation: number) {
@@ -59,11 +59,19 @@ export default function InversionSection() {
   useEffect(() => {
     fetch(`${API}/zones`)
       .then((r) => r.json())
-      .then((d) => { if (d.zones) setZones(d.zones.sort()); })
+      .then((d) => {
+        if (Array.isArray(d?.zones)) setZones(d.zones.sort());
+      })
       .catch(() => {});
     fetch(`${API}/trends`)
       .then((r) => r.json())
-      .then((d) => setTrends(d))
+      .then((d) => {
+        if (Array.isArray(d?.top_10) && Array.isArray(d?.bottom_10)) {
+          setTrends(d);
+        } else {
+          setTrends(null);
+        }
+      })
       .catch(() => {});
   }, []);
 

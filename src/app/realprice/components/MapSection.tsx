@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import GoogleMap, { type MapLayer } from "./GoogleMap";
 import { LAYER_DEFS as POI_LAYERS } from "./dubaiPOIs";
 
-const API = "https://web-production-9051f.up.railway.app";
+const API = "/api/fonatprop";
 
 interface Zone {
   id: string;

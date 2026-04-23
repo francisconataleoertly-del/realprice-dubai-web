@@ -1,7 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { DEFAULT_FEATURE_FLAGS, canAccessFeature, parseSessionFromCookieStore } from "@/lib/access-control";
 
 const UPSTREAM_API =
   process.env.NEXT_PUBLIC_FONATPROP_API_BASE_URL ||
@@ -294,6 +296,21 @@ function blendProfileAnchor(
 
 export async function POST(request: Request) {
   try {
+    const cookieStore = await cookies();
+    const session = parseSessionFromCookieStore(cookieStore);
+    if (!canAccessFeature(session, "valuation", DEFAULT_FEATURE_FLAGS)) {
+      const status = session.authenticated ? 402 : 401;
+      return NextResponse.json(
+        {
+          detail:
+            status === 401
+              ? "Login required for address-only valuation."
+              : "Upgrade required for address-only valuation.",
+        },
+        { status }
+      );
+    }
+
     const body = await request.json();
     const profiles = await getProfiles();
     const inference = resolveInferenceSource(profiles, body.zona, body.building_name);
