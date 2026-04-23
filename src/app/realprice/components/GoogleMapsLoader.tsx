@@ -2,7 +2,9 @@
 
 import { useEffect, useState, createContext, useContext } from "react";
 
-const GOOGLE_MAPS_KEY = "AIzaSyB8hGtyBdYX8KsoT2dwbnjo_6g5x58Kc1E";
+const GOOGLE_MAPS_KEY =
+  process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+  "AIzaSyDNuJqXzs2JLuecLiC8KMevBdmYVKZ8CQ4";
 
 const GoogleMapsContext = createContext(false);
 

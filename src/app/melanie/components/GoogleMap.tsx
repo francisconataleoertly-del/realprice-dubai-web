@@ -40,6 +40,10 @@ function getZoneColor(psf: number) {
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-AE", { maximumFractionDigits: 0 }).format(n);
 
+const GOOGLE_MAPS_MAP_ID =
+  process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID ||
+  "2258c8a7-7ee7-4bbe-9891-b6121da134c7";
+
 export default function GoogleMap({
   zones,
   layers,
@@ -64,7 +68,7 @@ export default function GoogleMap({
     mapInstance.current = new google.maps.Map(mapRef.current, {
       center: { lat: 25.15, lng: 55.25 },
       zoom: 11,
-      mapId: "fonatprop_dark",
+      mapId: GOOGLE_MAPS_MAP_ID,
       disableDefaultUI: true,
       zoomControl: true,
       zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },
