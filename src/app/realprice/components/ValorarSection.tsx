@@ -480,7 +480,7 @@ export default function ValorarSection() {
       payload.year = form.year ? Number(form.year) : currentYear;
       if (useAddressInference) payload.address = addressText;
 
-      const response = await fetch(`${API}/${useAddressInference ? "predict-address" : "predict"}`, {
+      const response = await fetch(useAddressInference ? "/api/predict-address" : `${API}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
