@@ -73,19 +73,19 @@ export default function HeroCarousel() {
           {/* Premium buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="/register"
+              href="/login?mode=signup&next=/app"
               className="group relative inline-flex items-center gap-4 px-10 py-4 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium rounded-none hover:bg-white/90 transition-all duration-500"
             >
-              <span>Begin Valuation</span>
+              <span>Create Account</span>
               <span className="transition-transform duration-500 group-hover:translate-x-1.5">
                 &rarr;
               </span>
             </a>
             <a
-              href="#valorar"
+              href="/login?next=/app"
               className="inline-flex items-center gap-3 px-10 py-4 text-white/80 text-[11px] tracking-[0.3em] uppercase font-medium hover:text-white transition-all duration-500 border-b border-white/20 hover:border-white/60"
             >
-              <span>Explore Platform</span>
+              <span>Log In</span>
             </a>
           </div>
         </div>

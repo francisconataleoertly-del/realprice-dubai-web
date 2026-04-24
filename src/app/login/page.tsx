@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -12,7 +12,8 @@ function LoginPageContent() {
   const searchParams = useSearchParams();
   const { authConfigured, signIn, signInWithGoogle, signUp } = useAccess();
 
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const initialMode = searchParams.get("mode") === "signup" ? "signup" : "signin";
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +22,26 @@ function LoginPageContent() {
   const [notice, setNotice] = useState("");
 
   const nextPath = searchParams.get("next") || "/app";
+
+  useEffect(() => {
+    setMode(searchParams.get("mode") === "signup" ? "signup" : "signin");
+  }, [searchParams]);
+
+  const formatAuthError = (submitError: unknown, fallback: string) => {
+    if (!(submitError instanceof Error)) {
+      return fallback;
+    }
+
+    if (submitError.message.toLowerCase().includes("failed to fetch")) {
+      return (
+        "Could not reach Supabase. Check NEXT_PUBLIC_SUPABASE_URL " +
+        "(must be https://ryaaggulcxwstieoxaqs.supabase.co, without /rest/v1), " +
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY, and Supabase Auth URL Configuration."
+      );
+    }
+
+    return submitError.message;
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,11 +67,7 @@ function LoginPageContent() {
         router.push(nextPath);
       }
     } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "We could not open the session."
-      );
+      setError(formatAuthError(submitError, "We could not open the session."));
     } finally {
       setLoading(false);
     }
@@ -64,11 +81,7 @@ function LoginPageContent() {
     try {
       await signInWithGoogle(nextPath);
     } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Google sign in could not start."
-      );
+      setError(formatAuthError(submitError, "Google sign in could not start."));
       setLoading(false);
     }
   };
