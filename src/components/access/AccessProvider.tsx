@@ -25,6 +25,7 @@ import {
 } from "@/lib/access-control";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { getSupabasePublicEnv } from "@/lib/supabase/env";
+import { fetchOwnProfile } from "@/lib/supabase/profiles";
 
 type AuthInput = {
   email: string;
@@ -78,8 +79,10 @@ function loadFlagsFromBrowser() {
   }
 }
 
-function sessionFromUser(user: User | null | undefined) {
-  return resolveSessionFromUser(user);
+async function sessionFromUser(user: User | null | undefined) {
+  const supabase = getSupabaseBrowserClient();
+  const profile = supabase ? await fetchOwnProfile(supabase, user) : null;
+  return resolveSessionFromUser(user, profile);
 }
 
 export function AccessProvider({ children }: { children: ReactNode }) {
@@ -115,7 +118,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
       } = await supabase.auth.getUser();
 
       if (!active) return;
-      setSession(sessionFromUser(user));
+      setSession(await sessionFromUser(user));
       setHydrated(true);
     };
 
@@ -125,8 +128,10 @@ export function AccessProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, authSession) => {
       if (!active) return;
-      setSession(sessionFromUser(authSession?.user));
-      setHydrated(true);
+      void (async () => {
+        setSession(await sessionFromUser(authSession?.user));
+        setHydrated(true);
+      })();
     });
 
     return () => {
@@ -150,7 +155,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
 
     if (error) throw error;
 
-    const nextSession = sessionFromUser(data.user);
+    const nextSession = await sessionFromUser(data.user);
     setSession(nextSession);
 
     return {
@@ -183,7 +188,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
 
     if (error) throw error;
 
-    const nextSession = sessionFromUser(data.user);
+    const nextSession = await sessionFromUser(data.user);
     const pendingConfirmation = !data.session;
 
     if (!pendingConfirmation) {
@@ -218,7 +223,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    const nextSession = sessionFromUser(user);
+    const nextSession = await sessionFromUser(user);
     setSession(nextSession);
     return nextSession;
   };

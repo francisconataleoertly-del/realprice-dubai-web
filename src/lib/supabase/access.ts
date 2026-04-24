@@ -1,4 +1,5 @@
 import { DEFAULT_SESSION, resolveSessionFromUser } from "@/lib/access-control";
+import { fetchOwnProfile } from "@/lib/supabase/profiles";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function getServerAccessSession() {
@@ -14,8 +15,10 @@ export async function getServerAccessSession() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const profile = await fetchOwnProfile(supabase, user);
+
   return {
     configured: true,
-    session: resolveSessionFromUser(user),
+    session: resolveSessionFromUser(user, profile),
   };
 }

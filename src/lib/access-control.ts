@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import type { FonatPropProfile } from "@/lib/supabase/profiles";
 
 export type FonatPropPlan = "guest" | "member" | "pro";
 export type FonatPropRole = "guest" | "user" | "admin";
@@ -77,7 +78,10 @@ function coerceRole(value: unknown): FonatPropRole | null {
   return null;
 }
 
-export function resolveSessionFromUser(user: User | null | undefined): FonatPropSession {
+export function resolveSessionFromUser(
+  user: User | null | undefined,
+  profile?: FonatPropProfile | null
+): FonatPropSession {
   if (!user?.email) {
     return DEFAULT_SESSION;
   }
@@ -87,6 +91,7 @@ export function resolveSessionFromUser(user: User | null | undefined): FonatProp
   const userMeta = user.user_metadata || {};
 
   const inferredRole =
+    coerceRole(profile?.role) ||
     coerceRole(appMeta.role) ||
     coerceRole(userMeta.role) ||
     (email.endsWith("@fonatprop.com") || email.endsWith("@fonatprop.ae")
@@ -94,6 +99,7 @@ export function resolveSessionFromUser(user: User | null | undefined): FonatProp
       : "user");
 
   let inferredPlan =
+    coercePlan(profile?.plan) ||
     coercePlan(appMeta.plan) ||
     coercePlan(userMeta.plan) ||
     (coerceRole(appMeta.role) === "admin" || coerceRole(userMeta.role) === "admin"
@@ -105,6 +111,7 @@ export function resolveSessionFromUser(user: User | null | undefined): FonatProp
   }
 
   const rawName =
+    (typeof profile?.full_name === "string" && profile.full_name) ||
     (typeof userMeta.full_name === "string" && userMeta.full_name) ||
     (typeof userMeta.name === "string" && userMeta.name) ||
     (typeof appMeta.name === "string" && appMeta.name) ||
