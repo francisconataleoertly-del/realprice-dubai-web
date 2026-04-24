@@ -18,6 +18,64 @@ This creates:
 - triggers for new users
 - RLS policies so users only read their own profile/subscription
 
+## Auth URL configuration
+
+In Supabase Dashboard:
+
+- `Authentication`
+- `URL Configuration`
+
+Set:
+
+```text
+Site URL: https://fonatprop.com
+```
+
+Add redirect URLs:
+
+```text
+https://fonatprop.com/**
+https://www.fonatprop.com/**
+http://localhost:3000/**
+http://localhost:3002/**
+```
+
+## Email provider
+
+In Supabase Dashboard:
+
+- `Authentication`
+- `Sign In / Providers`
+- `Email`
+
+Enable:
+
+- Email provider
+- Allow new users to sign up
+- Confirm email, if you want email verification before first login
+
+## Google provider
+
+In Supabase Dashboard:
+
+- `Authentication`
+- `Sign In / Providers`
+- `Google`
+
+Enable Google and paste the Google OAuth Client ID and Client Secret.
+
+The Google OAuth app must allow this redirect URI:
+
+```text
+https://ryaaggulcxwstieoxaqs.supabase.co/auth/v1/callback
+```
+
+The app already sends users back through:
+
+```text
+https://fonatprop.com/auth/callback?next=/app
+```
+
 ## 2. Give yourself permanent master access
 
 After the migration, run:

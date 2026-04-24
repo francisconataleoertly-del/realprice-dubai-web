@@ -10,7 +10,7 @@ import { useAccess } from "@/components/access/AccessProvider";
 function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { authConfigured, signIn, signUp } = useAccess();
+  const { authConfigured, signIn, signInWithGoogle, signUp } = useAccess();
 
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [name, setName] = useState("");
@@ -52,6 +52,23 @@ function LoginPageContent() {
           : "We could not open the session."
       );
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError("");
+    setNotice("");
+
+    try {
+      await signInWithGoogle(nextPath);
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Google sign in could not start."
+      );
       setLoading(false);
     }
   };
@@ -148,6 +165,15 @@ function LoginPageContent() {
                   </button>
                 ))}
               </div>
+
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                className="mb-5 w-full rounded-2xl border border-white/12 bg-white/[0.03] px-5 py-4 text-[11px] uppercase tracking-[0.24em] text-white hover:bg-white/[0.07] disabled:opacity-45"
+              >
+                Continue with Google
+              </button>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" ? (

@@ -46,6 +46,7 @@ type AccessContextValue = {
   flags: FonatPropFeatureFlags;
   signIn: (input: AuthInput) => Promise<AuthResult>;
   signUp: (input: AuthInput) => Promise<AuthResult>;
+  signInWithGoogle: (nextPath?: string) => Promise<void>;
   signOut: () => Promise<void>;
   canAccess: (feature: FonatPropFeature) => boolean;
   requiredPlan: (feature: FonatPropFeature) => FonatPropPlan;
@@ -173,7 +174,9 @@ export function AccessProvider({ children }: { children: ReactNode }) {
     }
 
     const redirectTo =
-      typeof window !== "undefined" ? `${window.location.origin}/login` : undefined;
+      typeof window !== "undefined"
+        ? `${window.location.origin}/auth/callback?next=/app`
+        : undefined;
 
     const { data, error } = await supabase.auth.signUp({
       email: email.trim().toLowerCase(),
@@ -202,6 +205,33 @@ export function AccessProvider({ children }: { children: ReactNode }) {
         ? "Check your email to confirm the account, then come back and log in."
         : undefined,
     };
+  };
+
+  const signInWithGoogle = async (nextPath = "/app") => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) {
+      throw new Error(
+        "Supabase auth is not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY first."
+      );
+    }
+
+    const redirectTo =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`
+        : undefined;
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
+    });
+
+    if (error) throw error;
   };
 
   const signOut = async () => {
@@ -252,6 +282,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
       flags,
       signIn,
       signUp,
+      signInWithGoogle,
       signOut,
       canAccess: (feature) => canAccessFeature(session, feature, flags),
       requiredPlan: (feature) => getFeatureRequiredPlan(feature, flags),
