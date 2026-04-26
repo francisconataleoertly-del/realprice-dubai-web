@@ -34,6 +34,29 @@ const handoffCards = [
   },
 ];
 
+const heroSlides = [
+  {
+    image: "/dubai-slides/05-downtown-night.jpg",
+    position: "center",
+  },
+  {
+    image: "/dubai-slides/01-marina-skyline.jpg",
+    position: "center",
+  },
+  {
+    image: "/dubai-slides/09-palm-aerial.jpg",
+    position: "center",
+  },
+  {
+    image: "/dubai-slides/03-burj-al-arab.jpg",
+    position: "center",
+  },
+  {
+    image: "/dubai-slides/business-bay.jpg",
+    position: "center",
+  },
+];
+
 function mountWidget() {
   const maybeWindow = window as unknown as {
     FonatPropWidget?: { mountAll?: () => void };
@@ -142,10 +165,20 @@ export default function BrokerDemoClient() {
   return (
     <div className="bg-[#0a0a0f] text-white">
       <section className="relative overflow-hidden px-5 py-24 md:py-32">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-45"
-          style={{ backgroundImage: "url('/dubai-slides/05-downtown-night.jpg')" }}
-        />
+        <div className="absolute inset-0">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={slide.image}
+              className="broker-demo-hero-slide absolute inset-0 bg-cover opacity-0"
+              style={{
+                animationDelay: `${index * 5.6}s`,
+                backgroundImage: `url('${slide.image}')`,
+                backgroundPosition: slide.position,
+              }}
+            />
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(59,130,246,0.18),transparent_32%),linear-gradient(90deg,rgba(10,10,15,0.92),rgba(10,10,15,0.58)_48%,rgba(10,10,15,0.84))]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/35 via-[#0a0a0f]/76 to-[#0a0a0f]" />
         <div className="relative mx-auto max-w-7xl">
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
@@ -186,6 +219,15 @@ export default function BrokerDemoClient() {
               >
                 {item}
               </div>
+            ))}
+          </div>
+          <div className="mt-10 flex items-center gap-2">
+            {heroSlides.map((slide, index) => (
+              <span
+                key={`${slide.image}-dot`}
+                className="broker-demo-hero-dot h-[3px] w-8 rounded-full bg-white/20"
+                style={{ animationDelay: `${index * 5.6}s` }}
+              />
             ))}
           </div>
         </div>

@@ -85,3 +85,58 @@ body {
 .animate-count {
   animation: countUp 0.6s ease-out forwards;
 }
+
+/* Broker demo cinematic Dubai background */
+.broker-demo-hero-slide {
+  animation: brokerDemoHeroFade 28s infinite;
+  filter: saturate(1.05) contrast(1.08);
+  transform: scale(1.08);
+}
+
+.broker-demo-hero-dot {
+  animation: brokerDemoHeroDot 28s infinite;
+}
+
+@keyframes brokerDemoHeroFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+  4% {
+    opacity: 0.5;
+  }
+  18% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0;
+    transform: scale(1.18) translate3d(-1.8%, -1.2%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18) translate3d(-1.8%, -1.2%, 0);
+  }
+}
+
+@keyframes brokerDemoHeroDot {
+  0%,
+  24%,
+  100% {
+    background: rgba(255, 255, 255, 0.18);
+  }
+  4%,
+  18% {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .broker-demo-hero-slide,
+  .broker-demo-hero-dot {
+    animation: none;
+  }
+
+  .broker-demo-hero-slide:first-child {
+    opacity: 0.5;
+  }
+}
