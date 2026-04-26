@@ -19,29 +19,29 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#05060a]/92 text-white backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/broker-demo" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] font-['Fraunces'] text-sm italic">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] font-['Fraunces'] text-sm italic shadow-[0_0_28px_rgba(59,130,246,0.16)]">
               fp
             </div>
             <div>
               <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/35">
-                Broker Demo
+                Agency Sales Preview
               </p>
               <p className="text-sm font-medium tracking-[-0.02em] text-white">
-                FonatProp Valuation + Widget
+                FonatProp for broker websites
               </p>
             </div>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center rounded-full border border-white/10 bg-white/[0.035] p-1 sm:flex">
             <a
               href="#valuation"
-              className="rounded-xl border border-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white"
+              className="rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 transition-colors hover:bg-white/8 hover:text-white"
             >
               Valuation
             </a>
             <a
               href="#widget"
-              className="rounded-xl bg-white px-4 py-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[#0a0a0f]"
+              className="rounded-full bg-white px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#0a0a0f]"
             >
               Widget
             </a>

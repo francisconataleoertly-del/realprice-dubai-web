@@ -1,5 +1,5 @@
 /*!
- * RealPrice Dubai — Embeddable Valuation Widget
+ * FonatProp Dubai — Embeddable Valuation Widget
  * Vanilla JS + Shadow DOM. Premium editorial design.
  * Modes: inline · popup · drawer
  */
@@ -7,9 +7,20 @@
   "use strict";
 
   var API_BASE_DEFAULT = "https://web-production-9051f.up.railway.app";
+  var ADDRESS_API_BASE_DEFAULT = "https://fonatprop.com/api/widget";
   var DEFAULT_BRAND_COLOR = "#3b82f6";
   var DEFAULT_TITLE = "Estimate your property's value";
   var DEFAULT_SUBTITLE = "AI-powered market estimate in under a minute. Backed by 234K Dubai transactions.";
+  // Banner mode (horizontal hero card on agency websites)
+  var DEFAULT_BANNER_TITLE = "Want to know how much a property is worth?";
+  var DEFAULT_BANNER_CTA = "Get your free valuation";
+  var DEFAULT_BANNER_BG = "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=80";
+  // Real Dubai market benchmarks (kept general — for the precise number, the agency takes over)
+  var DUBAI_MARKET_BENCHMARK = {
+    avgPsf: "AED 1,650",
+    onebrAvg: "AED 1.2M",
+    yoyGrowth: "+8.5%",
+  };
   var ROOM_OPTIONS = ["Studio", "1 BR", "2 BR", "3 BR", "4 BR", "5 BR"];
   var PROPERTY_TYPES = [
     { label: "Apartment", value: "Flat" },
@@ -123,7 +134,7 @@
         return options;
       })
       .catch(function (error) {
-        console.error("[RealPrice Widget] zones load failed", error);
+        console.error("[FonatProp Widget] zones load failed", error);
         ZONE_CACHE.promise = null;
         return [
           "Dubai Marina", "Downtown Dubai", "Business Bay", "Palm Jumeirah",
@@ -148,7 +159,7 @@
         return true;
       })
       .catch(function (error) {
-        console.error("[RealPrice Widget] webhook failed", error);
+        console.error("[FonatProp Widget] webhook failed", error);
         return false;
       });
   }
@@ -396,6 +407,131 @@
       'transition:background .18s ease,color .18s ease}',
       '.rp-close:hover{background:var(--rp-line);color:var(--rp-fg)}',
 
+      // ── Banner mode (horizontal card with Dubai background) ────
+      '.rp-banner-shell{width:100%}',
+      '.rp-banner{position:relative;width:100%;min-height:300px;border-radius:20px;overflow:hidden;',
+      'background-color:#0a0a0f;background-size:cover;background-position:center;',
+      'box-shadow:0 1px 2px rgba(15,23,42,.08),0 24px 60px -20px rgba(15,23,42,.35)}',
+      '.rp-banner-overlay{position:absolute;inset:0;',
+      'background:linear-gradient(105deg,rgba(10,10,15,.92) 0%,rgba(10,10,15,.7) 45%,rgba(10,10,15,.4) 100%)}',
+      '.rp-banner-content{position:relative;display:flex;align-items:center;justify-content:space-between;',
+      'gap:40px;padding:48px 56px;min-height:300px}',
+      '.rp-banner-step{display:none;width:100%}',
+      '.rp-banner-step.rp-active{display:flex;align-items:center;justify-content:space-between;gap:40px;width:100%;',
+      'animation:rp-banner-fade .5s cubic-bezier(.22,1,.36,1)}',
+      '@keyframes rp-banner-fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}',
+
+      // Banner hero (step 0)
+      '.rp-banner-text{max-width:580px;flex:1}',
+      '.rp-banner-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;',
+      'font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.22em;text-transform:uppercase;font-weight:500}',
+      '.rp-banner-eyebrow .rp-dot{width:6px;height:6px;border-radius:999px;background:var(--rp-brand);',
+      'box-shadow:0 0 0 3px color-mix(in srgb,var(--rp-brand) 25%,transparent);animation:rp-dot-pulse 2.4s ease-in-out infinite}',
+      '.rp-banner-title{font-family:"Fraunces",Georgia,serif;font-weight:300;',
+      'font-size:clamp(28px,3.2vw,40px);line-height:1.05;letter-spacing:-.02em;',
+      'color:#fff;margin:0}',
+      '.rp-banner-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.55)}',
+      '.rp-banner-cta-wrap{flex-shrink:0}',
+      '.rp-banner-cta{display:inline-flex;align-items:center;gap:12px;border:0;border-radius:999px;',
+      'padding:18px 30px;background:#fff;color:#0a0a0f;font:inherit;font-size:14.5px;font-weight:600;',
+      'letter-spacing:.005em;cursor:pointer;',
+      'box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 24px rgba(0,0,0,.3),0 2px 6px rgba(0,0,0,.18);',
+      'transition:transform .2s ease,box-shadow .2s ease}',
+      '.rp-banner-cta:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 14px 32px rgba(0,0,0,.4)}',
+      '.rp-banner-cta .rp-arrow{transition:transform .25s cubic-bezier(.22,1,.36,1)}',
+      '.rp-banner-cta:hover .rp-arrow{transform:translateX(4px)}',
+
+      // Banner lead form (step 1) — dark card on the right
+      '.rp-banner-lead-copy{max-width:380px;flex:1;color:#fff}',
+      '.rp-banner-lead-copy .rp-banner-eyebrow{color:rgba(255,255,255,.55)}',
+      '.rp-banner-lead-copy h3{font-family:"Fraunces",Georgia,serif;font-weight:300;font-size:30px;',
+      'line-height:1.1;letter-spacing:-.02em;margin:0 0 14px;color:#fff}',
+      '.rp-banner-lead-copy p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;margin:0}',
+      '.rp-banner-form-wrap{flex:1;max-width:420px;background:rgba(15,23,42,.4);',
+      'backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);',
+      'border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px}',
+      '.rp-banner-form-wrap .rp-label{color:rgba(255,255,255,.65);font-size:11.5px;',
+      'text-transform:uppercase;letter-spacing:.12em;font-weight:500}',
+      '.rp-banner-form-wrap .rp-input,.rp-banner-form-wrap .rp-phone{',
+      'background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#fff}',
+      '.rp-banner-form-wrap .rp-input::placeholder{color:rgba(255,255,255,.3)}',
+      '.rp-banner-form-wrap .rp-input:hover,.rp-banner-form-wrap .rp-phone:hover{border-color:rgba(255,255,255,.2)}',
+      '.rp-banner-form-wrap .rp-input:focus,.rp-banner-form-wrap .rp-phone:focus-within{',
+      'border-color:var(--rp-brand);background:rgba(255,255,255,.06);',
+      'box-shadow:0 0 0 4px color-mix(in srgb,var(--rp-brand) 18%,transparent)}',
+      '.rp-banner-form-wrap .rp-phone-prefix{background:rgba(255,255,255,.04);',
+      'border-right-color:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}',
+      '.rp-banner-form-wrap .rp-phone input{color:#fff}',
+      '.rp-banner-form-wrap .rp-phone input::placeholder{color:rgba(255,255,255,.3)}',
+      '.rp-banner-form-wrap .rp-button{margin-top:6px}',
+
+      // Banner result (step 2) — general benchmark
+      '.rp-banner-result-copy{max-width:380px;flex:1;color:#fff}',
+      '.rp-banner-result-copy h3{font-family:"Fraunces",Georgia,serif;font-weight:300;font-size:28px;',
+      'line-height:1.1;letter-spacing:-.02em;margin:0 0 14px;color:#fff}',
+      '.rp-banner-result-copy p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;margin:0 0 16px}',
+      '.rp-banner-result-copy p strong{color:rgba(255,255,255,.85);font-weight:500}',
+      '.rp-general-result{flex:1;max-width:480px;background:rgba(15,23,42,.5);',
+      'backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);',
+      'border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;color:#fff}',
+      '.rp-general-result-label{font-family:"Fraunces",Georgia,serif;font-style:italic;',
+      'font-size:13px;color:rgba(255,255,255,.55);margin:0 0 18px}',
+      '.rp-general-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}',
+      '.rp-general-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);',
+      'border-radius:12px;padding:14px 12px;text-align:center}',
+      '.rp-general-stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.18em;',
+      'color:rgba(255,255,255,.45);font-weight:500;margin-bottom:8px}',
+      '.rp-general-stat-value{font-family:"Fraunces",Georgia,serif;font-weight:300;font-size:20px;',
+      'letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}',
+      '.rp-general-result .rp-contact-grid{margin-top:14px}',
+      '.rp-general-result .rp-link-button{background:rgba(255,255,255,.06);',
+      'border-color:rgba(255,255,255,.1);color:#fff}',
+      '.rp-general-result .rp-link-button:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}',
+      '.rp-general-result .rp-link-button.rp-whatsapp{background:#25D366;border-color:#25D366;color:#fff}',
+      '.rp-general-result .rp-link-button.rp-whatsapp:hover{background:#20b558;border-color:#20b558}',
+
+      // Banner address form (inside step 2 result card)
+      '.rp-general-result .rp-form{display:grid;gap:14px;margin-bottom:16px}',
+      '.rp-general-result .rp-label{color:rgba(255,255,255,.65);font-size:11.5px;',
+      'text-transform:uppercase;letter-spacing:.12em;font-weight:500}',
+      '.rp-general-result .rp-input,.rp-general-result .rp-select{',
+      'background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#fff}',
+      '.rp-general-result .rp-input::placeholder{color:rgba(255,255,255,.3)}',
+      '.rp-general-result .rp-input:hover,.rp-general-result .rp-select:hover{border-color:rgba(255,255,255,.2)}',
+      '.rp-general-result .rp-input:focus,.rp-general-result .rp-select:focus{',
+      'border-color:var(--rp-brand);background:rgba(255,255,255,.06);',
+      'box-shadow:0 0 0 4px color-mix(in srgb,var(--rp-brand) 18%,transparent)}',
+      '.rp-general-result .rp-select-wrap::after{border-color:rgba(255,255,255,.5)}',
+
+      // Banner range display
+      '.rp-banner-estimate{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);',
+      'animation:rp-result-in .5s cubic-bezier(.22,1,.36,1)}',
+      '.rp-banner-range-value{display:flex;align-items:baseline;gap:14px;margin-top:10px;',
+      'font-family:"Fraunces",Georgia,serif;font-weight:300;letter-spacing:-.02em;color:#fff;',
+      'font-variant-numeric:tabular-nums}',
+      '.rp-banner-range-lo,.rp-banner-range-hi{font-size:30px;line-height:1.05}',
+      '.rp-banner-range-sep{color:rgba(255,255,255,.35);font-size:24px}',
+      '.rp-banner-range-bar{margin-top:12px;height:5px;background:rgba(255,255,255,.08);border-radius:999px;',
+      'position:relative;overflow:hidden}',
+      '.rp-banner-range-fill{position:absolute;top:0;bottom:0;left:0;right:0;',
+      'background:linear-gradient(90deg,#86efac 0%,color-mix(in srgb,var(--rp-brand) 60%,#fff) 50%,#fcd34d 100%);',
+      'border-radius:999px;animation:rp-bar-grow 1.1s cubic-bezier(.22,1,.36,1)}',
+      '.rp-banner-range-note{margin:14px 0 0;font-size:13px;color:rgba(255,255,255,.6);line-height:1.55}',
+      '.rp-banner-range-note strong{color:rgba(255,255,255,.85);font-weight:500}',
+
+      // Banner mobile
+      '@media (max-width:760px){',
+      '.rp-banner-content{padding:32px 26px;flex-direction:column;align-items:flex-start;gap:24px;min-height:0}',
+      '.rp-banner-step.rp-active{flex-direction:column;align-items:stretch;gap:24px}',
+      '.rp-banner-text,.rp-banner-lead-copy,.rp-banner-result-copy{max-width:100%}',
+      '.rp-banner-form-wrap,.rp-general-result{max-width:100%;width:100%}',
+      '.rp-banner-cta{width:100%;justify-content:center}',
+      '.rp-banner-title{font-size:26px}',
+      '.rp-general-stats{grid-template-columns:repeat(3,1fr);gap:6px}',
+      '.rp-general-stat{padding:10px 6px}',
+      '.rp-general-stat-value{font-size:16px}',
+      '}',
+
       // Mobile
       '@media (max-width:520px){',
       '.rp-card{padding:24px 20px 20px;border-radius:16px}',
@@ -509,8 +645,119 @@
     svgCheck; // eslint-disable-line
   }
 
+  function createBannerInner(config) {
+    var svgArrow = '<svg class="rp-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var svgWhatsApp = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.9 1.1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.1-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5s-.6-1.4-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.1 2.9c.1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M20.5 3.5C18.3 1.3 15.3 0 12 0 5.4 0 0 5.4 0 12c0 2.1.6 4.1 1.6 5.9L0 24l6.3-1.6c1.7.9 3.7 1.4 5.7 1.4 6.6 0 12-5.4 12-12 0-3.3-1.3-6.3-3.5-8.3zm-8.5 18.5c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.6 15.9 2 14 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg>';
+    var svgMail = '<svg viewBox="0 0 24 24" fill="none"><path d="M3 6.5A1.5 1.5 0 014.5 5h15A1.5 1.5 0 0121 6.5v11a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 17.5v-11z" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 7l8.5 6 8.5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var titleHtml = (config.bannerTitle || DEFAULT_BANNER_TITLE).replace(/worth\??$/i, function (m) {
+      return "<em>" + m + "</em>";
+    });
+
+    return [
+      // Step 0 — Hero CTA
+      '<section class="rp-banner-step rp-banner-hero rp-active">',
+      '<div class="rp-banner-text">',
+      '<div class="rp-banner-eyebrow"><span class="rp-dot"></span><span>Powered by Dubai market AI</span></div>',
+      '<h2 class="rp-banner-title">' + titleHtml + '</h2>',
+      '</div>',
+      '<div class="rp-banner-cta-wrap">',
+      '<button type="button" class="rp-banner-cta">' + (config.bannerCta || DEFAULT_BANNER_CTA) + svgArrow + '</button>',
+      '</div>',
+      '</section>',
+
+      // Step 1 — Lead capture
+      '<section class="rp-banner-step rp-banner-lead">',
+      '<div class="rp-banner-lead-copy">',
+      '<div class="rp-banner-eyebrow"><span class="rp-dot"></span><span>Just three details</span></div>',
+      '<h3>Tell us how to reach you.</h3>',
+      '<p>We&rsquo;ll share a Dubai market benchmark with you and a precise, agent-led valuation will follow shortly.</p>',
+      '</div>',
+      '<div class="rp-banner-form-wrap">',
+      '<form class="rp-form rp-banner-lead-form" autocomplete="on" novalidate>',
+      '<div class="rp-field"><span class="rp-label">Full name</span>',
+      '<input class="rp-input" name="name" type="text" placeholder="Jane Doe" autocomplete="name" required />',
+      '</div>',
+      '<div class="rp-field"><span class="rp-label">Email</span>',
+      '<input class="rp-input" name="email" type="email" placeholder="jane@company.com" autocomplete="email" required />',
+      '</div>',
+      '<div class="rp-field"><span class="rp-label">Phone</span>',
+      '<div class="rp-phone">',
+      '<span class="rp-phone-prefix"><span class="rp-flag">🇦🇪</span><span>+971</span></span>',
+      '<input name="phone" type="tel" placeholder="50 123 4567" autocomplete="tel-national" required />',
+      '</div>',
+      '</div>',
+      '<button class="rp-button rp-banner-lead-submit" type="submit" disabled>',
+      '<span class="rp-button-text">Continue</span>' + svgArrow,
+      '</button>',
+      '</form>',
+      '<div class="rp-error rp-banner-lead-error" hidden><span class="rp-ic">!</span><span class="rp-msg"></span></div>',
+      '</div>',
+      '</section>',
+
+      // Step 2 — Address-based general estimate + agent contact
+      '<section class="rp-banner-step rp-banner-result">',
+      '<div class="rp-banner-result-copy">',
+      '<div class="rp-banner-eyebrow"><span class="rp-dot"></span><span>Free general estimate</span></div>',
+      '<h3>Tell us where it is.</h3>',
+      '<p>Type the address or building name. We&rsquo;ll show you a wide market range based on real Dubai transactions. <strong>Your agent will follow up with a precise, unit-level valuation.</strong></p>',
+      '</div>',
+      '<div class="rp-general-result">',
+      '<form class="rp-form rp-banner-address-form" autocomplete="off" novalidate>',
+      '<div class="rp-field"><span class="rp-label">Property address or building</span>',
+      '<input class="rp-input" name="address" type="text" placeholder="e.g. Marina Promenade, Dubai Marina" required />',
+      '</div>',
+      '<div class="rp-grid-2">',
+      '<div class="rp-field"><span class="rp-label">Bedrooms</span>',
+      '<div class="rp-select-wrap"><select class="rp-select" name="rooms" required>' +
+        ROOM_OPTIONS.map(function (r, i) { return '<option value="' + r + '"' + (i === 1 ? ' selected' : '') + '>' + r + '</option>'; }).join("") +
+        '</select></div></div>',
+      '<div class="rp-field"><span class="rp-label">Area (m²)</span>',
+      '<input class="rp-input" name="area_m2" type="number" min="20" max="2000" step="1" placeholder="e.g. 75" required />',
+      '</div>',
+      '</div>',
+      '<button class="rp-button rp-banner-address-submit" type="submit" disabled>',
+      '<span class="rp-button-text">Get my free estimate</span>' + svgArrow,
+      '</button>',
+      '</form>',
+      '<div class="rp-error rp-banner-address-error" hidden><span class="rp-ic">!</span><span class="rp-msg"></span></div>',
+
+      // Estimate display — hidden until we get a result
+      '<div class="rp-banner-estimate" hidden>',
+      '<p class="rp-general-result-label">Indicative range &mdash; based on recent transactions</p>',
+      '<div class="rp-banner-range-value">',
+      '<span class="rp-banner-range-lo">—</span>',
+      '<span class="rp-banner-range-sep">—</span>',
+      '<span class="rp-banner-range-hi">—</span>',
+      '</div>',
+      '<div class="rp-banner-range-bar"><div class="rp-banner-range-fill"></div></div>',
+      '<p class="rp-banner-range-note">This is a wide market range. <strong>For your unit&rsquo;s precise number, your agent will be in touch.</strong></p>',
+      '<div class="rp-contact-grid">',
+      '<a class="rp-link-button rp-whatsapp rp-banner-whatsapp" href="#" target="_blank" rel="noopener">' + svgWhatsApp + '<span>WhatsApp</span></a>',
+      '<a class="rp-link-button rp-email rp-banner-email" href="#">' + svgMail + '<span>Email agent</span></a>',
+      '</div>',
+      '</div>',
+      '</div>',
+      '</section>',
+    ].join("");
+  }
+
   function createTemplate(config) {
     var svgSparkle = '<svg class="rp-fab-icon" viewBox="0 0 20 20" fill="none"><path d="M10 2l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5z" fill="currentColor" opacity=".95"/></svg>';
+
+    if (config.mode === "banner") {
+      var bg = config.bannerImage || DEFAULT_BANNER_BG;
+      return (
+        '<div class="rp-shell rp-banner-shell">' +
+        '<div class="rp-banner" style="background-image:url(\'' + bg + '\')">' +
+        '<div class="rp-banner-overlay"></div>' +
+        '<div class="rp-banner-content">' +
+        createBannerInner(config) +
+        '</div>' +
+        '</div>' +
+        '</div>'
+      );
+    }
+
     return (
       '<div class="rp-shell ' + (config.mode === "inline" ? "rp-inline" : "") + '">' +
       (config.mode === "inline"
@@ -528,6 +775,247 @@
     );
   }
 
+  // ── Banner mount (hero → lead capture → general benchmark) ─
+  function mountBanner(shadowRoot, config) {
+    var heroStep = shadowRoot.querySelector(".rp-banner-hero");
+    var leadStep = shadowRoot.querySelector(".rp-banner-lead");
+    var resultStep = shadowRoot.querySelector(".rp-banner-result");
+    var ctaButton = shadowRoot.querySelector(".rp-banner-cta");
+    var leadForm = shadowRoot.querySelector(".rp-banner-lead-form");
+    var leadSubmit = shadowRoot.querySelector(".rp-banner-lead-submit");
+    var leadError = shadowRoot.querySelector(".rp-banner-lead-error");
+    var nameInput = leadForm.querySelector('input[name="name"]');
+    var emailInput = leadForm.querySelector('input[name="email"]');
+    var phoneInput = leadForm.querySelector('input[name="phone"]');
+    var whatsappLink = shadowRoot.querySelector(".rp-banner-whatsapp");
+    var emailLink = shadowRoot.querySelector(".rp-banner-email");
+
+    function showError(node, message) {
+      if (!node) return;
+      node.hidden = false;
+      var msgEl = node.querySelector(".rp-msg");
+      if (msgEl) msgEl.textContent = message; else node.textContent = message;
+    }
+    function hideError(node) {
+      if (!node) return;
+      node.hidden = true;
+      var msgEl = node.querySelector(".rp-msg");
+      if (msgEl) msgEl.textContent = "";
+    }
+    function setLoading(button, loading, label) {
+      if (!button) return;
+      var text = button.querySelector(".rp-button-text");
+      var arrow = button.querySelector(".rp-arrow");
+      button.disabled = loading;
+      if (!text) return;
+      if (loading) {
+        text.innerHTML = '<span class="rp-spinner"></span> ' + label;
+        if (arrow) arrow.style.display = "none";
+      } else {
+        text.textContent = label;
+        if (arrow) arrow.style.display = "";
+      }
+    }
+
+    function switchTo(stepEl) {
+      [heroStep, leadStep, resultStep].forEach(function (s) {
+        if (s) s.classList.remove("rp-active");
+      });
+      if (stepEl) stepEl.classList.add("rp-active");
+    }
+
+    function isValidName(v) { return String(v || "").trim().length >= 2; }
+    function isValidEmail(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v || "").trim()); }
+    function isValidPhone(v) { return /^[\d][\d\s-]{6,}$/.test(String(v || "").trim()); }
+
+    function updateContinueState() {
+      var ok = isValidName(nameInput.value) && isValidEmail(emailInput.value) && isValidPhone(phoneInput.value);
+      leadSubmit.disabled = !ok;
+    }
+
+    if (ctaButton) {
+      ctaButton.addEventListener("click", function () {
+        switchTo(leadStep);
+        // focus first field after the transition
+        setTimeout(function () { try { nameInput.focus(); } catch (_) {} }, 250);
+      });
+    }
+
+    [nameInput, emailInput, phoneInput].forEach(function (el) {
+      el.addEventListener("input", function () {
+        hideError(leadError);
+        updateContinueState();
+      });
+    });
+    updateContinueState();
+
+    var leadState = { name: "", email: "", phone: "" };
+
+    leadForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      hideError(leadError);
+      var name = nameInput.value.trim();
+      var email = emailInput.value.trim();
+      var phone = phoneInput.value.trim();
+
+      if (!isValidName(name) || !isValidEmail(email) || !isValidPhone(phone)) {
+        showError(leadError, "Please complete the three fields with valid details.");
+        return;
+      }
+
+      var fullPhone = "+971 " + phone;
+      leadState = { name: name, email: email, phone: fullPhone };
+
+      setLoading(leadSubmit, true, "Saving…");
+      sendWebhook(config.leadWebhook, {
+        event: "banner_lead_captured",
+        agency_id: config.agencyId,
+        agent_email: config.agentEmail,
+        agent_phone: config.agentPhone,
+        name: name, email: email, phone: fullPhone,
+        timestamp: new Date().toISOString(),
+      }).finally(function () {
+        setLoading(leadSubmit, false, "Continue");
+        switchTo(resultStep);
+      });
+    });
+
+    // ── Step 2: address-based general estimate ─────────────────
+    var addressForm = shadowRoot.querySelector(".rp-banner-address-form");
+    var addressInput = addressForm.querySelector('input[name="address"]');
+    var roomsSelect = addressForm.querySelector('select[name="rooms"]');
+    var areaInput = addressForm.querySelector('input[name="area_m2"]');
+    var addressSubmit = shadowRoot.querySelector(".rp-banner-address-submit");
+    var addressError = shadowRoot.querySelector(".rp-banner-address-error");
+    var estimateBox = shadowRoot.querySelector(".rp-banner-estimate");
+    var rangeLoEl = shadowRoot.querySelector(".rp-banner-range-lo");
+    var rangeHiEl = shadowRoot.querySelector(".rp-banner-range-hi");
+
+    function isValidAddress(v) { return String(v || "").trim().length >= 4; }
+    function isValidArea(v) { var n = Number(v); return isFinite(n) && n >= 20 && n <= 2000; }
+    function updateAddressSubmit() {
+      addressSubmit.disabled = !(
+        isValidAddress(addressInput.value) &&
+        roomsSelect.value &&
+        isValidArea(areaInput.value)
+      );
+    }
+    [addressInput, areaInput].forEach(function (el) {
+      el.addEventListener("input", function () {
+        hideError(addressError);
+        updateAddressSubmit();
+      });
+    });
+    roomsSelect.addEventListener("change", function () {
+      hideError(addressError);
+      updateAddressSubmit();
+    });
+    updateAddressSubmit();
+
+    function wireAgentLinks(name, address, rangeText) {
+      if (config.agentPhone && whatsappLink) {
+        var waText = "Hi, I'm " + name + ". I just used the property valuation widget on your website. " +
+          (address ? "Address: " + address + ". " : "") +
+          (rangeText ? "Indicative range: " + rangeText + ". " : "") +
+          "Could you help me with a precise valuation?";
+        whatsappLink.href = "https://wa.me/" + sanitizePhone(config.agentPhone) + "?text=" + encodeURIComponent(waText);
+      } else if (whatsappLink) { whatsappLink.href = "#"; }
+
+      if (config.agentEmail && emailLink) {
+        var subj = encodeURIComponent("Property valuation request — " + (address || "Dubai"));
+        var body = encodeURIComponent(
+          "Hello,\n\nI'd like a precise valuation of my property.\n\n" +
+          "Name: " + leadState.name + "\nEmail: " + leadState.email + "\nPhone: " + leadState.phone + "\n" +
+          (address ? "Address: " + address + "\n" : "") +
+          (rangeText ? "Indicative range: " + rangeText + "\n" : "")
+        );
+        emailLink.href = "mailto:" + config.agentEmail + "?subject=" + subj + "&body=" + body;
+      } else if (emailLink) { emailLink.href = "#"; }
+    }
+
+    addressForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      hideError(addressError);
+      estimateBox.hidden = true;
+
+      var address = addressInput.value.trim();
+      var rooms = (roomsSelect.value || "1 BR").trim();
+      var areaM2 = Number(areaInput.value);
+
+      if (!isValidAddress(address)) { showError(addressError, "Please type the property address or building name."); return; }
+      if (!isValidArea(areaM2)) { showError(addressError, "Please enter an area between 20 and 2000 m²."); return; }
+
+      var apiRooms = rooms === "Studio" ? "Studio" : rooms.replace(" BR", " B/R");
+
+      setLoading(addressSubmit, true, "Estimating…");
+
+      var url = config.addressApiBase.replace(/\/$/, "") + "/predict-address";
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          address: address,
+          building_name: address,
+          zona: address,
+          rooms: apiRooms,
+          area_m2: areaM2,
+        }),
+      })
+        .then(function (r) {
+          return r.json().then(function (data) { return { ok: r.ok, data: data }; });
+        })
+        .then(function (result) {
+          if (!result.ok) {
+            throw new Error((result.data && result.data.detail) || "We couldn't estimate this address.");
+          }
+          var predictedAed = Number(result.data && result.data.predicted_aed);
+          if (!isFinite(predictedAed) || predictedAed <= 0) {
+            throw new Error("Invalid response from valuation engine.");
+          }
+
+          // Wide, intentionally general range: -40% / +30% from the predicted value
+          var lo = predictedAed * 0.60;
+          var hi = predictedAed * 1.30;
+          var rangeText = currencyCompact(lo) + " – " + currencyCompact(hi);
+
+          rangeLoEl.textContent = currencyCompact(lo);
+          rangeHiEl.textContent = currencyCompact(hi);
+          estimateBox.hidden = false;
+
+          wireAgentLinks(leadState.name, address, rangeText);
+
+          // Send the enriched lead (now including the address + estimate) to the agency
+          sendWebhook(config.leadWebhook, {
+            event: "banner_address_estimate",
+            agency_id: config.agencyId,
+            agent_email: config.agentEmail,
+            agent_phone: config.agentPhone,
+            name: leadState.name,
+            email: leadState.email,
+            phone: leadState.phone,
+            address: address,
+            rooms: rooms,
+            area_m2: areaM2,
+            estimated_range: rangeText,
+            estimated_low_aed: Math.round(lo),
+            estimated_high_aed: Math.round(hi),
+            raw_prediction: result.data,
+            timestamp: new Date().toISOString(),
+          });
+        })
+        .catch(function (error) {
+          console.error("[FonatProp Widget] address estimate failed", error);
+          showError(addressError, error.message || "We couldn't estimate this address right now. Please contact the agent.");
+          // Still expose the agent links so the user can reach out
+          wireAgentLinks(leadState.name, address, "");
+          estimateBox.hidden = true;
+        })
+        .finally(function () {
+          setLoading(addressSubmit, false, "Get my free estimate");
+        });
+    });
+  }
+
   // ── Mount ─────────────────────────────────────────────────
   function mountWidget(host) {
     if (!host || host.__realPriceWidgetMounted) return;
@@ -543,8 +1031,12 @@
       agentEmail: host.getAttribute("data-agent-email") || "",
       brandColor: brandColor,
       leadWebhook: host.getAttribute("data-lead-webhook") || "",
-      mode: mode === "popup" || mode === "drawer" ? mode : "inline",
+      mode: mode === "popup" || mode === "drawer" || mode === "banner" ? mode : "inline",
       apiBase: apiBase,
+      addressApiBase: host.getAttribute("data-address-api") || ADDRESS_API_BASE_DEFAULT,
+      bannerTitle: host.getAttribute("data-banner-title") || "",
+      bannerCta: host.getAttribute("data-banner-cta") || "",
+      bannerImage: host.getAttribute("data-banner-image") || "",
     };
 
     var shadowRoot = host.attachShadow({ mode: "open" });
@@ -553,6 +1045,11 @@
     var mount = document.createElement("div");
     mount.innerHTML = createTemplate(config);
     shadowRoot.appendChild(mount);
+
+    if (config.mode === "banner") {
+      mountBanner(shadowRoot, config);
+      return;
+    }
 
     var overlay = shadowRoot.querySelector(".rp-overlay");
     var panel = shadowRoot.querySelector(".rp-modal, .rp-drawer-panel");
@@ -801,15 +1298,12 @@
       });
     }
     collect(document.querySelectorAll("#realprice-widget"));
-    collect(document.querySelectorAll("#fonatprop-widget"));
     collect(document.querySelectorAll("[data-realprice-widget]"));
-    collect(document.querySelectorAll("[data-fonatprop-widget]"));
     collect(document.querySelectorAll(".realprice-widget"));
     nodes.forEach(mountWidget);
   }
 
-  window.FonatPropWidget = { mountAll: mountAll, mount: mountWidget };
-  window.RealPriceWidget = window.FonatPropWidget;
+  window.RealPriceWidget = { mountAll: mountAll, mount: mountWidget };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mountAll, { once: true });
