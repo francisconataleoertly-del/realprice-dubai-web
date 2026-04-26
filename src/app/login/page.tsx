@@ -16,6 +16,7 @@ function LoginPageContent() {
   const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,7 +57,7 @@ function LoginPageContent() {
         return;
       }
 
-      const result = await signUp({ name, email, password });
+      const result = await signUp({ name, email, password, phone });
       if (result.pendingConfirmation) {
         setNotice(
           result.message ||
@@ -190,17 +191,32 @@ function LoginPageContent() {
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" ? (
-                  <div>
-                    <label className="block font-mono text-[10px] tracking-[0.28em] uppercase text-white/28 mb-2">
-                      Name
-                    </label>
-                    <input
-                      value={name}
-                      onChange={(event) => setName(event.target.value)}
-                      placeholder="Francisco"
-                      className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-white placeholder:text-white/18 outline-none focus:border-white/24 transition-colors"
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label className="block font-mono text-[10px] tracking-[0.28em] uppercase text-white/28 mb-2">
+                        Name
+                      </label>
+                      <input
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        placeholder="Francisco"
+                        className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-white placeholder:text-white/18 outline-none focus:border-white/24 transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-mono text-[10px] tracking-[0.28em] uppercase text-white/28 mb-2">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
+                        placeholder="+971 50 123 4567"
+                        className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-white placeholder:text-white/18 outline-none focus:border-white/24 transition-colors"
+                      />
+                    </div>
+                  </>
                 ) : null}
 
                 <div>

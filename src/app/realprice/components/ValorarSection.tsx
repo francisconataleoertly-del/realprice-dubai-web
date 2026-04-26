@@ -6,7 +6,8 @@ import { MapPin, Check } from "lucide-react";
 import CountUp from "react-countup";
 import { useGoogleMaps } from "./GoogleMapsLoader";
 
-const API = "/api/fonatprop";
+const AUTH_API = "/api/fonatprop";
+const PUBLIC_API = "https://web-production-9051f.up.railway.app";
 
 const TYPES = [
   { value: "Flat", label: "Apartment" },
@@ -218,7 +219,15 @@ function PriceGauge({
   );
 }
 
-export default function ValorarSection() {
+export default function ValorarSection({
+  publicDemo = false,
+}: {
+  publicDemo?: boolean;
+}) {
+  const apiBase = publicDemo ? PUBLIC_API : AUTH_API;
+  const addressInferenceEndpoint = publicDemo
+    ? "/api/predict-address"
+    : "/api/predict-address";
   const googleLoaded = useGoogleMaps();
   const addressInputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -268,7 +277,7 @@ export default function ValorarSection() {
   const canInferFromAddress = Boolean(
     addressSelected && (form.zona || form.building_name || addressText)
   );
-  const canRequest = canSubmit || canInferFromAddress;
+  const canRequest = canSubmit || (!publicDemo && canInferFromAddress);
 
   const resolveZoneFromSignals = (signals: string[]) => {
     const directMap = new Map<string, string>();
@@ -384,7 +393,7 @@ export default function ValorarSection() {
   };
 
   useEffect(() => {
-    fetch(`${API}/zones`)
+    fetch(`${apiBase}/zones`)
       .then((response) => response.text())
       .then((raw) => {
         const parsed = parseZonesPayload(raw);
@@ -414,7 +423,7 @@ export default function ValorarSection() {
           "DIFC",
         ]);
       });
-  }, []);
+  }, [apiBase]);
 
   useEffect(() => {
     if (!googleLoaded || !addressInputRef.current) return;
@@ -476,7 +485,13 @@ export default function ValorarSection() {
       payload.year = form.year ? Number(form.year) : currentYear;
       if (useAddressInference) payload.address = addressText;
 
-      const response = await fetch(useAddressInference ? "/api/predict-address" : `${API}/predict`, {
+      if (publicDemo && useAddressInference) {
+        throw new Error(
+          "For the broker demo, add rooms, area and property type to show a precise valuation."
+        );
+      }
+
+      const response = await fetch(useAddressInference ? addressInferenceEndpoint : `${apiBase}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -511,7 +526,7 @@ export default function ValorarSection() {
             : data.inferred_has_parking ?? prev.has_parking,
       }));
 
-      fetch(`${API}/comparables`, {
+      fetch(`${apiBase}/comparables`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -950,6 +965,8 @@ export default function ValorarSection() {
                       <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">
                         {canSubmit
                           ? "Manual details are ready. Request the valuation when you want."
+                          : publicDemo
+                            ? "Add rooms, area and property type so the broker demo shows a precise AVM result."
                           : "We can infer property details from the address, building and recent market evidence."}
                       </p>
                     </div>

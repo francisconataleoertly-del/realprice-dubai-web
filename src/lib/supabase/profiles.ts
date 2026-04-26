@@ -4,6 +4,7 @@ export type FonatPropProfile = {
   id: string;
   email: string;
   full_name: string | null;
+  phone: string | null;
   role: "user" | "admin";
   plan: "member" | "pro";
   billing_status: string | null;
@@ -18,7 +19,7 @@ export async function fetchOwnProfile(
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id,email,full_name,role,plan,billing_status,is_master")
+    .select("id,email,full_name,phone,role,plan,billing_status,is_master")
     .eq("id", user.id)
     .maybeSingle();
 

@@ -31,6 +31,7 @@ type AuthInput = {
   email: string;
   name?: string;
   password: string;
+  phone?: string;
 };
 
 type AuthResult = {
@@ -165,7 +166,12 @@ export function AccessProvider({ children }: { children: ReactNode }) {
     };
   };
 
-  const signUp = async ({ email, password, name }: AuthInput): Promise<AuthResult> => {
+  const signUp = async ({
+    email,
+    password,
+    name,
+    phone,
+  }: AuthInput): Promise<AuthResult> => {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
       throw new Error(
@@ -185,6 +191,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
         emailRedirectTo: redirectTo,
         data: {
           name: name?.trim() || "",
+          phone: phone?.trim() || "",
         },
       },
     });

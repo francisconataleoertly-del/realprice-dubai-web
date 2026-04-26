@@ -22,6 +22,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null unique,
   full_name text,
+  phone text,
   role text not null default 'user' check (role in ('user', 'admin')),
   plan text not null default 'pro' check (plan in ('member', 'pro')),
   billing_status text not null default 'complimentary',
@@ -29,6 +30,9 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.profiles
+add column if not exists phone text;
 
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),
@@ -98,6 +102,7 @@ as $$
 declare
   master_match boolean;
   new_name text;
+  new_phone text;
 begin
   select exists(
     select 1
@@ -111,11 +116,17 @@ begin
     new.raw_user_meta_data ->> 'name',
     ''
   );
+  new_phone := coalesce(
+    new.phone,
+    new.raw_user_meta_data ->> 'phone',
+    ''
+  );
 
   insert into public.profiles (
     id,
     email,
     full_name,
+    phone,
     role,
     plan,
     billing_status,
@@ -125,6 +136,7 @@ begin
     new.id,
     lower(new.email),
     nullif(trim(new_name), ''),
+    nullif(trim(new_phone), ''),
     case when master_match then 'admin' else 'user' end,
     'pro',
     case when master_match then 'owner' else 'complimentary' end,
@@ -133,6 +145,7 @@ begin
   on conflict (id) do update
     set email = excluded.email,
         full_name = coalesce(excluded.full_name, public.profiles.full_name),
+        phone = coalesce(excluded.phone, public.profiles.phone),
         role = case when public.profiles.is_master then 'admin' else public.profiles.role end,
         plan = case when public.profiles.plan is null then 'pro' else public.profiles.plan end,
         is_master = public.profiles.is_master or excluded.is_master;
@@ -164,6 +177,7 @@ insert into public.profiles (
   id,
   email,
   full_name,
+  phone,
   role,
   plan,
   billing_status,
@@ -173,6 +187,7 @@ select
   u.id,
   lower(u.email),
   nullif(trim(coalesce(u.raw_user_meta_data ->> 'full_name', u.raw_user_meta_data ->> 'name', '')), ''),
+  nullif(trim(coalesce(u.phone, u.raw_user_meta_data ->> 'phone', '')), ''),
   case
     when exists (
       select 1 from public.master_access ma where lower(ma.email) = lower(u.email)
