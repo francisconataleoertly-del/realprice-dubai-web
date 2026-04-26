@@ -64,6 +64,12 @@ interface Result {
   resolved_zone?: string;
   resolved_building?: string;
   valuation_mode?: string;
+  unit_distribution_source?: string;
+  unit_distribution_count?: number;
+  unit_area_segment?: string;
+  unit_distribution_anchor_aed?: number;
+  unit_distribution_low_aed?: number;
+  unit_distribution_high_aed?: number;
 }
 
 interface Comparable {
@@ -1030,6 +1036,39 @@ export default function ValorarSection({
                             high={result.confidence_high_aed}
                           />
                         </div>
+
+                        {result.unit_distribution_source && (
+                          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4">
+                            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35">
+                              Unit position
+                            </p>
+                            <div className="mt-3 grid grid-cols-3 gap-3 text-sm">
+                              <div>
+                                <p className="text-white/30">Scope</p>
+                                <p className="mt-1 font-mono uppercase text-white/70">
+                                  {result.unit_distribution_source}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-white/30">Segment</p>
+                                <p className="mt-1 font-mono uppercase text-white/70">
+                                  {result.unit_area_segment || "typical"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-white/30">Evidence</p>
+                                <p className="mt-1 font-mono uppercase text-white/70">
+                                  {result.unit_distribution_count || 0} txns
+                                </p>
+                              </div>
+                            </div>
+                            {result.unit_distribution_low_aed && result.unit_distribution_high_aed && (
+                              <p className="mt-4 font-mono text-[11px] tracking-[0.18em] uppercase text-white/35">
+                                Comparable band AED {fmt(result.unit_distribution_low_aed)} - AED {fmt(result.unit_distribution_high_aed)}
+                              </p>
+                            )}
+                          </div>
+                        )}
 
                         <div className="grid grid-cols-2 gap-6">
                           <div>

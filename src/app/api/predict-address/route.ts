@@ -321,6 +321,34 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+
+    // Prefer the Railway API as the canonical valuation engine. It has the
+    // latest DLD-derived address profiles, unit-distribution anchors, and date
+    // parsing fixes. Keep the local slim-profile logic below only as a safety
+    // fallback for old deployments or temporary upstream failures.
+    try {
+      const upstreamAddressResponse = await fetch(`${UPSTREAM_API}/predict-address`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        cache: "no-store",
+      });
+      const upstreamAddressData = await upstreamAddressResponse.json();
+
+      if (upstreamAddressResponse.ok) {
+        return NextResponse.json(upstreamAddressData);
+      }
+
+      if (![404, 422].includes(upstreamAddressResponse.status)) {
+        return NextResponse.json(
+          { detail: upstreamAddressData?.detail || `Error ${upstreamAddressResponse.status}` },
+          { status: upstreamAddressResponse.status }
+        );
+      }
+    } catch (error) {
+      console.warn("predict-address upstream fallback engaged", error);
+    }
+
     const profiles = await getProfiles();
     const inference = resolveInferenceSource(profiles, body.zona, body.building_name);
 
