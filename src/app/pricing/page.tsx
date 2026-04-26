@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SessionRail from "@/components/access/SessionRail";
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
 
 const plans = [
   {
@@ -35,6 +36,11 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[#0a0a0f] text-white px-6 py-16">
       <SessionRail surface="public" />
       <div className="max-w-6xl mx-auto pt-16">
+        <FonatPropLogo
+          variant="lockup"
+          className="mb-10 h-auto w-full max-w-[390px] rounded-2xl opacity-90"
+          priority
+        />
         <p className="font-mono text-[10px] tracking-[0.32em] uppercase text-white/28 mb-4">
           FonatProp Plans
         </p>

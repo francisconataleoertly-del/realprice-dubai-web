@@ -362,8 +362,8 @@
       // Powered by
       '.rp-powered{margin-top:22px;padding-top:16px;border-top:1px solid var(--rp-line-soft);',
       'display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--rp-fg-muted);letter-spacing:.01em}',
-      '.rp-powered-brand{display:flex;align-items:center;gap:6px;color:var(--rp-fg-soft);font-weight:500;text-decoration:none}',
-      '.rp-powered-brand .rp-logo-dot{width:6px;height:6px;border-radius:999px;background:var(--rp-fg)}',
+      '.rp-powered-brand{display:flex;align-items:center;gap:8px;color:var(--rp-fg-soft);font-weight:500;text-decoration:none}',
+      '.rp-powered-logo{width:20px;height:20px;border-radius:7px;object-fit:cover;box-shadow:0 0 0 1px rgba(15,23,42,.08)}',
       '.rp-powered-secure{display:inline-flex;align-items:center;gap:5px}',
 
       // Spinner
@@ -637,7 +637,7 @@
 
       // Powered by
       '<div class="rp-powered">',
-      '<a class="rp-powered-brand" href="https://fonatprop.com" target="_blank" rel="noopener"><span class="rp-logo-dot"></span>Powered by FonatProp</a>',
+      '<a class="rp-powered-brand" href="https://fonatprop.com" target="_blank" rel="noopener"><img class="rp-powered-logo" src="https://fonatprop.com/brand/fonatprop-mark.webp" alt="FonatProp" loading="lazy" />Powered by FonatProp</a>',
       '<span class="rp-powered-secure">' + svgLock + 'Secure &amp; private</span>',
       '</div>',
     ].join("");

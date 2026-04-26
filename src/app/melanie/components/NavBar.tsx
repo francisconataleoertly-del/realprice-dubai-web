@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 const NAV_ITEMS = [
   { id: "valorar", label: "Valuate", num: "01" },
   { id: "mapa", label: "Map", num: "02" },
@@ -48,8 +50,13 @@ export default function NavBar() {
     }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="font-mono text-[13px] tracking-[0.2em] text-white uppercase">
-          Real<span className="text-[#3b82f6]">Price</span>
+        <a href="#" className="inline-flex items-center gap-2">
+          <FonatPropLogo
+            variant="mark"
+            className="h-9 w-9 rounded-xl border border-white/10 shadow-[0_0_18px_rgba(59,130,246,0.16)]"
+            imageClassName="scale-125"
+          />
+          <FonatPropLogo variant="nav" className="hidden h-9 w-[145px] sm:inline-flex" />
         </a>
 
         {/* Bento nav grid */}

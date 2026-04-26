@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, Map, BarChart3, Home } from "lucide-react";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 const links = [
   { href: "/", label: "Home", icon: Home },
   { href: "/valuate", label: "Valuate", icon: Building2 },
@@ -19,9 +21,12 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#05060a]/92 text-white backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/broker-demo" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] font-['Fraunces'] text-sm italic shadow-[0_0_28px_rgba(59,130,246,0.16)]">
-              fp
-            </div>
+            <FonatPropLogo
+              variant="mark"
+              className="h-10 w-10 rounded-2xl border border-white/12 bg-white/[0.04] shadow-[0_0_28px_rgba(59,130,246,0.16)]"
+              imageClassName="scale-125"
+              priority
+            />
             <div>
               <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/35">
                 Agency Sales Preview
@@ -56,10 +61,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-background" />
-            </div>
-            <span className="text-xl font-bold gold-text">FonatProp</span>
+            <FonatPropLogo
+              variant="mark"
+              className="h-9 w-9 rounded-xl border border-white/10 shadow-[0_0_22px_rgba(59,130,246,0.14)]"
+              imageClassName="scale-125"
+            />
+            <FonatPropLogo variant="nav" className="h-9 w-[150px]" />
             <span className="text-xs text-muted font-medium px-2 py-0.5 rounded-full border border-card-border">
               DUBAI
             </span>

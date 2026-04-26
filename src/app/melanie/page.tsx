@@ -8,6 +8,7 @@ import MapSection from "./components/MapSection";
 import RadarSection from "./components/RadarSection";
 import InversionSection from "./components/InversionSection";
 import ReformaSection from "./components/ReformaSection";
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
 
 export default function RealPricePage() {
   return (
@@ -39,6 +40,7 @@ export default function RealPricePage() {
 
       {/* Footer */}
       <footer className="px-4 md:px-8 py-16 border-t border-white/5 text-center">
+        <FonatPropLogo variant="nav" className="mx-auto mb-6 h-14 w-[240px] opacity-80" />
         <p className="text-xs text-white/15 tracking-widest uppercase">
           FonatProp &mdash; AI-Powered Property Valuation
         </p>

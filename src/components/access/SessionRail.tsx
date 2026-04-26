@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Crown, LayoutDashboard, LockKeyhole, LogOut } from "lucide-react";
 
 import { useAccess } from "@/components/access/AccessProvider";
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
 
 export default function SessionRail({
   surface,
@@ -24,6 +25,11 @@ export default function SessionRail({
     <div className="fixed top-5 right-5 z-[70]">
       <div className="rounded-[22px] border border-white/10 bg-[#0a0a0f]/72 backdrop-blur-2xl px-4 py-3 shadow-[0_18px_48px_rgba(0,0,0,0.35)]">
         <div className="flex items-center gap-3">
+          <FonatPropLogo
+            variant="mark"
+            className="hidden h-9 w-9 rounded-xl border border-white/10 shadow-[0_0_18px_rgba(59,130,246,0.16)] sm:inline-flex"
+            imageClassName="scale-125"
+          />
           <div className="hidden md:block">
             <p className="font-mono text-[9px] tracking-[0.28em] uppercase text-white/28">
               {surface === "admin"

@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 // ── EDIT THIS ARRAY to change hero images ──────────────────────────
 const SLIDES = [
   "/dubai-slides/01-marina-skyline.jpg",
@@ -59,6 +61,11 @@ export default function HeroCarousel() {
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
+        <FonatPropLogo
+          variant="lockup"
+          className="mb-8 h-auto w-full max-w-[380px] rounded-2xl opacity-90 shadow-[0_24px_80px_rgba(0,0,0,0.28)]"
+          priority
+        />
         <h1 className="text-[clamp(2rem,5vw,4.2rem)] leading-[1.08] font-light tracking-tight text-white max-w-3xl mb-4">
           Want to know how much your property is worth?
         </h1>

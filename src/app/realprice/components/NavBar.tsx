@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 const NAV_ITEMS = [
   { id: "valorar", label: "Valuation" },
   { id: "mapa", label: "Map" },
@@ -71,11 +73,13 @@ export default function NavBar() {
         }`}
       >
         {/* Left brand mark */}
-        <div className="pl-5 pr-4 py-2 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
-          <span className="font-['Fraunces'] text-[13px] font-light italic text-white/90 tracking-tight leading-none">
-            rp
-          </span>
+        <div className="pl-3 pr-3 py-1.5 flex items-center gap-2">
+          <FonatPropLogo
+            variant="mark"
+            className="h-8 w-8 rounded-full border border-white/10 shadow-[0_0_18px_rgba(59,130,246,0.18)]"
+            imageClassName="scale-125"
+            priority
+          />
         </div>
 
         {/* Divider */}

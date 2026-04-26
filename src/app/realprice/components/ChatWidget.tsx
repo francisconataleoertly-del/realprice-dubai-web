@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
 
@@ -32,6 +34,7 @@ export default function ChatWidget() {
         }`}
       >
         <div className="w-full h-full bg-[#0a0a0f] border border-white/[0.08] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl p-6">
+          <FonatPropLogo variant="nav" className="mb-5 h-10 w-[176px] opacity-90" />
           <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-[#3b82f6]/70">
             AI Assistant
           </p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import SessionRail from "@/components/access/SessionRail";
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
 import { useAccess } from "@/components/access/AccessProvider";
 
 function LoginPageContent() {
@@ -92,6 +93,11 @@ function LoginPageContent() {
       <SessionRail surface="public" />
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
         <div className="pt-16">
+          <FonatPropLogo
+            variant="lockup"
+            className="mb-10 h-auto w-full max-w-[390px] rounded-2xl opacity-90 shadow-[0_22px_70px_rgba(0,0,0,0.28)]"
+            priority
+          />
           <p className="font-mono text-[10px] tracking-[0.32em] uppercase text-white/28 mb-4">
             FonatProp Access
           </p>
@@ -308,6 +314,11 @@ export default function LoginPage() {
         <div className="min-h-screen bg-[#0a0a0f] text-white px-6 py-16">
           <SessionRail surface="public" />
           <div className="max-w-6xl mx-auto pt-16">
+            <FonatPropLogo
+              variant="lockup"
+              className="mb-10 h-auto w-full max-w-[360px] rounded-2xl opacity-90"
+              priority
+            />
             <p className="font-mono text-[10px] tracking-[0.32em] uppercase text-white/28 mb-4">
               FonatProp Access
             </p>

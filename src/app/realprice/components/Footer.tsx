@@ -1,5 +1,7 @@
 "use client";
 
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
+
 const LINKS = {
   Platform: [
     { label: "Valuate", href: "#valorar" },
@@ -27,21 +29,17 @@ export default function Footer() {
       {/* Large wordmark */}
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h2 className="font-['Epilogue'] text-[clamp(3rem,10vw,10rem)] font-extralight tracking-[-0.04em] leading-none text-white/[0.04]">
-            FonatProp
-          </h2>
+          <FonatPropLogo
+            variant="lockup"
+            className="h-auto w-full max-w-5xl opacity-[0.18] mix-blend-screen"
+          />
         </div>
 
         {/* Top row */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
           {/* Brand */}
           <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-5">
-              <div className="w-2 h-2 rounded-full bg-[#3b82f6]" />
-              <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white">
-                FONAT<span className="text-[#3b82f6]">PROP</span>
-              </span>
-            </div>
+            <FonatPropLogo variant="nav" className="mb-5 h-12 w-[210px]" />
             <p className="text-white/40 text-[14px] font-light leading-relaxed max-w-xs mb-6">
               FonatProp is an AI-powered automated valuation platform for Dubai real estate.
               Instant estimates, live market intelligence.

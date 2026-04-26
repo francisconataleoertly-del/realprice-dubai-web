@@ -15,9 +15,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fonatprop.com"),
   title: "FonatProp Dubai - Property Valuation",
   description:
     "FonatProp: AI-powered Automated Valuation Model for Dubai residential real estate",
+  icons: {
+    icon: "/brand/favicon.ico",
+    shortcut: "/brand/favicon.ico",
+    apple: "/brand/fonatprop-apple-touch.png",
+  },
+  openGraph: {
+    title: "FonatProp Dubai - Property Valuation",
+    description:
+      "AI-powered real estate intelligence, valuation and seller lead capture for Dubai brokerages.",
+    images: ["/brand/fonatprop-og.jpg"],
+  },
 };
 
 export default function RootLayout({
