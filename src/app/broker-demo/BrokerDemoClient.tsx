@@ -57,6 +57,21 @@ const heroSlides = [
   },
 ];
 
+const proofPoints = [
+  {
+    en: "234K+ verified Dubai transactions",
+    ar: "أكثر من 234 ألف معاملة موثقة في دبي",
+  },
+  {
+    en: "Building-level comparable anchors",
+    ar: "مقارنات على مستوى المبنى",
+  },
+  {
+    en: "English + Arabic ready for UAE clients",
+    ar: "جاهز بالإنجليزية والعربية لعملاء الإمارات",
+  },
+];
+
 function mountWidget() {
   const maybeWindow = window as unknown as {
     FonatPropWidget?: { mountAll?: () => void };
@@ -193,6 +208,17 @@ export default function BrokerDemoClient() {
             A focused presentation for Dubai brokerages: a precise internal valuation tool for
             agents, plus an embeddable website widget that captures seller leads.
           </p>
+          <div className="mt-6 max-w-3xl rounded-[24px] border border-white/10 bg-white/[0.045] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+            <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/34">
+              English + Arabic sales-ready
+            </p>
+            <p className="mt-3 text-[15px] leading-7 text-white/64">
+              Instant property valuation and seller lead capture for Dubai brokerages.
+            </p>
+            <p className="mt-2 text-right text-[18px] leading-8 text-white/78" dir="rtl" lang="ar">
+              تقييم عقاري فوري وتحويل طلبات الملاك إلى فرص بيع مؤهلة للوساطة العقارية في دبي.
+            </p>
+          </div>
           <div className="mt-10 flex flex-wrap gap-3">
             <a
               href="#valuation"
@@ -208,16 +234,15 @@ export default function BrokerDemoClient() {
             </a>
           </div>
           <div className="mt-12 grid max-w-4xl gap-3 md:grid-cols-3">
-            {[
-              "234K+ verified Dubai transactions",
-              "Building-level comparable anchors",
-              "Lead capture for broker websites",
-            ].map((item) => (
+            {proofPoints.map((item) => (
               <div
-                key={item}
+                key={item.en}
                 className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-white/65"
               >
-                {item}
+                <p>{item.en}</p>
+                <p className="mt-2 text-right text-xs leading-5 text-white/42" dir="rtl" lang="ar">
+                  {item.ar}
+                </p>
               </div>
             ))}
           </div>
