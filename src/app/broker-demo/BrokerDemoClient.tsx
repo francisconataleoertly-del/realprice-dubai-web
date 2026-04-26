@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Script from "next/script";
 import { ArrowRight, Mail, MessageCircle } from "lucide-react";
 
 import GoogleMapsLoader from "@/app/realprice/components/GoogleMapsLoader";
@@ -137,8 +138,22 @@ function WidgetPreview() {
   data-agent-phone="+971501234567"
   data-agent-email="info@agency.ae">
 </div>
-<script src="https://widget.fonatprop.com/embed.js" async></script>`}
+<script src="https://fonatprop.com/widget/embed.js" async></script>`}
             </pre>
+          </div>
+
+          <div className="mt-8 rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.26em] text-white/35">
+              Live embed from the real script
+            </p>
+            <Script src="/widget/embed.js" strategy="afterInteractive" />
+            <div
+              id="fonatprop-widget"
+              data-agency-id="demo-agency-001"
+              data-agent-phone="+971501234567"
+              data-agent-email="info@agency.ae"
+              data-brand-color="#3b82f6"
+            />
           </div>
         </div>
 
