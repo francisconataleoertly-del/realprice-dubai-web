@@ -20,17 +20,23 @@ const handoffCards = [
   {
     label: "1 / Capture",
     title: "Visitor leaves name, email and phone",
+    titleAr: "الزائر يترك الاسم والبريد ورقم الهاتف",
     body: "The first step is pure lead capture. It sends a lightweight event immediately, even before the estimate.",
+    bodyAr: "الخطوة الأولى تلتقط بيانات المالك فوراً، حتى قبل ظهور نطاق التقييم.",
   },
   {
     label: "2 / Estimate",
     title: "Address + bedrooms + area create a wide range",
+    titleAr: "العنوان وعدد الغرف والمساحة تنتج نطاقاً تقديرياً",
     body: "The widget uses FonatProp's live address valuation endpoint, then shows a broad public range so the agent keeps the exact valuation conversation.",
+    bodyAr: "يعتمد الويدجت على محرك التقييم الحي، ويعرض نطاقاً عاماً ليبقى الرقم الدقيق جزءاً من متابعة الوسيط.",
   },
   {
     label: "3 / Agent handoff",
     title: "Webhook, WhatsApp and email all fire together",
+    titleAr: "تسليم مباشر للوسيط عبر واتساب والبريد والويب هوك",
     body: "Small agencies can use Zapier or Make. Bigger teams can send the same payload into HubSpot, Pipedrive or a private backend.",
+    bodyAr: "يمكن للوكالات الصغيرة استخدام Zapier أو Make، ويمكن للفرق الأكبر ربطه مع CRM أو نظام داخلي.",
   },
 ];
 
@@ -86,17 +92,23 @@ function WidgetShowcase() {
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#15120f]/45">
-              Product 02 / Website Widget
+              Product 02 / Website Widget · ويدجت الموقع
             </p>
             <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
               Turn every agency website
               <br />
               <span className="italic text-[#15120f]/42">into a seller lead machine.</span>
             </h2>
+            <p className="mt-5 max-w-3xl text-right text-[21px] leading-9 text-[#15120f]/58" dir="rtl" lang="ar">
+              حوّل موقع الوكالة العقارية إلى قناة فعّالة لجذب ملاك العقارات وفرص البيع.
+            </p>
           </div>
           <p className="max-w-md text-[15px] leading-8 text-[#15120f]/58">
             This is the exact embeddable widget brokers can install with one script. It is isolated
             with Shadow DOM, works on mobile, and posts leads to the agency in real time.
+            <span className="mt-3 block text-right text-[#15120f]/52" dir="rtl" lang="ar">
+              ويدجت جاهز للتركيب على موقع الوكالة، يعمل على الجوال، ويرسل بيانات العميل المحتمل فوراً.
+            </span>
           </p>
         </div>
 
@@ -104,10 +116,13 @@ function WidgetShowcase() {
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 px-2">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-black/35">
-                Live script preview
+                Live script preview · معاينة مباشرة
               </p>
               <p className="mt-1 text-sm text-black/55">
                 Banner mode: hero, contact capture, address estimate and agent handoff.
+                <span className="ml-2 inline-block text-right text-black/42" dir="rtl" lang="ar">
+                  عرض الويدجت، التقاط البيانات، التقييم، وتسليم العميل للوسيط.
+                </span>
               </p>
             </div>
             <a
@@ -145,7 +160,13 @@ function WidgetShowcase() {
                 {card.label}
               </p>
               <h3 className="text-xl font-semibold tracking-[-0.035em]">{card.title}</h3>
+              <p className="mt-3 text-right text-lg leading-7 text-black/70" dir="rtl" lang="ar">
+                {card.titleAr}
+              </p>
               <p className="mt-4 text-sm leading-7 text-black/55">{card.body}</p>
+              <p className="mt-3 text-right text-sm leading-7 text-black/45" dir="rtl" lang="ar">
+                {card.bodyAr}
+              </p>
             </div>
           ))}
         </div>
@@ -153,7 +174,7 @@ function WidgetShowcase() {
         <div className="mt-10 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="rounded-[28px] border border-black/10 bg-[#15120f] p-6 text-white">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-white/35">
-              Agency install code
+              Agency install code · كود التركيب
             </p>
             <pre className="overflow-x-auto rounded-2xl border border-white/10 bg-black/35 p-5 text-[11px] leading-6 text-white/70">
               {installSnippet}
@@ -161,13 +182,16 @@ function WidgetShowcase() {
           </div>
           <div className="rounded-[28px] border border-black/10 bg-white/70 p-6">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-black/35">
-              How you deliver it
+              How you deliver it · طريقة التسليم
             </p>
             <p className="text-[15px] leading-8 text-black/60">
               For a broker, you only need their agency ID, agent WhatsApp, agent email and webhook
               destination. If they do not have a CRM, use a Zapier or Make webhook that sends the
               lead to Gmail and Google Sheets. Later, FonatProp can centralize this through a
               private leads API and dashboard.
+              <span className="mt-4 block text-right text-black/52" dir="rtl" lang="ar">
+                للتشغيل تحتاج فقط رقم الوكالة، واتساب الوسيط، البريد الإلكتروني، ورابط استقبال العملاء المحتملين. يمكن ربطه مع البريد، Google Sheets أو أي CRM.
+              </span>
             </p>
           </div>
         </div>
@@ -193,11 +217,11 @@ export default function BrokerDemoClient() {
             />
           ))}
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(59,130,246,0.18),transparent_32%),linear-gradient(90deg,rgba(10,10,15,0.92),rgba(10,10,15,0.58)_48%,rgba(10,10,15,0.84))]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/35 via-[#0a0a0f]/76 to-[#0a0a0f]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(59,130,246,0.16),transparent_32%),linear-gradient(90deg,rgba(10,10,15,0.76),rgba(10,10,15,0.36)_48%,rgba(10,10,15,0.62))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/18 via-[#0a0a0f]/48 to-[#0a0a0f]/92" />
         <div className="relative mx-auto max-w-7xl">
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
-            FonatProp / Agency Revenue Demo
+            FonatProp / Agency Revenue Demo · عرض للوكالات العقارية
           </p>
           <h1 className="max-w-5xl font-['Fraunces'] text-[clamp(3.2rem,7vw,7.5rem)] font-light leading-[0.88] tracking-[-0.06em]">
             Sell the valuation.
@@ -207,6 +231,9 @@ export default function BrokerDemoClient() {
           <p className="mt-8 max-w-2xl text-[16px] leading-8 text-white/58">
             A focused presentation for Dubai brokerages: a precise internal valuation tool for
             agents, plus an embeddable website widget that captures seller leads.
+            <span className="mt-4 block text-right text-white/56" dir="rtl" lang="ar">
+              عرض مخصص لشركات الوساطة في دبي: أداة تقييم دقيقة للوسطاء، وويدجت قابل للتركيب لجذب ملاك العقارات.
+            </span>
           </p>
           <div className="mt-6 max-w-3xl rounded-[24px] border border-white/10 bg-white/[0.045] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur-xl">
             <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/34">
@@ -224,13 +251,13 @@ export default function BrokerDemoClient() {
               href="#valuation"
               className="bg-white px-7 py-4 text-[11px] font-medium uppercase tracking-[0.28em] text-[#0a0a0f] transition hover:bg-white/88"
             >
-              Try valuation
+              Try valuation · جرّب التقييم
             </a>
             <a
               href="#widget"
               className="border border-white/15 px-7 py-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white/70 transition hover:border-white/30 hover:text-white"
             >
-              See widget
+              See widget · شاهد الويدجت
             </a>
           </div>
           <div className="mt-12 grid max-w-4xl gap-3 md:grid-cols-3">

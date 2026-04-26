@@ -413,7 +413,7 @@
       'background-color:#0a0a0f;background-size:cover;background-position:center;',
       'box-shadow:0 1px 2px rgba(15,23,42,.08),0 24px 60px -20px rgba(15,23,42,.35)}',
       '.rp-banner-overlay{position:absolute;inset:0;',
-      'background:linear-gradient(105deg,rgba(10,10,15,.92) 0%,rgba(10,10,15,.7) 45%,rgba(10,10,15,.4) 100%)}',
+      'background:linear-gradient(105deg,rgba(10,10,15,.76) 0%,rgba(10,10,15,.52) 45%,rgba(10,10,15,.22) 100%)}',
       '.rp-banner-content{position:relative;display:flex;align-items:center;justify-content:space-between;',
       'gap:40px;padding:48px 56px;min-height:300px}',
       '.rp-banner-step{display:none;width:100%}',

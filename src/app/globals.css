@@ -103,10 +103,10 @@ body {
     transform: scale(1.08) translate3d(0, 0, 0);
   }
   4% {
-    opacity: 0.5;
+    opacity: 0.74;
   }
   18% {
-    opacity: 0.5;
+    opacity: 0.74;
   }
   25% {
     opacity: 0;
@@ -137,6 +137,6 @@ body {
   }
 
   .broker-demo-hero-slide:first-child {
-    opacity: 0.5;
+    opacity: 0.74;
   }
 }
