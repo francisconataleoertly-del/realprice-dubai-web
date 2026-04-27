@@ -4,7 +4,6 @@ import Script from "next/script";
 
 import GoogleMapsLoader from "@/app/realprice/components/GoogleMapsLoader";
 import ValorarSection from "@/app/realprice/components/ValorarSection";
-import FonatPropLogo from "@/components/brand/FonatPropLogo";
 
 const installSnippet = `<div
   data-realprice-widget
@@ -22,7 +21,7 @@ const handoffCards = [
     label: "1 / Capture",
     title: "Visitor leaves name, email and phone",
     titleAr: "الزائر يترك الاسم والبريد ورقم الهاتف",
-    body: "The first step is pure lead capture. It sends a lightweight event immediately, even before the estimate.",
+    body: "The first step is contact capture. It sends a lightweight event immediately, even before the estimate.",
     bodyAr: "الخطوة الأولى تلتقط بيانات المالك فوراً، حتى قبل ظهور نطاق التقييم.",
   },
   {
@@ -98,15 +97,15 @@ function WidgetShowcase() {
             <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
               Turn every agency website
               <br />
-              <span className="italic text-[#15120f]/42">into a seller lead machine.</span>
+              <span className="italic text-[#15120f]/42">into an inquiry engine.</span>
             </h2>
             <p className="mt-5 max-w-3xl text-right text-[21px] leading-9 text-[#15120f]/58" dir="rtl" lang="ar">
               حوّل موقع الوكالة العقارية إلى قناة فعّالة لجذب ملاك العقارات وفرص البيع.
             </p>
           </div>
           <p className="max-w-md text-[15px] leading-8 text-[#15120f]/58">
-            This is the exact embeddable widget brokers can install with one script. It is isolated
-            with Shadow DOM, works on mobile, and posts leads to the agency in real time.
+            This is the embeddable widget brokers can install with one script. It is isolated
+            with Shadow DOM, works on mobile, and sends qualified inquiries to the agency in real time.
             <span className="mt-3 block text-right text-[#15120f]/52" dir="rtl" lang="ar">
               ويدجت جاهز للتركيب على موقع الوكالة، يعمل على الجوال، ويرسل بيانات العميل المحتمل فوراً.
             </span>
@@ -209,7 +208,7 @@ export default function BrokerDemoClient() {
           {heroSlides.map((slide, index) => (
             <div
               key={slide.image}
-              className="broker-demo-hero-slide absolute inset-0 bg-cover opacity-0"
+              className="broker-demo-hero-slide absolute inset-0 bg-cover opacity-0 brightness-[1.42] contrast-[1.04] saturate-[1.16]"
               style={{
                 animationDelay: `${index * 5.6}s`,
                 backgroundImage: `url('${slide.image}')`,
@@ -218,14 +217,23 @@ export default function BrokerDemoClient() {
             />
           ))}
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(59,130,246,0.16),transparent_32%),linear-gradient(90deg,rgba(10,10,15,0.76),rgba(10,10,15,0.36)_48%,rgba(10,10,15,0.62))]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/18 via-[#0a0a0f]/48 to-[#0a0a0f]/92" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(59,130,246,0.035),transparent_34%),linear-gradient(90deg,rgba(10,10,15,0.30),rgba(10,10,15,0.03)_50%,rgba(10,10,15,0.12))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/0 via-[#0a0a0f]/4 to-[#0a0a0f]/34" />
         <div className="relative mx-auto max-w-7xl">
-          <FonatPropLogo
-            variant="lockup"
-            className="mb-10 h-auto w-full max-w-[430px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.58)]"
-            priority
-          />
+          <div className="mb-10 inline-flex items-center gap-5 text-white drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]">
+            <span className="font-['Fraunces'] text-[3.2rem] font-light italic leading-none tracking-[-0.08em] text-white/92">
+              fp
+            </span>
+            <span className="h-16 w-px bg-white/42" />
+            <span>
+              <span className="block font-['Fraunces'] text-[clamp(2.6rem,4.2vw,4.7rem)] font-light leading-none tracking-[-0.06em]">
+                FonatProp
+              </span>
+              <span className="mt-3 block font-mono text-[9px] uppercase tracking-[0.48em] text-white/62">
+                AI-powered real estate intelligence
+              </span>
+            </span>
+          </div>
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
             FonatProp / Agency Revenue Demo · عرض للوكالات العقارية
           </p>
@@ -235,8 +243,8 @@ export default function BrokerDemoClient() {
             <span className="italic text-white/42">Install the widget.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-[16px] leading-8 text-white/58">
-            A focused presentation for Dubai brokerages: a precise internal valuation tool for
-            agents, plus an embeddable website widget that captures seller leads.
+            A focused presentation for Dubai brokerages: a precise private valuation tool for
+            agents, plus an embeddable website widget that captures qualified inquiries.
             <span className="mt-4 block text-right text-white/56" dir="rtl" lang="ar">
               عرض مخصص لشركات الوساطة في دبي: أداة تقييم دقيقة للوسطاء، وويدجت قابل للتركيب لجذب ملاك العقارات.
             </span>
@@ -246,7 +254,7 @@ export default function BrokerDemoClient() {
               English + Arabic sales-ready
             </p>
             <p className="mt-3 text-[15px] leading-7 text-white/64">
-              Instant property valuation and seller lead capture for Dubai brokerages.
+              Private valuation for brokerages. Public inquiry capture for their websites.
             </p>
             <p className="mt-2 text-right text-[18px] leading-8 text-white/78" dir="rtl" lang="ar">
               تقييم عقاري فوري وتحويل طلبات الملاك إلى فرص بيع مؤهلة للوساطة العقارية في دبي.

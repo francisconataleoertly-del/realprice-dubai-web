@@ -18,7 +18,7 @@ For FonatProp, do not copy the dollars idea literally. Translate the same struct
 - DolarApp metaphor: money physically floats through the world.
 - FonatProp metaphor: Dubai property values, transactions, and data points become visible around buildings.
 - Emotional question: "What is my property really worth?"
-- Business answer: "FonatProp turns valuation curiosity into qualified seller leads."
+- Business answer: "FonatProp turns valuation curiosity into qualified property-owner inquiries."
 
 ## Recommended Tool Workflow
 
@@ -31,16 +31,16 @@ Important: do not ask AI video tools to generate readable UI text. Generate the 
 Title: "The Real Value of Dubai"
 
 One-line idea:
-In Dubai, property value is hidden inside millions of market signals. FonatProp makes it visible, instantly, and turns every valuation request into a broker lead.
+In Dubai, property value is hidden inside millions of market signals. FonatProp makes it visible for brokerages, instantly, and turns every public widget interaction into a qualified broker inquiry.
 
 Core visual metaphor:
-Verified transaction points appear as small blue-white light particles across Dubai buildings. They flow into a phone, become a valuation range, then transform into a lead notification for the broker.
+Verified transaction points appear as small blue-white light particles across Dubai buildings. They flow into a private brokerage dashboard, become a professional valuation range, then transform public website interest into an agent follow-up.
 
 Arabic positioning line:
 تقييم عقاري فوري وتحويل طلبات الملاك إلى فرص بيع مؤهلة
 
 English positioning line:
-AI valuation and seller lead capture for Dubai brokerages.
+Private AI valuation and public inquiry capture for Dubai brokerages.
 
 ## 60-Second Film
 
@@ -49,7 +49,7 @@ AI valuation and seller lead capture for Dubai brokerages.
 1. 0-7s: Hook
 2. 7-18s: Problem
 3. 18-32s: FonatProp valuation
-4. 32-45s: Widget lead capture
+4. 32-45s: Website widget inquiry capture
 5. 45-55s: Broker outcome
 6. 55-60s: Brand close
 
@@ -66,11 +66,11 @@ FonatProp makes the answer instant.
 
 Our AI valuation engine reads verified Dubai transaction data, building-level comparables, and live market signals to estimate property value in seconds.
 
-And with the FonatProp widget, any brokerage website becomes a seller lead machine.
+And with the FonatProp widget, any brokerage website becomes a conversion channel for property-owner inquiries.
 
-The visitor enters their details, checks a property, receives an indicative range, and your agent gets the lead with the full context.
+The visitor enters their details, checks a property, receives a broad indicative range, and your agent gets the inquiry with context.
 
-One line of code. One branded experience. One new channel for qualified seller leads.
+One line of code. One branded experience. One new channel for qualified property-owner inquiries.
 
 FonatProp.
 AI-powered valuation for Dubai brokerages.
@@ -193,24 +193,24 @@ Composite the real widget recording from:
 
 Overlay text:
 ```text
-Your website becomes a seller lead channel.
+Your website becomes a property-owner inquiry channel.
 موقعك يتحول إلى قناة لجذب ملاك العقارات.
 ```
 
-### Shot 6: Lead capture handoff
+### Shot 6: Inquiry handoff
 
 Duration: 8 seconds
 
 Prompt:
 ```text
-Close-up of a real estate agent receiving a qualified lead notification on a smartphone in a luxury Dubai brokerage office, agent smiles subtly, city skyline outside, professional and calm, no generated readable UI text, cinematic shallow depth of field, premium commercial style, realistic hands and phone, soft daylight
+Close-up of a real estate agent receiving a qualified property inquiry notification on a smartphone in a luxury Dubai brokerage office, agent smiles subtly, city skyline outside, professional and calm, no generated readable UI text, cinematic shallow depth of field, premium commercial style, realistic hands and phone, soft daylight
 ```
 
 Edit instruction:
 Overlay clean notification:
 
 ```text
-New seller lead
+New property inquiry
 Business Bay · 2 BR · 118 m²
 Indicative range: AED 2.8M - 3.4M
 Contact via WhatsApp
@@ -218,7 +218,7 @@ Contact via WhatsApp
 
 Overlay text:
 ```text
-From valuation request to qualified lead.
+From public interest to agent follow-up.
 من طلب تقييم إلى فرصة بيع مؤهلة.
 ```
 
@@ -275,11 +275,11 @@ Every Dubai property owner wants to know the real value of their property.
 
 FonatProp gives brokerages an instant AI valuation engine trained on verified Dubai market data.
 
-And with our embeddable widget, your website captures seller leads automatically:
+And with our embeddable widget, your website captures property-owner inquiries automatically:
 name, phone, property, valuation range, and direct handoff to your agent.
 
 FonatProp.
-AI valuation and seller lead capture for Dubai brokerages.
+Private AI valuation and public inquiry capture for Dubai brokerages.
 ```
 
 ## Sora Master Prompt
@@ -287,7 +287,7 @@ AI valuation and seller lead capture for Dubai brokerages.
 Use this only if you want Sora to generate a full concept draft. For the final, generate shot by shot.
 
 ```text
-Create a premium cinematic commercial for a Dubai real estate technology company called FonatProp. The story: property owners in Dubai want to know the real value of their property; AI market data makes hidden value visible; a brokerage website widget captures the visitor as a qualified seller lead. Visual style inspired by high-end fintech commercials: realistic Dubai skyline, elegant office interiors, shallow depth of field, slow cinematic camera movement, subtle blue-white data particles, luxury but restrained, not cyberpunk. No readable generated UI text, no fake logos, no cartoon style. Include scenes of an owner looking at a phone, market data flowing like light through Dubai buildings, a broker receiving a lead, and a final sunrise skyline. Keep it realistic, premium, serious, and suitable for a meeting with Dubai brokerages.
+Create a premium cinematic commercial for a Dubai real estate technology company called FonatProp. The story: property owners in Dubai want to know the real value of their property; AI market data makes hidden value visible for brokerages; a brokerage website widget captures the visitor as a qualified property-owner inquiry. Visual style inspired by high-end fintech commercials: realistic Dubai skyline, elegant office interiors, shallow depth of field, slow cinematic camera movement, subtle blue-white data particles, luxury but restrained, not cyberpunk. No readable generated UI text, no fake logos, no cartoon style. Include scenes of an owner looking at a phone, market data flowing like light through Dubai buildings, a broker receiving an inquiry, and a final sunrise skyline. Keep it realistic, premium, serious, and suitable for a meeting with Dubai brokerages.
 ```
 
 ## Runway / Seedance Alternate Prompts
@@ -309,7 +309,7 @@ Close-up of a modern smartphone in a broker's hand inside a luxury Dubai office,
 ### Broker outcome
 
 ```text
-Professional Dubai real estate agent in a modern office receiving a seller lead on phone, calm confident smile, skyline behind glass, premium corporate commercial, realistic, soft daylight, no text
+Professional Dubai real estate agent in a modern office receiving a qualified property inquiry on phone, calm confident smile, skyline behind glass, premium corporate commercial, realistic, soft daylight, no text
 ```
 
 ## Editing Rules
@@ -347,13 +347,13 @@ Use this order:
 2. Say: "This is the client-facing experience we can install on a brokerage website."
 3. Open `https://fonatprop.com/broker-demo`.
 4. Demonstrate valuation.
-5. Demonstrate widget lead capture.
+5. Demonstrate widget inquiry capture.
 6. Close with pilot offer.
 
 Pilot line:
 
 ```text
-We can launch this on one brokerage website first, track seller leads for 30 days, and then decide whether to expand it across your agents and landing pages.
+We can launch this on one brokerage website first, track qualified inquiries for 30 days, and then decide whether to expand it across your agents and landing pages.
 ```
 
 ## Final CTA Slide
@@ -362,11 +362,10 @@ We can launch this on one brokerage website first, track seller leads for 30 day
 FonatProp for Broker Websites
 
 Instant AI valuation
-Seller lead capture
+Public inquiry capture
 WhatsApp / email handoff
 One-line installation
 
 Pilot: 30 days
 Demo: https://fonatprop.com/broker-demo
 ```
-
