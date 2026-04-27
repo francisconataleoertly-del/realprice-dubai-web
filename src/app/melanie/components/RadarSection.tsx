@@ -254,7 +254,7 @@ export default function RadarSection() {
   return (
     <section id="radar" className="relative min-h-screen overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-cover bg-center bg-fixed" style={{ backgroundImage: "url('/dubai-tower-bg.jpg')" }} />
+      <div className="absolute inset-0 bg-cover bg-center md:bg-fixed" style={{ backgroundImage: "url('/dubai-tower-bg.jpg')" }} />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/60 via-[#0a0a0f]/75 to-[#0a0a0f]" />
 
       <div className="relative z-10 px-4 md:px-8 lg:px-16 py-28">

@@ -557,7 +557,7 @@ export default function ValorarSection({
   return (
     <section id="valorar" className="relative min-h-screen overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed transition-all duration-700"
+        className="absolute inset-0 bg-cover bg-center transition-all duration-700 md:bg-fixed"
         style={{
           backgroundImage: "url('/dubai-valuation-bg.jpg')",
           filter: focused ? "blur(4px) scale(1.03)" : "blur(0px) scale(1)",

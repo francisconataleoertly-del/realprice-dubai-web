@@ -14,7 +14,7 @@
   // Banner mode (horizontal hero card on agency websites)
   var DEFAULT_BANNER_TITLE = "Want to know how much a property is worth?";
   var DEFAULT_BANNER_CTA = "Get your free valuation";
-  var DEFAULT_BANNER_BG = "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=80";
+  var DEFAULT_BANNER_BG = "https://fonatprop.com/dubai-slides/03-burj-al-arab.jpg";
   // Real Dubai market benchmarks (kept general — for the precise number, the agency takes over)
   var DUBAI_MARKET_BENCHMARK = {
     avgPsf: "AED 1,650",

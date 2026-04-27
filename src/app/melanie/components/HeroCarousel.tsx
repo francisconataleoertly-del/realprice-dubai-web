@@ -42,7 +42,7 @@ export default function HeroCarousel() {
   }, [current, goTo]);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative min-h-[100svh] w-full overflow-hidden md:min-h-screen">
       {/* Slides */}
       {SLIDES.map((src, i) => (
         <div
@@ -60,7 +60,7 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 bg-black/45 z-10" />
 
       {/* Content */}
-      <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
+      <div className="relative z-20 flex min-h-[100svh] flex-col items-center justify-center px-6 py-28 text-center md:min-h-screen">
         <FonatPropLogo
           variant="lockup"
           className="mb-8 h-auto w-full max-w-[380px] rounded-2xl opacity-90 shadow-[0_24px_80px_rgba(0,0,0,0.28)]"

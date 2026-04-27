@@ -1,0 +1,104 @@
+﻿[
+    {
+        "path":  "public/dubai-slides/01-marina-skyline.jpg",
+        "source":  "https://unsplash.com/photos/a-panoramic-view-of-a-marina-and-a-city-g9wIpPZgMv0",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:08"
+    },
+    {
+        "path":  "public/dubai-slides/02-burj-khalifa.jpg",
+        "source":  "https://unsplash.com/photos/the-burj-khalifa-dominates-the-dubai-skyline-Bu435tjPsvk",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:14"
+    },
+    {
+        "path":  "public/dubai-slides/03-burj-al-arab.jpg",
+        "source":  "https://unsplash.com/photos/burj-al-arab-dubai-7tb-b37yHx4",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:22"
+    },
+    {
+        "path":  "public/dubai-slides/04-marina-night.jpg",
+        "source":  "https://unsplash.com/photos/city-skyline-illuminated-at-dusk-with-colorful-sky-6gAHA4cQ7r8",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:28"
+    },
+    {
+        "path":  "public/dubai-slides/05-downtown-night.jpg",
+        "source":  "https://unsplash.com/photos/burj-khalifa-dubai-CvA7LJk2M_A",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:30"
+    },
+    {
+        "path":  "public/dubai-slides/06-sunset-silhouette.jpg",
+        "source":  "https://unsplash.com/photos/dubai-skyline-silhouetted-against-an-orange-sky-TgzCR3IYTg4",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:33"
+    },
+    {
+        "path":  "public/dubai-slides/07-marina-aerial.jpg",
+        "source":  "https://unsplash.com/photos/a-marina-filled-with-lots-of-boats-next-to-tall-buildings-uClqGE81DHs",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:39"
+    },
+    {
+        "path":  "public/dubai-slides/08-camels-desert.jpg",
+        "source":  "https://unsplash.com/photos/three-camels-lying-on-sand-ZPzl-RlAvHM",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:46"
+    },
+    {
+        "path":  "public/dubai-slides/09-palm-aerial.jpg",
+        "source":  "https://unsplash.com/photos/aerial-view-of-a-coastal-city-with-many-buildings-psfPhKbF-mw",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:50"
+    },
+    {
+        "path":  "public/dubai-slides/10-golf-skyline.jpg",
+        "source":  "https://unsplash.com/photos/dubai-skyline-towers-over-a-beach-_Fbm03ABx5E",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:53"
+    },
+    {
+        "path":  "public/dubai-slides/business-bay.jpg",
+        "source":  "https://unsplash.com/photos/dubais-skyline-featuring-the-burj-khalifa-lMo2HjtoUpM",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:09:58"
+    },
+    {
+        "path":  "public/dubai-hero.jpg",
+        "source":  "https://unsplash.com/photos/the-burj-khalifa-dominates-the-dubai-skyline-Bu435tjPsvk",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:03"
+    },
+    {
+        "path":  "public/dubai-valuation-bg.jpg",
+        "source":  "https://unsplash.com/photos/dubais-skyline-featuring-the-burj-khalifa-lMo2HjtoUpM",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:07"
+    },
+    {
+        "path":  "public/dubai-palm-bg.jpg",
+        "source":  "https://unsplash.com/photos/aerial-view-of-a-coastal-city-with-many-buildings-psfPhKbF-mw",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:09"
+    },
+    {
+        "path":  "public/dubai-beach-bg.jpg",
+        "source":  "https://unsplash.com/photos/burj-al-arab-dubai-7tb-b37yHx4",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:16"
+    },
+    {
+        "path":  "public/dubai-tower-bg.jpg",
+        "source":  "https://unsplash.com/photos/burj-khalifa-dubai-CvA7LJk2M_A",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:18"
+    },
+    {
+        "path":  "public/dubai-construction-bg.jpg",
+        "source":  "https://unsplash.com/photos/dubais-skyline-featuring-the-burj-khalifa-lMo2HjtoUpM",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T18:10:22"
+    }
+]

@@ -30,7 +30,7 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative min-h-[100svh] w-full overflow-hidden md:min-h-screen">
       {/* Slides with Ken Burns */}
       {SLIDES.map((src, i) => (
         <div
@@ -54,7 +54,7 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(10,10,15,0.35) 80%)" }} />
 
       {/* Content */}
-      <div className="relative z-20 h-full flex flex-col items-start justify-center px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+      <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-7xl flex-col items-start justify-center px-6 py-28 md:min-h-screen md:px-12 lg:px-24">
         <div className="max-w-4xl">
           <FonatPropLogo
             variant="lockup"
