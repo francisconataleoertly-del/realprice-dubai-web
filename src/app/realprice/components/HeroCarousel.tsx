@@ -58,7 +58,7 @@ export default function HeroCarousel() {
         <div className="max-w-4xl">
           <FonatPropLogo
             variant="lockup"
-            className="mb-10 h-auto w-full max-w-[390px] rounded-2xl opacity-90 shadow-[0_24px_80px_rgba(0,0,0,0.28)]"
+            className="mb-10 h-auto w-full max-w-[390px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
             priority
           />
 

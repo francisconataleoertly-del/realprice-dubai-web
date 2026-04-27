@@ -2,9 +2,9 @@ import Image from "next/image";
 
 const LOGOS = {
   lockup: {
-    src: "/brand/fonatprop-logo-lockup.webp",
-    width: 1280,
-    height: 400,
+    src: "/brand/fonatprop-logo-lockup-transparent.webp",
+    width: 1172,
+    height: 350,
     alt: "FonatProp - AI-powered real estate intelligence",
   },
   nav: {

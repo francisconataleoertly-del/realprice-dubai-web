@@ -223,7 +223,7 @@ export default function BrokerDemoClient() {
         <div className="relative mx-auto max-w-7xl">
           <FonatPropLogo
             variant="lockup"
-            className="mb-10 h-auto w-full max-w-[430px] rounded-2xl opacity-95 shadow-[0_24px_80px_rgba(0,0,0,0.32)]"
+            className="mb-10 h-auto w-full max-w-[430px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.58)]"
             priority
           />
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
