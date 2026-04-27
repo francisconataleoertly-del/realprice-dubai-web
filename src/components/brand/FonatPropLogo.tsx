@@ -3,14 +3,14 @@ import Image from "next/image";
 const LOGOS = {
   lockup: {
     src: "/brand/fonatprop-logo-lockup.webp",
-    width: 1260,
-    height: 471,
+    width: 1280,
+    height: 400,
     alt: "FonatProp - AI-powered real estate intelligence",
   },
   nav: {
     src: "/brand/fonatprop-logo-nav.webp",
     width: 1000,
-    height: 303,
+    height: 363,
     alt: "FonatProp",
   },
   mark: {
