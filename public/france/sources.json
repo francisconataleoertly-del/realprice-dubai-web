@@ -1,5 +1,11 @@
 ﻿[
     {
+        "path":  "public/france/eiffel-tower-night.jpg",
+        "source":  "https://unsplash.com/photos/eiffel-tower-in-paris-during-night-time-Xtruau_16w0",
+        "license":  "Unsplash License",
+        "downloaded_at":  "2026-04-27T20:36:00"
+    },
+    {
         "path":  "public/france/eiffel-tower-hero.jpg",
         "source":  "https://unsplash.com/photos/a-black-and-white-photo-of-the-eiffel-tower-vAOMId7FCgA",
         "license":  "Unsplash License",

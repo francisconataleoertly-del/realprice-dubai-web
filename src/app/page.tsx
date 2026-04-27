@@ -8,7 +8,7 @@ const markets = [
     eyebrow: "Market I / Europe",
     title: "France",
     subtitle: "Paris, DVF transactions, notaires, rental yields and renovation intelligence.",
-    image: "/france/eiffel-tower-hero.jpg",
+    image: "/france/eiffel-tower-night.jpg",
     align: "items-start text-left justify-end",
     gradient:
       "bg-[linear-gradient(90deg,rgba(5,6,10,0.58),rgba(5,6,10,0.34)_45%,rgba(5,6,10,0.72))]",
