@@ -4,7 +4,7 @@ import Script from "next/script";
 
 import GoogleMapsLoader from "@/app/realprice/components/GoogleMapsLoader";
 import ValorarSection from "@/app/realprice/components/ValorarSection";
-import FonatPropMotionLogo from "@/components/brand/FonatPropMotionLogo";
+import FonatPropLogo from "@/components/brand/FonatPropLogo";
 
 const installSnippet = `<div
   data-realprice-widget
@@ -221,8 +221,9 @@ export default function BrokerDemoClient() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(59,130,246,0.16),transparent_32%),linear-gradient(90deg,rgba(10,10,15,0.76),rgba(10,10,15,0.36)_48%,rgba(10,10,15,0.62))]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/18 via-[#0a0a0f]/48 to-[#0a0a0f]/92" />
         <div className="relative mx-auto max-w-7xl">
-          <FonatPropMotionLogo
-            className="mb-10 aspect-video w-full max-w-[450px] opacity-95"
+          <FonatPropLogo
+            variant="lockup"
+            className="mb-10 h-auto w-full max-w-[430px] rounded-2xl opacity-95 shadow-[0_24px_80px_rgba(0,0,0,0.32)]"
             priority
           />
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
