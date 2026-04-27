@@ -74,19 +74,28 @@ export default function HomePage() {
         ))}
 
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
-          <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-white/18 bg-[#05060a]/58 shadow-[0_28px_90px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:h-32 md:w-32">
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_25%,rgba(96,165,250,0.28),transparent_42%)]" />
-            <Image
-              src="/brand/fonatprop-mark.webp"
-              alt="FonatProp"
-              width={92}
-              height={92}
-              className="relative h-14 w-14 object-contain md:h-20 md:w-20"
-              priority
-            />
+          <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-white/20 bg-[#05060a]/46 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.58)] backdrop-blur-2xl md:h-36 md:w-36">
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_25%,rgba(96,165,250,0.30),transparent_40%)]" />
+            <div className="absolute inset-[-1px] rounded-full border border-white/8" />
+            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-[#05060a]/72">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_78%,rgba(59,130,246,0.28),transparent_34%)]" />
+              <Image
+                src="/brand/fonatprop-final-icon.webp"
+                alt="FonatProp"
+                width={120}
+                height={120}
+                className="relative h-full w-full scale-[1.12] rounded-full object-cover"
+                priority
+              />
+            </div>
           </div>
-          <div className="mt-4 hidden rounded-full border border-white/12 bg-black/24 px-5 py-2 font-mono text-[9px] uppercase tracking-[0.32em] text-white/58 backdrop-blur-xl md:block">
-            Choose market
+          <div className="mt-4 flex flex-col items-center text-center drop-shadow-[0_18px_44px_rgba(0,0,0,0.7)] md:mt-5">
+            <span className="font-['Fraunces'] text-2xl font-light tracking-[-0.05em] text-white md:text-4xl">
+              FonatProp
+            </span>
+            <span className="mt-1 max-w-[220px] font-mono text-[8px] uppercase tracking-[0.32em] text-white/58 md:text-[9px]">
+              AI-powered real estate intelligence
+            </span>
           </div>
         </div>
 

@@ -16,6 +16,10 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
 
+  if (pathname === "/") {
+    return null;
+  }
+
   if (pathname?.startsWith("/broker-demo")) {
     return (
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#05060a]/92 text-white backdrop-blur-2xl">
