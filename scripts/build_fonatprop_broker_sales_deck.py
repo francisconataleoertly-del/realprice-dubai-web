@@ -1,39 +1,27 @@
 from __future__ import annotations
 
+import shutil
+import tempfile
 import zipfile
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from pptx import Presentation
-from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
-from pptx.util import Inches, Pt
+from pptx.util import Inches
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DESKTOP = Path.home() / "OneDrive" / "Desktop" / "FonatProp_Broker_Deck_PREMIUM.pptx"
 OUT_DOWNLOADS = Path.home() / "Downloads" / "FonatProp_Broker_Deck_PREMIUM.pptx"
+DEMO_URL = "https://fonatprop.com/broker-demo"
 
+W, H = 1920, 1080
 SLIDE_W = Inches(13.333)
 SLIDE_H = Inches(7.5)
 
-BG = RGBColor(3, 5, 10)
-INK = RGBColor(246, 248, 252)
-SOFT = RGBColor(184, 191, 205)
-MUTED = RGBColor(117, 128, 148)
-LINE = RGBColor(50, 68, 105)
-BLUE = RGBColor(59, 130, 246)
-CYAN = RGBColor(118, 196, 255)
-GOLD = RGBColor(232, 193, 108)
-CARD = RGBColor(7, 11, 21)
-
-LOGO = ROOT / "public" / "brand" / "fonatprop-logo-nav.png"
-MARK = ROOT / "public" / "brand" / "fonatprop-final-icon.png"
-QR = ROOT / "public" / "brand" / "broker-demo-qr.png"
-DEMO_URL = "https://fonatprop.com/broker-demo"
-
-BACKGROUNDS = [
+BG_IMAGES = [
     ROOT / "public" / "dubai-slides" / "02-burj-khalifa.jpg",
     ROOT / "public" / "dubai-slides" / "01-marina-skyline.jpg",
     ROOT / "public" / "dubai-slides" / "04-marina-night.jpg",
@@ -42,212 +30,395 @@ BACKGROUNDS = [
     ROOT / "public" / "dubai-slides" / "05-downtown-night.jpg",
 ]
 
+LOGO = ROOT / "public" / "brand" / "fonatprop-logo-nav.png"
+MARK = ROOT / "public" / "brand" / "fonatprop-final-icon.png"
+QR = ROOT / "public" / "brand" / "broker-demo-qr.png"
 
-def add_picture_cover(slide, image_path: Path, opacity_cover: int = 26) -> None:
-    slide.background.fill.solid()
-    slide.background.fill.fore_color.rgb = BG
-    if image_path.exists():
-        slide.shapes.add_picture(str(image_path), 0, 0, width=SLIDE_W, height=SLIDE_H)
-
-    # Layered overlays keep photos visible while preserving dark premium contrast.
-    overlay = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0, 0, SLIDE_W, SLIDE_H)
-    overlay.fill.solid()
-    overlay.fill.fore_color.rgb = RGBColor(2, 4, 9)
-    overlay.fill.transparency = opacity_cover
-    overlay.line.fill.background()
-
-    vignette = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0, 0, SLIDE_W, SLIDE_H)
-    vignette.fill.solid()
-    vignette.fill.fore_color.rgb = RGBColor(0, 0, 0)
-    vignette.fill.transparency = 58
-    vignette.line.fill.background()
-
-    panel = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0, 0, Inches(7.2), SLIDE_H)
-    panel.fill.solid()
-    panel.fill.fore_color.rgb = RGBColor(0, 0, 0)
-    panel.fill.transparency = 36
-    panel.line.fill.background()
+WHITE = (248, 250, 252)
+SOFT = (194, 201, 216)
+MUTED = (134, 145, 166)
+BLUE = (82, 152, 255)
+CYAN = (112, 202, 255)
+GOLD = (235, 196, 105)
+CARD = (8, 13, 25, 215)
+CARD2 = (9, 15, 29, 232)
+INK = (3, 5, 10)
 
 
-def add_logo(slide, x: float = 0.62, y: float = 0.36, w: float = 1.58) -> None:
-    if LOGO.exists():
-        slide.shapes.add_picture(str(LOGO), Inches(x), Inches(y), width=Inches(w))
-    elif MARK.exists():
-        slide.shapes.add_picture(str(MARK), Inches(x), Inches(y), width=Inches(0.46))
+def font(name: str, size: int) -> ImageFont.FreeTypeFont:
+    candidates = {
+        "serif": [
+            "C:/Windows/Fonts/georgiab.ttf",
+            "C:/Windows/Fonts/georgia.ttf",
+            "C:/Windows/Fonts/timesbd.ttf",
+        ],
+        "serif_i": [
+            "C:/Windows/Fonts/georgiai.ttf",
+            "C:/Windows/Fonts/georgia.ttf",
+        ],
+        "sans": [
+            "C:/Windows/Fonts/aptos.ttf",
+            "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/arial.ttf",
+        ],
+        "sans_b": [
+            "C:/Windows/Fonts/aptosbd.ttf",
+            "C:/Windows/Fonts/segoeuib.ttf",
+            "C:/Windows/Fonts/arialbd.ttf",
+        ],
+        "mono": [
+            "C:/Windows/Fonts/consolab.ttf",
+            "C:/Windows/Fonts/consola.ttf",
+        ],
+    }
+    for path in candidates[name]:
+        if Path(path).exists():
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default()
 
 
-def textbox(slide, text: str, x: float, y: float, w: float, h: float):
-    shape = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
-    tf = shape.text_frame
-    tf.clear()
-    tf.margin_left = 0
-    tf.margin_right = 0
-    tf.margin_top = 0
-    tf.margin_bottom = 0
-    tf.word_wrap = True
-    p = tf.paragraphs[0]
-    p.text = text
-    return shape, tf, p
+SERIF_88 = font("serif", 88)
+SERIF_78 = font("serif", 78)
+SERIF_66 = font("serif", 66)
+SERIF_56 = font("serif", 56)
+SERIF_I_76 = font("serif_i", 76)
+SERIF_I_58 = font("serif_i", 58)
+SANS_32 = font("sans", 32)
+SANS_28 = font("sans", 28)
+SANS_24 = font("sans", 24)
+SANS_22 = font("sans", 22)
+SANS_20 = font("sans", 20)
+SANS_18 = font("sans", 18)
+SANS_B_34 = font("sans_b", 34)
+SANS_B_28 = font("sans_b", 28)
+SANS_B_22 = font("sans_b", 22)
+SANS_B_18 = font("sans_b", 18)
+MONO_18 = font("mono", 18)
+MONO_15 = font("mono", 15)
 
 
-def label(slide, text: str, x: float, y: float, w: float = 4.8, color: RGBColor = CYAN) -> None:
-    _, _, p = textbox(slide, text.upper(), x, y, w, 0.25)
-    p.font.name = "Aptos"
-    p.font.size = Pt(8.5)
-    p.font.bold = True
-    p.font.color.rgb = color
-    p.font.letter_spacing = Pt(2.8)
+def cover_image(path: Path) -> Image.Image:
+    img = Image.open(path).convert("RGB")
+    ratio = max(W / img.width, H / img.height)
+    new_size = (int(img.width * ratio), int(img.height * ratio))
+    img = img.resize(new_size, Image.Resampling.LANCZOS)
+    left = (img.width - W) // 2
+    top = (img.height - H) // 2
+    return img.crop((left, top, left + W, top + H))
 
 
-def title(slide, first: str, second: str | None = None, x: float = 0.68, y: float = 1.34, w: float = 7.7) -> None:
-    _, tf, p = textbox(slide, first, x, y, w, 1.18)
-    p.font.name = "Georgia"
-    p.font.size = Pt(48 if len(first) < 28 else 42)
-    p.font.color.rgb = INK
-    p.line_spacing = 0.9
-    if second:
-        p2 = tf.add_paragraph()
-        p2.text = second
-        p2.font.name = "Georgia"
-        p2.font.size = Pt(44 if len(second) < 28 else 38)
-        p2.font.italic = True
-        p2.font.color.rgb = SOFT
-        p2.line_spacing = 0.9
+def premium_bg(path: Path, dark: int = 88) -> Image.Image:
+    img = cover_image(path)
+    img = ImageEnhance.Brightness(img).enhance(0.98)
+    img = ImageEnhance.Contrast(img).enhance(1.15)
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, dark))
+    img = Image.alpha_composite(img.convert("RGBA"), overlay)
+
+    # Soft left readability gradient, without killing the photo.
+    grad = Image.new("L", (W, H), 0)
+    draw = ImageDraw.Draw(grad)
+    for x in range(W):
+        alpha = int(max(0, 150 * (1 - x / 1120)))
+        draw.line((x, 0, x, H), fill=alpha)
+    left = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    left.putalpha(grad)
+    img = Image.alpha_composite(img, left)
+
+    # Vignette border.
+    vignette = Image.new("L", (W, H), 0)
+    vd = ImageDraw.Draw(vignette)
+    for i in range(220):
+        alpha = int((i / 220) ** 2 * 160)
+        vd.rectangle((i, i, W - i, H - i), outline=alpha)
+    black = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    black.putalpha(vignette.filter(ImageFilter.GaussianBlur(28)))
+    return Image.alpha_composite(img, black)
 
 
-def body(slide, text: str, x: float, y: float, w: float, h: float = 0.9, size: int = 15, color: RGBColor = SOFT) -> None:
-    _, _, p = textbox(slide, text, x, y, w, h)
-    p.font.name = "Aptos"
-    p.font.size = Pt(size)
-    p.font.color.rgb = color
-    p.line_spacing = 1.15
+def paste_logo(canvas: Image.Image, xy: tuple[int, int] = (92, 70), width: int = 214) -> None:
+    path = LOGO if LOGO.exists() else MARK
+    if not path.exists():
+        return
+    logo = Image.open(path).convert("RGBA")
+    ratio = width / logo.width
+    logo = logo.resize((width, int(logo.height * ratio)), Image.Resampling.LANCZOS)
+    canvas.alpha_composite(logo, xy)
 
 
-def line(slide, x: float, y: float, w: float = 1.05, color: RGBColor = BLUE) -> None:
-    shape = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(0.025))
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = color
-    shape.line.fill.background()
+def draw_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, fnt, fill=WHITE, spacing=8) -> None:
+    draw.multiline_text(xy, text, font=fnt, fill=fill, spacing=spacing)
 
 
-def glass_card(slide, x: float, y: float, w: float, h: float, border: RGBColor = LINE, fill: RGBColor = CARD):
-    shape = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h))
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = fill
-    shape.fill.transparency = 8
-    shape.line.color.rgb = border
-    shape.line.transparency = 18
-    return shape
+def wrap_text(text: str, fnt, max_width: int) -> list[str]:
+    words = text.split()
+    lines: list[str] = []
+    cur = ""
+    scratch = Image.new("RGB", (10, 10))
+    d = ImageDraw.Draw(scratch)
+    for word in words:
+        trial = f"{cur} {word}".strip()
+        if d.textbbox((0, 0), trial, font=fnt)[2] <= max_width:
+            cur = trial
+        else:
+            if cur:
+                lines.append(cur)
+            cur = word
+    if cur:
+        lines.append(cur)
+    return lines
 
 
-def metric_card(slide, x: float, y: float, metric: str, caption: str, w: float = 1.85) -> None:
-    glass_card(slide, x, y, w, 0.86)
-    _, _, p = textbox(slide, metric, x + 0.18, y + 0.14, w - 0.36, 0.32)
-    p.font.name = "Georgia"
-    p.font.size = Pt(24)
-    p.font.bold = True
-    p.font.color.rgb = INK
-    _, _, p = textbox(slide, caption.upper(), x + 0.18, y + 0.54, w - 0.36, 0.18)
-    p.font.name = "Aptos"
-    p.font.size = Pt(6.7)
-    p.font.bold = True
-    p.font.color.rgb = MUTED
-    p.font.letter_spacing = Pt(1.2)
+def paragraph(draw: ImageDraw.ImageDraw, text: str, x: int, y: int, max_width: int, fnt, fill=SOFT, line_gap: int = 12) -> int:
+    lines = wrap_text(text, fnt, max_width)
+    line_h = dheight(fnt) + line_gap
+    for i, line_text in enumerate(lines):
+        draw.text((x, y + i * line_h), line_text, font=fnt, fill=fill)
+    return y + len(lines) * line_h
 
 
-def bullet_panel(slide, eyebrow: str, bullets: list[str], x: float, y: float, w: float, h: float) -> None:
-    glass_card(slide, x, y, w, h)
-    label(slide, eyebrow, x + 0.32, y + 0.32, w - 0.64, BLUE)
-    top = y + 0.84
-    for i, item in enumerate(bullets):
-        dot = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.OVAL, Inches(x + 0.34), Inches(top + i * 0.62 + 0.08), Inches(0.08), Inches(0.08))
-        dot.fill.solid()
-        dot.fill.fore_color.rgb = BLUE if i == 0 else CYAN
-        dot.line.fill.background()
-        _, _, p = textbox(slide, item, x + 0.58, top + i * 0.62, w - 0.88, 0.34)
-        p.font.name = "Aptos"
-        p.font.size = Pt(13.6)
-        p.font.color.rgb = INK if i == 0 else SOFT
+def dheight(fnt) -> int:
+    box = fnt.getbbox("Ag")
+    return box[3] - box[1]
 
 
-def product_card(slide, x: float, y: float, title_text: str, description: str, tag: str) -> None:
-    glass_card(slide, x, y, 5.72, 1.52, BLUE if tag == "PRIVATE" else GOLD)
-    label(slide, tag, x + 0.28, y + 0.22, 2.0, GOLD if tag == "PUBLIC" else BLUE)
-    _, _, p = textbox(slide, title_text, x + 0.28, y + 0.56, 4.95, 0.32)
-    p.font.name = "Georgia"
-    p.font.size = Pt(20)
-    p.font.color.rgb = INK
-    _, _, p = textbox(slide, description, x + 0.28, y + 0.94, 5.05, 0.38)
-    p.font.name = "Aptos"
-    p.font.size = Pt(11.8)
-    p.font.color.rgb = SOFT
+def label(draw: ImageDraw.ImageDraw, text: str, x: int, y: int, fill=CYAN) -> None:
+    draw.text((x, y), text.upper(), font=MONO_18, fill=fill)
+    draw.rounded_rectangle((x, y + 34, x + 132, y + 39), radius=2, fill=fill)
 
 
-def pricing_card(slide, x: float, y: float, w: float, h: float, name: str, aed: str, usd: str, featured: bool = False) -> None:
-    glass_card(slide, x, y, w, h, GOLD if featured else LINE, RGBColor(9, 14, 26))
+def footer(draw: ImageDraw.ImageDraw, idx: int) -> None:
+    draw.text((1660, 1018), f"0{idx} / FONATPROP", font=MONO_15, fill=(126, 136, 154))
+
+
+def rounded_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], fill=CARD, outline=(57, 83, 130), width=2, radius=28) -> None:
+    draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
+
+
+def metric(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], value: str, cap: str) -> None:
+    rounded_card(draw, box, fill=(8, 13, 25, 190), outline=(65, 101, 166), radius=20)
+    x1, y1, x2, _ = box
+    draw.text((x1 + 24, y1 + 18), value, font=SERIF_56, fill=WHITE)
+    draw.text((x1 + 24, y1 + 92), cap.upper(), font=MONO_15, fill=MUTED)
+
+
+def bullet_panel(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], title_text: str, bullets: list[str]) -> None:
+    rounded_card(draw, box, fill=(8, 13, 25, 228), outline=(74, 109, 171), radius=38)
+    x1, y1, x2, _ = box
+    draw.text((x1 + 44, y1 + 42), title_text.upper(), font=MONO_18, fill=BLUE)
+    y = y1 + 108
+    for i, bullet in enumerate(bullets):
+        draw.ellipse((x1 + 44, y + 10, x1 + 56, y + 22), fill=BLUE if i == 0 else CYAN)
+        y = paragraph(draw, bullet, x1 + 84, y, x2 - x1 - 132, SANS_24, WHITE if i == 0 else SOFT, 8) + 20
+
+
+def product_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], tag: str, title_text: str, copy: str, accent) -> None:
+    rounded_card(draw, box, fill=CARD2, outline=accent, radius=24, width=3)
+    x1, y1, x2, _ = box
+    draw.text((x1 + 34, y1 + 30), tag.upper(), font=MONO_15, fill=accent)
+    draw.text((x1 + 34, y1 + 78), title_text, font=SERIF_56, fill=WHITE)
+    paragraph(draw, copy, x1 + 34, y1 + 156, x2 - x1 - 68, SANS_22, SOFT, 8)
+
+
+def step_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], number: str, title_text: str, copy: str) -> None:
+    rounded_card(draw, box, fill=(8, 13, 25, 214), outline=(67, 97, 154), radius=22)
+    x1, y1, x2, _ = box
+    draw.text((x1 + 28, y1 + 28), number, font=MONO_18, fill=BLUE)
+    draw.text((x1 + 78, y1 + 22), title_text, font=SERIF_56, fill=WHITE)
+    paragraph(draw, copy, x1 + 28, y1 + 92, x2 - x1 - 56, SANS_20, SOFT, 8)
+
+
+def pricing_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], name: str, aed: str, usd: str, accent, featured=False) -> None:
+    rounded_card(draw, box, fill=(8, 13, 25, 235), outline=accent, width=3 if featured else 2, radius=26)
+    x1, y1, x2, _ = box
     if featured:
-        ribbon = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(x + 0.28), Inches(y + 0.18), Inches(1.18), Inches(0.26))
-        ribbon.fill.solid()
-        ribbon.fill.fore_color.rgb = GOLD
-        ribbon.line.fill.background()
-        _, _, p = textbox(slide, "POPULAR", x + 0.42, y + 0.235, 0.82, 0.12)
-        p.font.name = "Aptos"
-        p.font.size = Pt(6.5)
-        p.font.bold = True
-        p.font.color.rgb = RGBColor(7, 10, 18)
-        p.alignment = PP_ALIGN.CENTER
-        name_y = y + 0.58
+        draw.rounded_rectangle((x1 + 28, y1 + 24, x1 + 174, y1 + 58), radius=8, fill=accent)
+        draw.text((x1 + 58, y1 + 32), "POPULAR", font=MONO_15, fill=INK)
+        name_y = y1 + 82
     else:
-        name_y = y + 0.34
-
-    _, _, p = textbox(slide, name, x + 0.26, name_y, w - 0.52, 0.38)
-    p.font.name = "Aptos"
-    p.font.size = Pt(12.4)
-    p.font.bold = True
-    p.font.color.rgb = SOFT
-    p.alignment = PP_ALIGN.CENTER
-
-    _, _, p = textbox(slide, aed, x + 0.18, y + 1.03, w - 0.36, 0.46)
-    p.font.name = "Georgia"
-    p.font.size = Pt(23 if len(aed) < 10 else 20)
-    p.font.bold = True
-    p.font.color.rgb = INK
-    p.alignment = PP_ALIGN.CENTER
-
-    _, _, p = textbox(slide, usd, x + 0.2, y + 1.56, w - 0.4, 0.22)
-    p.font.name = "Aptos"
-    p.font.size = Pt(9.5)
-    p.font.color.rgb = MUTED
-    p.alignment = PP_ALIGN.CENTER
+        name_y = y1 + 45
+    draw.text((x1 + 28, name_y), name, font=SANS_B_22, fill=SOFT)
+    price_font = SERIF_56 if (x2 - x1) >= 300 and len(aed) <= 9 else SERIF_66 if len(aed) <= 8 else SANS_B_34
+    if (x2 - x1) < 280:
+        price_font = SANS_B_34
+    price_box = draw.textbbox((0, 0), aed, font=price_font)
+    price_w = price_box[2] - price_box[0]
+    draw.text((x1 + ((x2 - x1) - price_w) / 2, y1 + 128), aed, font=price_font, fill=WHITE)
+    usd_box = draw.textbbox((0, 0), usd, font=SANS_20)
+    usd_w = usd_box[2] - usd_box[0]
+    draw.text((x1 + ((x2 - x1) - usd_w) / 2, y1 + 206), usd, font=SANS_20, fill=MUTED)
 
 
-def step_card(slide, i: int, x: float, title_text: str, copy: str) -> None:
-    glass_card(slide, x, 4.35, 2.8, 1.28)
-    label(slide, f"0{i}", x + 0.22, 4.58, 0.7, BLUE)
-    _, _, p = textbox(slide, title_text, x + 0.64, 4.54, 1.9, 0.26)
-    p.font.name = "Georgia"
-    p.font.size = Pt(18)
-    p.font.color.rgb = INK
-    _, _, p = textbox(slide, copy, x + 0.24, 4.96, 2.26, 0.4)
-    p.font.name = "Aptos"
-    p.font.size = Pt(10.7)
-    p.font.color.rgb = SOFT
+def slide_1() -> Image.Image:
+    img = premium_bg(BG_IMAGES[0], 80)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img, (92, 72), 230)
+    label(draw, "Founder intro", 96, 210)
+    draw.text((96, 282), "Private AI valuations.", font=SERIF_88, fill=WHITE)
+    draw.text((96, 382), "Public lead capture.", font=SERIF_I_76, fill=SOFT)
+    paragraph(
+        draw,
+        "Francisco Natale Oertly, 22, from Argentina. Building FonatProp for Dubai brokerages: a private valuation engine for agents and a public website widget that turns property curiosity into qualified conversations.",
+        100,
+        520,
+        930,
+        SANS_28,
+        SOFT,
+        12,
+    )
+    metric(draw, (100, 770, 388, 918), "234K+", "Dubai transactions")
+    metric(draw, (428, 770, 716, 918), "AI", "agent valuation")
+    metric(draw, (756, 770, 1044, 918), "1 script", "widget install")
+    footer(draw, 1)
+    return img
 
 
-def footer(slide, idx: int) -> None:
-    _, _, p = textbox(slide, f"0{idx} / FONATPROP", 11.4, 7.05, 1.25, 0.16)
-    p.font.name = "Aptos"
-    p.font.size = Pt(7.2)
-    p.font.color.rgb = MUTED
-    p.alignment = PP_ALIGN.RIGHT
+def slide_2() -> Image.Image:
+    img = premium_bg(BG_IMAGES[1], 72)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img)
+    label(draw, "The problem", 96, 214)
+    draw.text((96, 292), "Premium websites.", font=SERIF_88, fill=WHITE)
+    draw.text((96, 392), "Weak conversion.", font=SERIF_I_76, fill=SOFT)
+    paragraph(
+        draw,
+        "Owners and buyers arrive with a valuable question: what is this property worth? If the website only says 'contact us', the agency loses timing, context and trust.",
+        100,
+        548,
+        900,
+        SANS_28,
+        SOFT,
+        12,
+    )
+    bullet_panel(
+        draw,
+        (1180, 210, 1792, 795),
+        "Business pain",
+        [
+            "High-intent visitors leave without a useful next step.",
+            "Agents receive weak leads with no property context.",
+            "Price conversations start without a data-backed anchor.",
+            "Marketing spend creates traffic, but not enough qualified conversations.",
+        ],
+    )
+    footer(draw, 2)
+    return img
 
 
-def add_slide_transition_xml(pptx_path: Path) -> None:
-    """Add simple fade transitions by editing slide XML directly."""
+def slide_3() -> Image.Image:
+    img = premium_bg(BG_IMAGES[2], 76)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img)
+    label(draw, "The solution", 96, 214)
+    draw.text((96, 292), "Two tools.", font=SERIF_88, fill=WHITE)
+    draw.text((96, 392), "One revenue loop.", font=SERIF_I_76, fill=SOFT)
+    product_card(
+        draw,
+        (100, 648, 900, 880),
+        "Private",
+        "AI Valuation Workspace",
+        "For the agency team. Agents use it internally for sharper price conversations, not as a public toy.",
+        BLUE,
+    )
+    product_card(
+        draw,
+        (980, 648, 1780, 880),
+        "Public",
+        "Lead Capture Widget",
+        "For the agency website. Broad range, captured intent and a direct handoff to the agent.",
+        GOLD,
+    )
+    footer(draw, 3)
+    return img
+
+
+def slide_4() -> Image.Image:
+    img = premium_bg(BG_IMAGES[3], 76)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img)
+    label(draw, "How it works", 96, 214)
+    draw.text((96, 292), "From visitor", font=SERIF_88, fill=WHITE)
+    draw.text((96, 392), "to agent conversation.", font=SERIF_I_76, fill=SOFT)
+    paragraph(draw, "The public experience captures the opportunity. The private AI workflow helps the agent close with confidence.", 100, 540, 820, SANS_28, SOFT, 12)
+    xs = [100, 545, 990, 1435]
+    steps = [
+        ("01", "Capture", "Name, phone, email and valuation intent."),
+        ("02", "Qualify", "Address, bedrooms, area and property context."),
+        ("03", "Route", "Lead moves to WhatsApp, email or CRM."),
+        ("04", "Close", "Agent follows up using private AI valuation."),
+    ]
+    for x, step in zip(xs, steps):
+        step_card(draw, (x, 728, x + 350, 928), *step)
+    footer(draw, 4)
+    return img
+
+
+def slide_5() -> Image.Image:
+    img = premium_bg(BG_IMAGES[4], 78)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img)
+    label(draw, "Pricing", 96, 174, GOLD)
+    draw.text((96, 250), "Monthly plans", font=SERIF_78, fill=WHITE)
+    draw.text((96, 340), "in AED.", font=SERIF_I_58, fill=SOFT)
+
+    # Feature the widget separately, then keep AI valuation tokens in a readable grid.
+    pricing_card(draw, (100, 510, 470, 805), "Lead Widget", "AED 1,099", "$299 / mo", GOLD, True)
+    draw.text((118, 828), "Public lead capture for one brokerage website.", font=SANS_20, fill=SOFT)
+
+    token_cards = [
+        ((560, 392, 880, 642), "10 uses", "AED 1,465", "$399 / mo", BLUE, False),
+        ((925, 392, 1245, 642), "20 uses", "AED 2,199", "$599 / mo", GOLD, True),
+        ((1290, 392, 1610, 642), "50 uses", "AED 4,400", "$1,199 / mo", BLUE, False),
+        ((742, 690, 1062, 940), "100 uses", "AED 7,345", "$2,000 / mo", BLUE, False),
+        ((1108, 690, 1428, 940), "200 uses", "AED 12.8K", "$3,500 / mo", BLUE, False),
+    ]
+    for args in token_cards:
+        pricing_card(draw, *args)
+
+    rounded_card(draw, (100, 940, 1820, 1016), fill=(8, 13, 25, 230), outline=GOLD, radius=22)
+    draw.text(
+        (135, 964),
+        "Extra valuation credits available. Widget + AI valuation bundles available.",
+        font=SANS_B_28,
+        fill=WHITE,
+    )
+    footer(draw, 5)
+    return img
+
+
+def slide_6() -> Image.Image:
+    img = premium_bg(BG_IMAGES[5], 74)
+    draw = ImageDraw.Draw(img)
+    paste_logo(img)
+    label(draw, "Live demo", 96, 214)
+    draw.text((96, 292), "Open the broker demo.", font=SERIF_88, fill=WHITE)
+    draw.text((96, 392), "See the revenue loop.", font=SERIF_I_76, fill=SOFT)
+    paragraph(
+        draw,
+        "Turn property curiosity into qualified brokerage conversations. The demo shows the widget, the private valuation positioning and the agent handoff.",
+        100,
+        550,
+        930,
+        SANS_28,
+        SOFT,
+        12,
+    )
+    draw.rounded_rectangle((100, 750, 650, 842), radius=22, fill=WHITE)
+    draw.text((162, 780), "OPEN LIVE BROKER DEMO", font=SANS_B_22, fill=INK)
+    draw.text((100, 880), DEMO_URL, font=SANS_B_22, fill=CYAN)
+    if QR.exists():
+        rounded_card(draw, (1425, 590, 1695, 895), fill=(8, 13, 25, 230), outline=BLUE, radius=28)
+        qr = Image.open(QR).convert("RGBA").resize((210, 210), Image.Resampling.LANCZOS)
+        img.alpha_composite(qr, (1455, 625))
+        draw.text((1488, 852), "SCAN DEMO", font=MONO_18, fill=CYAN)
+    footer(draw, 6)
+    return img
+
+
+def add_transitions(pptx_path: Path) -> None:
     ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main"}
     ET.register_namespace("p", ns["p"])
-    temp_path = pptx_path.with_suffix(".tmp.pptx")
-    with zipfile.ZipFile(pptx_path, "r") as zin, zipfile.ZipFile(temp_path, "w", zipfile.ZIP_DEFLATED) as zout:
+    tmp = pptx_path.with_suffix(".tmp.pptx")
+    with zipfile.ZipFile(pptx_path, "r") as zin, zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zout:
         for item in zin.infolist():
             data = zin.read(item.filename)
             if item.filename.startswith("ppt/slides/slide") and item.filename.endswith(".xml"):
@@ -259,193 +430,48 @@ def add_slide_transition_xml(pptx_path: Path) -> None:
                 root.insert(1, transition)
                 data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
             zout.writestr(item, data)
-    temp_path.replace(pptx_path)
+    tmp.replace(pptx_path)
 
 
-def make_deck() -> Presentation:
+def make_deck(slide_paths: list[Path]) -> Presentation:
     prs = Presentation()
     prs.slide_width = SLIDE_W
     prs.slide_height = SLIDE_H
     blank = prs.slide_layouts[6]
-
-    # 1. Founder / product intro
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[0], 30)
-    add_logo(slide)
-    label(slide, "Founder intro", 0.68, 1.08)
-    line(slide, 0.68, 1.4)
-    title(slide, "Private AI valuations.", "Public lead capture.", y=1.55, w=8.3)
-    body(
-        slide,
-        "Francisco Natale Oertly, 22, from Argentina. Building FonatProp for Dubai brokerages: a private valuation engine for agents and a public website widget that turns property curiosity into qualified conversations.",
-        0.72,
-        3.55,
-        7.4,
-        0.92,
-        14,
-    )
-    metric_card(slide, 0.72, 5.08, "234K+", "Dubai transaction base")
-    metric_card(slide, 2.92, 5.08, "AI", "agent valuation workflow")
-    metric_card(slide, 5.12, 5.08, "1 script", "widget install")
-    footer(slide, 1)
-
-    # 2. Brokerage problem
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[1], 34)
-    add_logo(slide)
-    label(slide, "The problem", 0.68, 1.08)
-    line(slide, 0.68, 1.4)
-    title(slide, "Websites look premium.", "But they do not convert valuation demand.", y=1.55, w=8.2)
-    body(
-        slide,
-        "Owners and buyers arrive with a valuable question: what is this property worth? If the website only says 'contact us', the agency loses timing, context and trust.",
-        0.72,
-        3.85,
-        6.9,
-        0.8,
-        14,
-    )
-    bullet_panel(
-        slide,
-        "Business pain",
-        [
-            "High-intent visitors leave without a useful next step.",
-            "Agents receive weak leads with no property context.",
-            "Price conversations start without a data-backed anchor.",
-            "Marketing spend creates traffic, but not enough qualified conversations.",
-        ],
-        8.05,
-        1.32,
-        4.58,
-        3.82,
-    )
-    footer(slide, 2)
-
-    # 3. FonatProp solution
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[2], 32)
-    add_logo(slide)
-    label(slide, "The solution", 0.68, 1.08)
-    line(slide, 0.68, 1.4)
-    title(slide, "Two tools.", "One brokerage revenue loop.", y=1.55, w=7.9)
-    product_card(
-        slide,
-        0.72,
-        4.1,
-        "AI Valuation Workspace",
-        "A private tool for the agency team. Agents use it internally for sharper price conversations.",
-        "PRIVATE",
-    )
-    product_card(
-        slide,
-        6.85,
-        4.1,
-        "Lead Capture Widget",
-        "A public website widget. It gives a broad range, captures intent and pushes the visitor to the agent.",
-        "PUBLIC",
-    )
-    footer(slide, 3)
-
-    # 4. Workflow
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[3], 32)
-    add_logo(slide)
-    label(slide, "How it works", 0.68, 1.08)
-    line(slide, 0.68, 1.4)
-    title(slide, "From visitor", "to qualified agent conversation.", y=1.55, w=8.1)
-    body(slide, "The public experience is simple. The agency workflow behind it is where the value compounds.", 0.72, 3.5, 6.4, 0.45, 14)
-    step_card(slide, 1, 0.72, "Capture", "Name, phone, email and valuation intent.")
-    step_card(slide, 2, 3.78, "Qualify", "Address, bedrooms, area and property context.")
-    step_card(slide, 3, 6.84, "Route", "Lead moves to WhatsApp, email or CRM.")
-    step_card(slide, 4, 9.9, "Close", "Agent follows up using private AI valuation.")
-    footer(slide, 4)
-
-    # 5. Pricing only
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[4], 40)
-    add_logo(slide)
-    label(slide, "Pricing", 0.68, 0.92, color=GOLD)
-    line(slide, 0.68, 1.22, 0.9, GOLD)
-    title(slide, "Monthly plans", "in AED.", y=1.34, w=5.5)
-
-    pricing_card(slide, 0.72, 3.05, 2.15, 2.0, "Lead Widget", "AED 1,099", "$299 / mo", True)
-    pricing_card(slide, 3.12, 3.05, 1.68, 2.0, "10 uses", "AED 1,465", "$399 / mo")
-    pricing_card(slide, 4.98, 3.05, 1.68, 2.0, "20 uses", "AED 2,199", "$599 / mo", True)
-    pricing_card(slide, 6.84, 3.05, 1.68, 2.0, "50 uses", "AED 4,400", "$1,199 / mo")
-    pricing_card(slide, 8.7, 3.05, 1.68, 2.0, "100 uses", "AED 7,345", "$2,000 / mo")
-    pricing_card(slide, 10.56, 3.05, 1.68, 2.0, "200 uses", "AED 12,855", "$3,500 / mo")
-
-    glass_card(slide, 0.72, 5.52, 11.5, 0.74, GOLD)
-    body(
-        slide,
-        "Extra valuation credits available. Widget + AI valuation bundles available for agencies that want both lead capture and internal pricing intelligence.",
-        1.02,
-        5.77,
-        10.9,
-        0.26,
-        12,
-        INK,
-    )
-    footer(slide, 5)
-
-    # 6. Live demo CTA
-    slide = prs.slides.add_slide(blank)
-    add_picture_cover(slide, BACKGROUNDS[5], 30)
-    add_logo(slide)
-    label(slide, "Live demo", 0.68, 1.08)
-    line(slide, 0.68, 1.4)
-    title(slide, "Open the live broker demo.", "See the revenue loop.", y=1.55, w=8.0)
-    body(
-        slide,
-        "Turn property curiosity into qualified brokerage conversations. The demo shows the widget, the private valuation positioning and the agent handoff.",
-        0.72,
-        3.55,
-        6.7,
-        0.75,
-        14,
-    )
-
-    button = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(0.72), Inches(4.78), Inches(4.25), Inches(0.72))
-    button.fill.solid()
-    button.fill.fore_color.rgb = INK
-    button.line.fill.background()
-    button.click_action.hyperlink.address = DEMO_URL
-    button.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-    p = button.text_frame.paragraphs[0]
-    p.text = "OPEN LIVE BROKER DEMO"
-    p.font.name = "Aptos"
-    p.font.size = Pt(12.5)
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(5, 8, 15)
-    p.alignment = PP_ALIGN.CENTER
-
-    _, _, p = textbox(slide, DEMO_URL, 0.74, 5.72, 4.8, 0.26)
-    p.font.name = "Aptos"
-    p.font.size = Pt(11.5)
-    p.font.color.rgb = CYAN
-    p.font.underline = True
-    p.alignment = PP_ALIGN.LEFT
-
-    if QR.exists():
-        glass_card(slide, 9.18, 3.65, 2.05, 2.25, BLUE)
-        slide.shapes.add_picture(str(QR), Inches(9.5), Inches(3.9), width=Inches(1.4))
-        label(slide, "Scan demo", 9.58, 5.47, 1.2)
-
-    footer(slide, 6)
+    for idx, path in enumerate(slide_paths, 1):
+        slide = prs.slides.add_slide(blank)
+        slide.shapes.add_picture(str(path), 0, 0, width=SLIDE_W, height=SLIDE_H)
+        if idx == 6:
+            link = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0.68), Inches(5.18), Inches(3.82), Inches(0.64))
+            link.fill.transparency = 100
+            link.line.fill.background()
+            link.click_action.hyperlink.address = DEMO_URL
     return prs
 
 
-def save_deck() -> None:
+def main() -> None:
+    tmpdir = Path(tempfile.gettempdir()) / "fonatprop_premium_deck"
+    if tmpdir.exists():
+        shutil.rmtree(tmpdir)
+    tmpdir.mkdir(parents=True, exist_ok=True)
+
+    slides = [slide_1(), slide_2(), slide_3(), slide_4(), slide_5(), slide_6()]
+    slide_paths = []
+    for idx, slide in enumerate(slides, 1):
+        path = tmpdir / f"slide_{idx:02}.png"
+        slide.convert("RGB").save(path, quality=96)
+        slide_paths.append(path)
+
     OUT_DESKTOP.parent.mkdir(parents=True, exist_ok=True)
     OUT_DOWNLOADS.parent.mkdir(parents=True, exist_ok=True)
-    deck = make_deck()
+    deck = make_deck(slide_paths)
     deck.save(OUT_DESKTOP)
-    add_slide_transition_xml(OUT_DESKTOP)
+    add_transitions(OUT_DESKTOP)
     deck.save(OUT_DOWNLOADS)
-    add_slide_transition_xml(OUT_DOWNLOADS)
+    add_transitions(OUT_DOWNLOADS)
     print(f"Saved {OUT_DESKTOP}")
     print(f"Saved {OUT_DOWNLOADS}")
 
 
 if __name__ == "__main__":
-    save_deck()
+    main()
