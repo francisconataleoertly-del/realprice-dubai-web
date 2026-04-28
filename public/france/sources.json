@@ -16,5 +16,29 @@
         "source":  "https://unsplash.com/photos/eiffel-tower-paris-KtDdRW-_l6g",
         "license":  "Unsplash License",
         "downloaded_at":  "2026-04-27T19:50:57"
+    },
+    {
+        "path": "public/france/lyon-skyline.jpg",
+        "source": "https://www.pexels.com/photo/lyon-france-city-view-6030917/",
+        "license": "Pexels License",
+        "downloaded_at": "2026-04-28T17:04:14"
+    },
+    {
+        "path": "public/france/french-alps-village.jpg",
+        "source": "https://www.pexels.com/photo/french-alps-village-landscape-37044666/",
+        "license": "Pexels License",
+        "downloaded_at": "2026-04-28T17:04:17"
+    },
+    {
+        "path": "public/france/nice-riviera.jpg",
+        "source": "https://commons.wikimedia.org/wiki/File:Nice,_France_(Unsplash_bLF3vK_X2Vc).jpg",
+        "license": "Unsplash License via Wikimedia Commons",
+        "downloaded_at": "2026-04-28T17:04:40"
+    },
+    {
+        "path": "public/france/bordeaux-night.jpg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bordeaux_Place_de_la_Bourse_de_nuit.jpg",
+        "license": "Wikimedia Commons file license",
+        "downloaded_at": "2026-04-28T17:04:52"
     }
 ]

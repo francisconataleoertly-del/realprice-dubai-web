@@ -11,7 +11,6 @@ import {
   Euro,
   Home,
   Map,
-  MapPin,
   Paintbrush,
   ShieldCheck,
   Sparkles,
@@ -74,17 +73,69 @@ const franceSlides = [
   {
     label: "Riviera",
     kicker: "Coastal demand",
-    image: "https://source.unsplash.com/2400x1600/?france,riviera,city",
+    image: "/france/nice-riviera.jpg",
   },
   {
     label: "Alps",
     kicker: "Lifestyle assets",
-    image: "https://source.unsplash.com/2400x1600/?france,alps,village",
+    image: "/france/french-alps-village.jpg",
   },
   {
     label: "Bordeaux",
     kicker: "Regional liquidity",
-    image: "https://source.unsplash.com/2400x1600/?bordeaux,france,architecture",
+    image: "/france/bordeaux-night.jpg",
+  },
+  {
+    label: "Lyon",
+    kicker: "Urban depth",
+    image: "/france/lyon-skyline.jpg",
+  },
+];
+
+const sectionBackdrops = {
+  valuation: "/france/paris-eiffel-city.jpg",
+  map: "/france/lyon-skyline.jpg",
+  radar: "/france/nice-riviera.jpg",
+  investment: "/france/bordeaux-night.jpg",
+  renovation: "/france/french-alps-village.jpg",
+};
+
+const renovationCategories = [
+  {
+    scope: "Kitchen refresh",
+    range: "EUR 900-1,800 / m2",
+    impact: "Strongest visual upgrade for city apartments",
+    note: "cabinetry, worktop, appliances, plumbing touch points",
+  },
+  {
+    scope: "Bathroom",
+    range: "EUR 1,200-2,500 / m2",
+    impact: "High buyer-confidence signal",
+    note: "tiles, sanitaryware, shower system, waterproofing",
+  },
+  {
+    scope: "Flooring",
+    range: "EUR 80-220 / m2",
+    impact: "Fast repositioning lever",
+    note: "engineered wood, laminate, porcelain or stone",
+  },
+  {
+    scope: "Painting and walls",
+    range: "EUR 25-60 / m2",
+    impact: "Low-cost presentation lift",
+    note: "surface prep, premium paint, minor repairs",
+  },
+  {
+    scope: "Windows and glazing",
+    range: "EUR 650-1,400 / unit",
+    impact: "Comfort and energy-rating improvement",
+    note: "double glazing, seals, acoustic/thermal performance",
+  },
+  {
+    scope: "Energy upgrade",
+    range: "EUR 150-450 / m2",
+    impact: "DPE-driven investment layer",
+    note: "insulation, heating controls, ventilation and efficiency",
   },
 ];
 
@@ -205,6 +256,27 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
     <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-blue-200/55">
       {children}
     </p>
+  );
+}
+
+function SectionBackdrop({
+  image,
+  opacity = 0.2,
+  position = "center",
+}: {
+  image: string;
+  opacity?: number;
+  position?: string;
+}) {
+  return (
+    <>
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${image}')`, backgroundPosition: position, opacity }}
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,10,0.96),rgba(5,6,10,0.82)_48%,rgba(5,6,10,0.62))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_18%,rgba(59,130,246,0.14),transparent_34%)]" />
+    </>
   );
 }
 
@@ -429,7 +501,7 @@ function ValuationSection({
 
   return (
     <section id="valorar" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(59,130,246,0.16),transparent_32%)]" />
+      <SectionBackdrop image={sectionBackdrops.valuation} opacity={0.16} position="center 42%" />
       <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="rounded-[32px] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-xl md:p-8">
           <SectionLabel>Valuation engine</SectionLabel>
@@ -699,8 +771,9 @@ function MapSection({
   setSelectedMapRecord: (record: CommuneRecord) => void;
 }) {
   return (
-    <section id="mapa" className="scroll-mt-28 bg-[#05060a] px-6 py-28 md:px-10">
-      <div className="mx-auto max-w-7xl">
+    <section id="mapa" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
+      <SectionBackdrop image={sectionBackdrops.map} opacity={0.18} position="center" />
+      <div className="relative mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
             <SectionLabel>Map intelligence</SectionLabel>
@@ -748,7 +821,7 @@ function MapSection({
 function RadarSection({ featured }: { featured: CommuneRecord[] }) {
   return (
     <section id="radar" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(59,130,246,0.15),transparent_32%)]" />
+      <SectionBackdrop image={sectionBackdrops.radar} opacity={0.18} position="center" />
       <div className="relative mx-auto max-w-7xl">
         <SectionLabel>Radar</SectionLabel>
         <div className="mt-5 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -792,6 +865,9 @@ function RadarSection({ featured }: { featured: CommuneRecord[] }) {
                 <span>{number.format(record.transactions)} tx</span>
                 <span>{eur.format(record.median_value_eur)}</span>
               </div>
+              <div className="mt-5 rounded-2xl border border-blue-300/10 bg-blue-400/[0.06] p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-blue-100/54">
+                Liquidity score: {Math.min(99, Math.round(record.transactions / 420))}/100
+              </div>
             </article>
           ))}
         </div>
@@ -805,19 +881,44 @@ function InvestmentSection({ propertyType }: { propertyType: PropertyType }) {
   const maxPsm = Math.max(...trend.map((row) => row.median_price_per_m2));
   const first = trend[0];
   const last = trend[trend.length - 1];
-  const movement = first && last ? ((last.median_price_per_m2 / first.median_price_per_m2 - 1) * 100).toFixed(1) : "0.0";
+  const movementNumber = first && last ? (last.median_price_per_m2 / first.median_price_per_m2 - 1) * 100 : 0;
+  const movement = movementNumber.toFixed(1);
+  const annualized =
+    first && last && last.year > first.year
+      ? (Math.pow(last.median_price_per_m2 / first.median_price_per_m2, 1 / (last.year - first.year)) - 1) * 100
+      : 0;
+  const basePsm = last?.median_price_per_m2 ?? latestTypeMedian(propertyType);
+  const scenarioRows = [
+    {
+      label: "Conservative",
+      growth: Math.max(-2, annualized - 1.8),
+      note: "Uses a softer cycle and slower buyer absorption.",
+    },
+    {
+      label: "Base case",
+      growth: annualized,
+      note: "Extends the cleaned DVF trend without assuming a boom.",
+    },
+    {
+      label: "Upside",
+      growth: annualized + 1.8,
+      note: "Adds stronger demand and renovation-driven positioning.",
+    },
+  ];
 
   return (
-    <section id="inversion" className="scroll-mt-28 bg-[#05060a] px-6 py-28 md:px-10">
-      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <section id="inversion" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
+      <SectionBackdrop image={sectionBackdrops.investment} opacity={0.2} position="center" />
+      <div className="relative mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <SectionLabel>Investment</SectionLabel>
           <h2 className="mt-5 font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-            France price trend layer.
+            France investment layer.
           </h2>
           <p className="mt-6 text-base leading-8 text-white/58">
-            The first investment layer is national and commune-level DVF history. The next
-            layer can add rents, notaire indicators, renovation and financing assumptions.
+            Investment starts with official DVF price history, liquidity and scenario ranges.
+            France stays separate from Dubai so returns, fees and renovation assumptions can
+            evolve into their own model.
           </p>
           <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.035] p-6">
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/38">
@@ -829,6 +930,21 @@ function InvestmentSection({ propertyType }: { propertyType: PropertyType }) {
             <p className="mt-3 text-sm text-white/44">
               Based on clean residential DVF transactions for {propertyType.toLowerCase()}.
             </p>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[
+              [`${annualized.toFixed(1)}%`, "annualized trend"],
+              [eur.format(basePsm), "latest median / m2"],
+              [compact(last?.transactions ?? 0), "latest tx volume"],
+            ].map(([value, label]) => (
+              <div key={label} className="rounded-2xl border border-white/10 bg-black/24 p-4">
+                <p className="text-2xl text-white">{value}</p>
+                <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.22em] text-white/32">
+                  {label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -855,6 +971,26 @@ function InvestmentSection({ propertyType }: { propertyType: PropertyType }) {
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 grid gap-3 md:grid-cols-3">
+            {scenarioRows.map((scenario) => {
+              const projected = Math.round(basePsm * Math.pow(1 + scenario.growth / 100, 3));
+              return (
+                <div key={scenario.label} className="rounded-2xl border border-white/10 bg-black/24 p-4">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-blue-200/52">
+                    {scenario.label}
+                  </p>
+                  <p className="mt-3 font-['Fraunces'] text-3xl font-light tracking-[-0.05em]">
+                    {eur.format(projected)}
+                  </p>
+                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">
+                    3-year EUR/m2
+                  </p>
+                  <p className="mt-4 text-xs leading-5 text-white/46">{scenario.note}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -887,12 +1023,19 @@ function RenovationSection() {
   ];
 
   return (
-    <section id="reforma" className="scroll-mt-28 bg-[#05060a] px-6 py-28 md:px-10">
-      <div className="mx-auto max-w-7xl">
+    <section id="reforma" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
+      <SectionBackdrop image={sectionBackdrops.renovation} opacity={0.19} position="center" />
+      <div className="relative mx-auto max-w-7xl">
         <SectionLabel>Renovation and data roadmap</SectionLabel>
         <h2 className="mt-5 max-w-4xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-          Same product family. Different country engine.
+          Renovation intelligence for France.
         </h2>
+        <p className="mt-6 max-w-3xl text-base leading-8 text-white/58">
+          The France renovation module starts with practical cost ranges and later connects
+          them to DPE, co-ownership context and value uplift. It is not a contractor quote;
+          it is an investment planning layer.
+        </p>
+
         <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {cards.map(({ icon: Icon, title, text }) => (
             <article key={title} className="rounded-[28px] border border-white/10 bg-white/[0.035] p-6">
@@ -901,6 +1044,29 @@ function RenovationSection() {
               </div>
               <h3 className="text-2xl font-medium tracking-[-0.04em] text-white">{title}</h3>
               <p className="mt-4 text-sm leading-7 text-white/52">{text}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {renovationCategories.map((item) => (
+            <article
+              key={item.scope}
+              className="rounded-[28px] border border-white/10 bg-black/28 p-6 backdrop-blur-xl"
+            >
+              <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-blue-200/50">
+                France beta range
+              </p>
+              <h3 className="mt-4 text-2xl font-medium tracking-[-0.04em] text-white">
+                {item.scope}
+              </h3>
+              <p className="mt-4 font-['Fraunces'] text-4xl font-light tracking-[-0.05em]">
+                {item.range}
+              </p>
+              <p className="mt-4 text-sm leading-7 text-white/54">{item.impact}</p>
+              <p className="mt-5 border-t border-white/10 pt-4 font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">
+                {item.note}
+              </p>
             </article>
           ))}
         </div>
