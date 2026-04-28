@@ -19,24 +19,18 @@ const installSnippet = `<div
 const handoffCards = [
   {
     label: "1 / Capture",
-    title: "Visitor leaves name, email and phone",
-    titleAr: "الزائر يترك الاسم والبريد ورقم الهاتف",
-    body: "The first step is contact capture. It sends a lightweight event immediately, even before the estimate.",
-    bodyAr: "الخطوة الأولى تلتقط بيانات المالك فوراً، حتى قبل ظهور نطاق التقييم.",
+    title: "Capture the visitor before the estimate",
+    body: "The widget collects name, email and phone first, so the agency gets a qualified inquiry even before the visitor sees a range.",
   },
   {
     label: "2 / Estimate",
-    title: "Address + bedrooms + area create a wide range",
-    titleAr: "العنوان وعدد الغرف والمساحة تنتج نطاقاً تقديرياً",
-    body: "The widget uses FonatProp's live address valuation endpoint, then shows a broad public range so the agent keeps the exact valuation conversation.",
-    bodyAr: "يعتمد الويدجت على محرك التقييم الحي، ويعرض نطاقاً عاماً ليبقى الرقم الدقيق جزءاً من متابعة الوسيط.",
+    title: "Give a broad AI market range",
+    body: "The public widget shows a non-final range. The precise valuation stays inside the brokerage, where the agent controls the conversation.",
   },
   {
     label: "3 / Agent handoff",
-    title: "Webhook, WhatsApp and email all fire together",
-    titleAr: "تسليم مباشر للوسيط عبر واتساب والبريد والويب هوك",
-    body: "Small agencies can use Zapier or Make. Bigger teams can send the same payload into HubSpot, Pipedrive or a private backend.",
-    bodyAr: "يمكن للوكالات الصغيرة استخدام Zapier أو Make، ويمكن للفرق الأكبر ربطه مع CRM أو نظام داخلي.",
+    title: "Send the inquiry to the agent instantly",
+    body: "Every inquiry can go to WhatsApp, email, Google Sheets, Zapier, Make, HubSpot, Pipedrive or the brokerage's private CRM.",
   },
 ];
 
@@ -64,17 +58,44 @@ const heroSlides = [
 ];
 
 const proofPoints = [
+  "234K+ verified Dubai transactions",
+  "Private AI valuation for agents",
+  "Public AI widget for qualified inquiries",
+];
+
+const benefits = [
   {
-    en: "234K+ verified Dubai transactions",
-    ar: "أكثر من 234 ألف معاملة موثقة في دبي",
+    title: "More qualified conversations",
+    body: "The website stops being only a brochure and becomes a reason for owners, buyers and investors to start a conversation.",
   },
   {
-    en: "Building-level comparable anchors",
-    ar: "مقارنات على مستوى المبنى",
+    title: "Faster pricing conversations",
+    body: "Agents can use the private valuation surface as the first answer before preparing a final professional recommendation.",
   },
   {
-    en: "English + Arabic ready for UAE clients",
-    ar: "جاهز بالإنجليزية والعربية لعملاء الإمارات",
+    title: "A modern AI edge",
+    body: "Brokerages look more digital, more data-driven and more responsive without rebuilding their website.",
+  },
+];
+
+const pricingCards = [
+  {
+    name: "Pilot",
+    price: "$200 / month",
+    credits: "300 AI valuation credits",
+    body: "Best for one brokerage website and one agent workflow.",
+  },
+  {
+    name: "Growth",
+    price: "$499 / month",
+    credits: "1,000 AI valuation credits",
+    body: "For teams that want more searches, more agents and CRM routing.",
+  },
+  {
+    name: "Scale",
+    price: "Custom",
+    credits: "3,000+ credits + extra packs",
+    body: "For multi-agent agencies, branches and dedicated integrations.",
   },
 ];
 
@@ -85,6 +106,57 @@ function mountWidget() {
   maybeWindow.FonatPropWidget?.mountAll?.();
 }
 
+function ProductSplit() {
+  return (
+    <section className="bg-[#f4f1ea] px-5 py-20 text-[#15120f]">
+      <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="rounded-[34px] border border-black/10 bg-white p-7 shadow-[0_26px_80px_rgba(21,18,15,0.10)]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#3b82f6]">
+            Product category
+          </p>
+          <h2 className="mt-4 font-['Fraunces'] text-[clamp(2.6rem,5vw,5.4rem)] font-light leading-[0.9] tracking-[-0.055em]">
+            AI valuation &
+            <br />
+            <span className="italic text-[#15120f]/42">lead conversion engine.</span>
+          </h2>
+          <p className="mt-6 max-w-2xl text-[16px] leading-8 text-[#15120f]/58">
+            Not a generic website plugin. FonatProp is an AI-powered revenue tool for Dubai
+            brokerages: private valuation for the team, public widget for the website.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-[30px] border border-black/10 bg-[#15120f] p-6 text-white">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/38">
+              Private tool
+            </p>
+            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em]">
+              Exact valuation for the brokerage
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-white/58">
+              Agents get the detailed AI estimate, comparables and confidence range. This is
+              controlled access, not public.
+            </p>
+          </div>
+
+          <div className="rounded-[30px] border border-black/10 bg-white p-6">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-black/38">
+              Public widget
+            </p>
+            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em]">
+              Broad range for website visitors
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-black/58">
+              Visitors get a useful market signal. The agent receives the inquiry and closes the
+              precise valuation conversation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WidgetShowcase() {
   return (
     <section id="widget" className="bg-[#f4f1ea] px-5 py-24 text-[#15120f]">
@@ -92,23 +164,18 @@ function WidgetShowcase() {
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#15120f]/45">
-              Product 02 / Website Widget · ويدجت الموقع
+              Product 02 / Website widget
             </p>
             <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
-              Turn every agency website
+              Turn the website
               <br />
               <span className="italic text-[#15120f]/42">into an inquiry engine.</span>
             </h2>
-            <p className="mt-5 max-w-3xl text-right text-[21px] leading-9 text-[#15120f]/58" dir="rtl" lang="ar">
-              حوّل موقع الوكالة العقارية إلى قناة فعّالة لجذب ملاك العقارات وفرص البيع.
-            </p>
           </div>
           <p className="max-w-md text-[15px] leading-8 text-[#15120f]/58">
-            This is the embeddable widget brokers can install with one script. It is isolated
-            with Shadow DOM, works on mobile, and sends qualified inquiries to the agency in real time.
-            <span className="mt-3 block text-right text-[#15120f]/52" dir="rtl" lang="ar">
-              ويدجت جاهز للتركيب على موقع الوكالة، يعمل على الجوال، ويرسل بيانات العميل المحتمل فوراً.
-            </span>
+            This is the embeddable widget brokers install with one script. It works on mobile,
+            keeps styles isolated with Shadow DOM and sends qualified inquiries to the agency in
+            real time.
           </p>
         </div>
 
@@ -116,13 +183,10 @@ function WidgetShowcase() {
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 px-2">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-black/35">
-                Live script preview · معاينة مباشرة
+                Live script preview
               </p>
               <p className="mt-1 text-sm text-black/55">
-                Banner mode: hero, contact capture, address estimate and agent handoff.
-                <span className="ml-2 inline-block text-right text-black/42" dir="rtl" lang="ar">
-                  عرض الويدجت، التقاط البيانات، التقييم، وتسليم العميل للوسيط.
-                </span>
+                Banner mode: hero, contact capture, broad estimate and agent handoff.
               </p>
             </div>
             <a
@@ -160,13 +224,7 @@ function WidgetShowcase() {
                 {card.label}
               </p>
               <h3 className="text-xl font-semibold tracking-[-0.035em]">{card.title}</h3>
-              <p className="mt-3 text-right text-lg leading-7 text-black/70" dir="rtl" lang="ar">
-                {card.titleAr}
-              </p>
               <p className="mt-4 text-sm leading-7 text-black/55">{card.body}</p>
-              <p className="mt-3 text-right text-sm leading-7 text-black/45" dir="rtl" lang="ar">
-                {card.bodyAr}
-              </p>
             </div>
           ))}
         </div>
@@ -174,7 +232,7 @@ function WidgetShowcase() {
         <div className="mt-10 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="rounded-[28px] border border-black/10 bg-[#15120f] p-6 text-white">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-white/35">
-              Agency install code · كود التركيب
+              Agency install code
             </p>
             <pre className="overflow-x-auto rounded-2xl border border-white/10 bg-black/35 p-5 text-[11px] leading-6 text-white/70">
               {installSnippet}
@@ -182,18 +240,58 @@ function WidgetShowcase() {
           </div>
           <div className="rounded-[28px] border border-black/10 bg-white/70 p-6">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-black/35">
-              How you deliver it · طريقة التسليم
+              How you deliver it
             </p>
             <p className="text-[15px] leading-8 text-black/60">
               For a broker, you only need their agency ID, agent WhatsApp, agent email and webhook
-              destination. If they do not have a CRM, use a Zapier or Make webhook that sends the
-              lead to Gmail and Google Sheets. Later, FonatProp can centralize this through a
-              private leads API and dashboard.
-              <span className="mt-4 block text-right text-black/52" dir="rtl" lang="ar">
-                للتشغيل تحتاج فقط رقم الوكالة، واتساب الوسيط، البريد الإلكتروني، ورابط استقبال العملاء المحتملين. يمكن ربطه مع البريد، Google Sheets أو أي CRM.
-              </span>
+              destination. If they do not have a CRM, use Zapier or Make to send the inquiry to
+              Gmail and Google Sheets. Later, FonatProp can centralize this through a private leads
+              API and dashboard.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PricingSection() {
+  return (
+    <section className="bg-[#0a0a0f] px-5 py-24 text-white">
+      <div className="mx-auto max-w-7xl">
+        <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-white/35">
+          Commercial model / valuation credits
+        </p>
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
+            Monthly plans.
+            <br />
+            <span className="italic text-white/42">Token-based usage.</span>
+          </h2>
+          <p className="max-w-md text-[15px] leading-8 text-white/55">
+            Each private valuation search consumes one AI valuation credit. Agencies can start
+            small, buy extra credits or upgrade as usage grows.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+          {pricingCards.map((card) => (
+            <div
+              key={card.name}
+              className="rounded-[30px] border border-white/10 bg-white/[0.045] p-6 shadow-[0_22px_80px_rgba(0,0,0,0.22)]"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-blue-300/70">
+                {card.name}
+              </p>
+              <p className="mt-5 font-['Fraunces'] text-4xl font-light tracking-[-0.04em]">
+                {card.price}
+              </p>
+              <p className="mt-4 rounded-full border border-white/10 px-4 py-2 text-sm text-white/72">
+                {card.credits}
+              </p>
+              <p className="mt-5 text-sm leading-7 text-white/50">{card.body}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -217,8 +315,8 @@ export default function BrokerDemoClient() {
             />
           ))}
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(59,130,246,0.035),transparent_34%),linear-gradient(90deg,rgba(10,10,15,0.30),rgba(10,10,15,0.03)_50%,rgba(10,10,15,0.12))]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/0 via-[#0a0a0f]/4 to-[#0a0a0f]/34" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(59,130,246,0.035),transparent_34%),linear-gradient(90deg,rgba(10,10,15,0.24),rgba(10,10,15,0.02)_50%,rgba(10,10,15,0.10))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/0 via-[#0a0a0f]/3 to-[#0a0a0f]/28" />
         <div className="relative mx-auto max-w-7xl">
           <div className="mb-10 inline-flex items-center gap-5 text-white drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]">
             <span className="font-['Fraunces'] text-[3.2rem] font-light italic leading-none tracking-[-0.08em] text-white/92">
@@ -234,30 +332,26 @@ export default function BrokerDemoClient() {
               </span>
             </span>
           </div>
-          <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/38">
-            FonatProp / Agency Revenue Demo · عرض للوكالات العقارية
+          <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/42">
+            Dubai brokerage revenue demo
           </p>
           <h1 className="max-w-5xl font-['Fraunces'] text-[clamp(3.2rem,7vw,7.5rem)] font-light leading-[0.88] tracking-[-0.06em]">
-            Sell the valuation.
+            Turn property value
             <br />
-            <span className="italic text-white/42">Install the widget.</span>
+            <span className="italic text-white/46">into qualified inquiries.</span>
           </h1>
-          <p className="mt-8 max-w-2xl text-[16px] leading-8 text-white/58">
-            A focused presentation for Dubai brokerages: a precise private valuation tool for
-            agents, plus an embeddable website widget that captures qualified inquiries.
-            <span className="mt-4 block text-right text-white/56" dir="rtl" lang="ar">
-              عرض مخصص لشركات الوساطة في دبي: أداة تقييم دقيقة للوسطاء، وويدجت قابل للتركيب لجذب ملاك العقارات.
-            </span>
+          <p className="mt-8 max-w-2xl text-[16px] leading-8 text-white/64">
+            FonatProp is an AI valuation and lead conversion engine for Dubai brokerages:
+            exact valuations for the agency, broad website estimates for clients, and instant
+            handoff to the agent.
           </p>
           <div className="mt-6 max-w-3xl rounded-[24px] border border-white/10 bg-white/[0.045] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur-xl">
             <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/34">
-              English + Arabic sales-ready
+              What it does in one sentence
             </p>
-            <p className="mt-3 text-[15px] leading-7 text-white/64">
-              Private valuation for brokerages. Public inquiry capture for their websites.
-            </p>
-            <p className="mt-2 text-right text-[18px] leading-8 text-white/78" dir="rtl" lang="ar">
-              تقييم عقاري فوري وتحويل طلبات الملاك إلى فرص بيع مؤهلة للوساطة العقارية في دبي.
+            <p className="mt-3 text-[15px] leading-7 text-white/68">
+              It gives brokerages an AI-powered reason for property owners and investors to
+              contact them.
             </p>
           </div>
           <div className="mt-10 flex flex-wrap gap-3">
@@ -265,25 +359,22 @@ export default function BrokerDemoClient() {
               href="#valuation"
               className="bg-white px-7 py-4 text-[11px] font-medium uppercase tracking-[0.28em] text-[#0a0a0f] transition hover:bg-white/88"
             >
-              Try valuation · جرّب التقييم
+              Try valuation
             </a>
             <a
               href="#widget"
               className="border border-white/15 px-7 py-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white/70 transition hover:border-white/30 hover:text-white"
             >
-              See widget · شاهد الويدجت
+              See widget
             </a>
           </div>
           <div className="mt-12 grid max-w-4xl gap-3 md:grid-cols-3">
             {proofPoints.map((item) => (
               <div
-                key={item.en}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-white/65"
+                key={item}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-white/68"
               >
-                <p>{item.en}</p>
-                <p className="mt-2 text-right text-xs leading-5 text-white/42" dir="rtl" lang="ar">
-                  {item.ar}
-                </p>
+                {item}
               </div>
             ))}
           </div>
@@ -299,6 +390,27 @@ export default function BrokerDemoClient() {
         </div>
       </section>
 
+      <ProductSplit />
+
+      <section className="bg-[#0a0a0f] px-5 py-20">
+        <div className="mx-auto max-w-7xl">
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-white/35">
+            Business value
+          </p>
+          <div className="grid gap-4 lg:grid-cols-3">
+            {benefits.map((benefit) => (
+              <div
+                key={benefit.title}
+                className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6"
+              >
+                <h3 className="text-2xl font-semibold tracking-[-0.045em]">{benefit.title}</h3>
+                <p className="mt-4 text-sm leading-7 text-white/52">{benefit.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div id="valuation">
         <GoogleMapsLoader>
           <ValorarSection publicDemo />
@@ -306,6 +418,7 @@ export default function BrokerDemoClient() {
       </div>
 
       <WidgetShowcase />
+      <PricingSection />
     </div>
   );
 }
