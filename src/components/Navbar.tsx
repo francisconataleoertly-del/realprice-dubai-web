@@ -16,7 +16,7 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === "/" || pathname?.startsWith("/france")) {
     return null;
   }
 

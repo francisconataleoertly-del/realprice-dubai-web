@@ -1,0 +1,225 @@
+{
+  "path": "C:\\Users\\franc\\FonatProp_Data_Lake\\02_france\\dvf.csv.gz",
+  "size_mb_compressed": 499.01,
+  "columns": [
+    "id_mutation",
+    "date_mutation",
+    "numero_disposition",
+    "nature_mutation",
+    "valeur_fonciere",
+    "adresse_numero",
+    "adresse_suffixe",
+    "adresse_nom_voie",
+    "adresse_code_voie",
+    "code_postal",
+    "code_commune",
+    "nom_commune",
+    "code_departement",
+    "ancien_code_commune",
+    "ancien_nom_commune",
+    "id_parcelle",
+    "ancien_id_parcelle",
+    "numero_volume",
+    "lot1_numero",
+    "lot1_surface_carrez",
+    "lot2_numero",
+    "lot2_surface_carrez",
+    "lot3_numero",
+    "lot3_surface_carrez",
+    "lot4_numero",
+    "lot4_surface_carrez",
+    "lot5_numero",
+    "lot5_surface_carrez",
+    "nombre_lots",
+    "code_type_local",
+    "type_local",
+    "surface_reelle_bati",
+    "nombre_pieces_principales",
+    "code_nature_culture",
+    "nature_culture",
+    "code_nature_culture_speciale",
+    "nature_culture_speciale",
+    "surface_terrain",
+    "longitude",
+    "latitude"
+  ],
+  "rows": 20382915,
+  "min_date": "2021-01-01",
+  "max_date": "2025-12-31",
+  "years": {
+    "2021": 4674542,
+    "2022": 4676187,
+    "2023": 3817426,
+    "2024": 3499931,
+    "2025": 3714829
+  },
+  "top_types": [
+    [
+      "(blank)",
+      8189148
+    ],
+    [
+      "Dépendance",
+      5308320
+    ],
+    [
+      "Maison",
+      3355671
+    ],
+    [
+      "Appartement",
+      2879521
+    ],
+    [
+      "Local industriel. commercial ou assimilé",
+      650255
+    ]
+  ],
+  "top_departments": [
+    [
+      "59",
+      553756
+    ],
+    [
+      "33",
+      525352
+    ],
+    [
+      "13",
+      473740
+    ],
+    [
+      "69",
+      462796
+    ],
+    [
+      "06",
+      458841
+    ],
+    [
+      "83",
+      453774
+    ],
+    [
+      "44",
+      438606
+    ],
+    [
+      "75",
+      420058
+    ],
+    [
+      "34",
+      412496
+    ],
+    [
+      "31",
+      409358
+    ],
+    [
+      "77",
+      369120
+    ],
+    [
+      "38",
+      360755
+    ],
+    [
+      "74",
+      357526
+    ],
+    [
+      "92",
+      346248
+    ],
+    [
+      "35",
+      337019
+    ],
+    [
+      "29",
+      327238
+    ],
+    [
+      "62",
+      314034
+    ],
+    [
+      "56",
+      311518
+    ],
+    [
+      "76",
+      306658
+    ],
+    [
+      "17",
+      306652
+    ]
+  ],
+  "nature_mutation": [
+    [
+      "Vente",
+      18982926
+    ],
+    [
+      "Vente en l'état futur d'achèvement",
+      1046189
+    ],
+    [
+      "Echange",
+      237573
+    ],
+    [
+      "Vente terrain à bâtir",
+      54555
+    ],
+    [
+      "Adjudication",
+      51289
+    ],
+    [
+      "Expropriation",
+      10383
+    ]
+  ],
+  "valid_price_area_rows": 6808686,
+  "valid_apartment_rows": 2853019,
+  "valid_house_rows": 3347938,
+  "missing_counts": {
+    "surface_reelle_bati": 13534223,
+    "type_local": 8189148,
+    "nombre_pieces_principales": 8201916,
+    "longitude": 427974,
+    "latitude": 427974,
+    "valeur_fonciere": 195947
+  },
+  "sample_unique_mutations_first_250k_rows": 90279,
+  "sample_psm_by_type": {
+    "Maison": {
+      "sample_n": 20000,
+      "p25": 1071.4285714285713,
+      "median": 1627.2727272727273,
+      "p75": 2425.3932584269664
+    },
+    "Appartement": {
+      "sample_n": 20000,
+      "p25": 1688.3116883116884,
+      "median": 2769.230769230769,
+      "p75": 4588.235294117647
+    },
+    "Local industriel. commercial ou assimilé": {
+      "sample_n": 20000,
+      "p25": 995.3703703703703,
+      "median": 2233.7662337662337,
+      "p75": 5300.0
+    },
+    "Dépendance": {
+      "sample_n": 1,
+      "p25": 937.5,
+      "median": 937.5,
+      "p75": 937.5
+    }
+  },
+  "seconds": 312.7
+}

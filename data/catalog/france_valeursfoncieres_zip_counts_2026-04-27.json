@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "zip": "valeursfoncieres-2021.txt.zip",
+      "member": "ValeursFoncieres-2021.txt",
+      "lines_including_header": 4674543,
+      "data_rows_est": 4674542,
+      "uncompressed_mb": 598.56,
+      "compressed_mb": 82.79
+    },
+    {
+      "zip": "valeursfoncieres-2022.txt.zip",
+      "member": "ValeursFoncieres-2022.txt",
+      "lines_including_header": 4676188,
+      "data_rows_est": 4676187,
+      "uncompressed_mb": 599.34,
+      "compressed_mb": 83.18
+    },
+    {
+      "zip": "valeursfoncieres-2023.txt.zip",
+      "member": "ValeursFoncieres-2023.txt",
+      "lines_including_header": 3817427,
+      "data_rows_est": 3817426,
+      "uncompressed_mb": 486.38,
+      "compressed_mb": 68.36
+    },
+    {
+      "zip": "valeursfoncieres-2024.txt.zip",
+      "member": "ValeursFoncieres-2024.txt",
+      "lines_including_header": 3499932,
+      "data_rows_est": 3499931,
+      "uncompressed_mb": 445.61,
+      "compressed_mb": 62.31
+    },
+    {
+      "zip": "valeursfoncieres-2025.txt.zip",
+      "member": "ValeursFoncieres-2025.txt",
+      "lines_including_header": 3714830,
+      "data_rows_est": 3714829,
+      "uncompressed_mb": 473.66,
+      "compressed_mb": 66.44
+    }
+  ],
+  "total_data_rows_est": 20382915,
+  "seconds": 37.7
+}
