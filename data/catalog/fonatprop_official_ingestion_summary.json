@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-05-01T00:39:38.301300+00:00",
+  "mode": "smoke",
+  "source_count": 49,
+  "status_counts": {
+    "http_error": 2,
+    "network_error": 2,
+    "network_unavailable_from_current_session": 7,
+    "not_actionable_in_smoke": 17,
+    "ok": 19,
+    "reachable": 1,
+    "skipped_large_declared": 1
+  },
+  "strategy_counts": {
+    "data_gouv_dataset_api": 8,
+    "dubai_pulse_probe_only": 8,
+    "page_or_file_snapshot": 16,
+    "registry_only": 17
+  },
+  "discovered_resource_count": 45,
+  "sampled_resource_count": 23,
+  "skipped_resource_count": 21,
+  "failed_resource_count": 1,
+  "sample_bytes_written": 3959124,
+  "local_inventory_file_count": 27,
+  "local_inventory_total_bytes": 6604736432,
+  "manifest_path": "data\\catalog\\fonatprop_official_ingestion_manifest.json",
+  "data_lake_output_root": "90_processed\\fonatprop_official_ingest",
+  "next_actions": [
+    "Turn sampled official metadata into normalized Postgres tables for price history, inflation, yields, taxes, and renovation cost ranges.",
+    "Run full mode only for selected large CSV/ZIP sources after choosing storage targets outside the frontend repo.",
+    "Use Dubai Pulse token/API or manual bulk export for DLD transactions, Ejari rents, service charges, units, and projects when the public portal blocks automation.",
+    "Attach source attribution and confidence level to every investment and renovation result shown in FonatProp."
+  ]
+}

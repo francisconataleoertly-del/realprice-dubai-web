@@ -104,7 +104,7 @@ export default function MapSection() {
         });
         if (parsed.length > 0) setZones(parsed);
       })
-      .catch(() => {});
+      .catch((err) => console.error('[MapSection] Failed to load zone data:', err));
   }, []);
 
   // Fetch zone stats when selected

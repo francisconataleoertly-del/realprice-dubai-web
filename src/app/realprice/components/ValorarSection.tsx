@@ -546,7 +546,7 @@ export default function ValorarSection({
         .then((d) => {
           if (d.comparables) setComparables(d.comparables.slice(0, 5));
         })
-        .catch(() => {});
+        .catch((err) => console.error('[ValorarSection] Failed to load comparables:', err));
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Failed");
     } finally {

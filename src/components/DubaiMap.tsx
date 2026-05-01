@@ -58,7 +58,10 @@ export default function DubaiMap() {
     fetch("/dubai_pois.json")
       .then((r) => r.json())
       .then((data) => setPOIData(data))
-      .catch(() => {});
+      .catch((err) => {
+        console.error('[DubaiMap] Failed to load POI data:', err);
+        setPOIData(null);
+      });
   }, []);
 
   const toggleCat = (cat: string) => {

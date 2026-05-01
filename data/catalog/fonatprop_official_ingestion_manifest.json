@@ -1,0 +1,2085 @@
+{
+  "generated_at": "2026-05-01T00:39:38.301300+00:00",
+  "mode": "smoke",
+  "max_bytes_per_resource": 1048576,
+  "registry_path": "data\\catalog\\fonatprop_source_registry.json",
+  "app_root": "C:\\Users\\franc\\FonatProp_Data_Lake\\03_apps\\realprice-dubai-web",
+  "data_lake_root": "C:\\Users\\franc\\FonatProp_Data_Lake",
+  "output_root": "90_processed\\fonatprop_official_ingest",
+  "source_filter": [],
+  "official_only": true,
+  "local_inventory": {
+    "france_dvf_zip_files": {
+      "file_count": 5,
+      "total_bytes": 380707632,
+      "files": [
+        {
+          "path": "02_france\\valeursfoncieres-2021.txt.zip",
+          "bytes": 86810248,
+          "modified_at": "2026-04-27T23:28:05.510835+00:00"
+        },
+        {
+          "path": "02_france\\valeursfoncieres-2022.txt.zip",
+          "bytes": 87222404,
+          "modified_at": "2026-04-27T23:26:11.660276+00:00"
+        },
+        {
+          "path": "02_france\\valeursfoncieres-2023.txt.zip",
+          "bytes": 71675691,
+          "modified_at": "2026-04-27T23:23:07.140378+00:00"
+        },
+        {
+          "path": "02_france\\valeursfoncieres-2024.txt.zip",
+          "bytes": 65334157,
+          "modified_at": "2026-04-27T23:18:37.829602+00:00"
+        },
+        {
+          "path": "02_france\\valeursfoncieres-2025.txt.zip",
+          "bytes": 69665132,
+          "modified_at": "2026-04-27T23:17:30.680221+00:00"
+        }
+      ],
+      "truncated": false
+    },
+    "france_dvf_csv_files": {
+      "file_count": 4,
+      "total_bytes": 563809722,
+      "files": [
+        {
+          "path": "02_france\\dvf.csv",
+          "bytes": 40558598,
+          "modified_at": "2026-04-27T23:33:21.276919+00:00"
+        },
+        {
+          "path": "02_france\\dvf.csv.gz",
+          "bytes": 523248393,
+          "modified_at": "2026-04-27T23:57:25.327195+00:00"
+        },
+        {
+          "path": "02_france\\dvf_appartements_cove.csv",
+          "bytes": 1309,
+          "modified_at": "2026-04-28T00:02:46.425566+00:00"
+        },
+        {
+          "path": "02_france\\dvf_maisons_cove.csv",
+          "bytes": 1422,
+          "modified_at": "2026-04-28T00:03:00.011167+00:00"
+        }
+      ],
+      "truncated": false
+    },
+    "france_quarterly_price_files": {
+      "file_count": 13,
+      "total_bytes": 4276942995,
+      "files": [
+        {
+          "path": "02_france\\fichier-t1-2023.csv",
+          "bytes": 223143460,
+          "modified_at": "2026-04-28T02:53:28.645487+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t1-2024.csv",
+          "bytes": 344620205,
+          "modified_at": "2026-04-28T02:48:31.497747+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t1-2025.csv",
+          "bytes": 437370368,
+          "modified_at": "2026-04-28T02:45:52.797655+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t2-2022.csv",
+          "bytes": 179819239,
+          "modified_at": "2026-04-28T02:53:10.633212+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t2-2023.csv",
+          "bytes": 312023815,
+          "modified_at": "2026-04-28T02:52:47.452043+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t2-2024.csv",
+          "bytes": 423774262,
+          "modified_at": "2026-04-28T02:48:05.053157+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t2-2025.csv",
+          "bytes": 444828020,
+          "modified_at": "2026-04-28T02:45:16.289258+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t3-2022-v2.csv",
+          "bytes": 181819240,
+          "modified_at": "2026-04-28T02:52:03.598495+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t3-2023.csv",
+          "bytes": 315238454,
+          "modified_at": "2026-04-28T02:50:47.127697+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t3-2024.csv",
+          "bytes": 428857947,
+          "modified_at": "2026-04-28T02:47:10.840454+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t3-2025.csv",
+          "bytes": 452973300,
+          "modified_at": "2026-04-28T02:44:10.132082+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t4-2022.csv",
+          "bytes": 212968197,
+          "modified_at": "2026-04-28T02:51:43.207817+00:00"
+        },
+        {
+          "path": "02_france\\fichier-t4-2023.csv",
+          "bytes": 319506488,
+          "modified_at": "2026-04-28T02:49:44.661877+00:00"
+        }
+      ],
+      "truncated": false
+    },
+    "france_rnc_files": {
+      "file_count": 3,
+      "total_bytes": 1383247153,
+      "files": [
+        {
+          "path": "02_france\\20260427-rnc-data-gouv-with-qpv.csv",
+          "bytes": 496444705,
+          "modified_at": "2026-04-28T02:42:57.068019+00:00"
+        },
+        {
+          "path": "02_france\\rnc-data-gouv-with-qpv (1).csv",
+          "bytes": 433829148,
+          "modified_at": "2026-04-28T02:46:25.126656+00:00"
+        },
+        {
+          "path": "02_france\\rnc-data-gouv-with-qpv.csv",
+          "bytes": 452973300,
+          "modified_at": "2026-04-28T02:44:43.386027+00:00"
+        }
+      ],
+      "truncated": false
+    },
+    "dubai_government_csv_files": {
+      "file_count": 2,
+      "total_bytes": 28930,
+      "files": [
+        {
+          "path": "01_dubai\\data_dubai_government\\Housing_Units_2026-04-22.csv",
+          "bytes": 418,
+          "modified_at": "2026-04-22T19:45:58.528573+00:00"
+        },
+        {
+          "path": "01_dubai\\data_dubai_government\\residential_sales_indicator_2026-04-22.csv",
+          "bytes": 28512,
+          "modified_at": "2026-04-22T19:39:13.535601+00:00"
+        }
+      ],
+      "truncated": false
+    },
+    "processed_france_dvf_parquet": {
+      "file_count": 0,
+      "total_bytes": 0,
+      "files": [],
+      "truncated": false
+    }
+  },
+  "local_seed_samples": [
+    {
+      "source": "local_inventory",
+      "original_path": "01_dubai\\data_dubai_government\\Housing_Units_2026-04-22.csv",
+      "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\local_dubai__housing_units_2026-04-22.csv",
+      "bytes": 418,
+      "sha256": "f90fae1d26c53c61eae84312b6cbb11119e13b837bda3b0a87fb807cffda884f"
+    },
+    {
+      "source": "local_inventory",
+      "original_path": "01_dubai\\data_dubai_government\\residential_sales_indicator_2026-04-22.csv",
+      "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\local_dubai__residential_sales_indicator_2026-04-22.csv",
+      "bytes": 28512,
+      "sha256": "11c01156d1ea7223d039873855c0ede44ce26cb607c41b89440afbd763003a66"
+    }
+  ],
+  "source_results": [
+    {
+      "source_id": "ae-cbuae-eibor-rates",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "CBUAE EIBOR Rates",
+      "publisher": "Central Bank of the UAE",
+      "status": "http_error",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.centralbank.ae/en/forex-eibor/eibor-rates/",
+      "download": {
+        "status": "http_error",
+        "url": "https://www.centralbank.ae/en/forex-eibor/eibor-rates/",
+        "http_status": 403,
+        "content_type": null,
+        "content_length": null,
+        "bytes_written": 0,
+        "sample_path": null,
+        "sha256": null,
+        "error": "HTTP Error 403: Forbidden"
+      }
+    },
+    {
+      "source_id": "ae-det-holiday-home-permit",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Issue a new Holiday Homes permit",
+      "publisher": "Dubai Department of Economy and Tourism",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.dubaidet.gov.ae/en/our-services/for-consumers-and-students/issue-a-new-holiday-homes-permit",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "ae-det-tourism-performance",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Tourism Performance Report",
+      "publisher": "Dubai Department of Economy and Tourism",
+      "status": "http_error",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.dubaidet.gov.ae/en/research-and-insights/tourism-performance-report-december-2025",
+      "download": {
+        "status": "http_error",
+        "url": "https://www.dubaidet.gov.ae/en/research-and-insights/tourism-performance-report-december-2025",
+        "http_status": 403,
+        "content_type": null,
+        "content_length": null,
+        "bytes_written": 0,
+        "sample_path": null,
+        "sha256": null,
+        "error": "HTTP Error 403: Forbidden"
+      }
+    },
+    {
+      "source_id": "ae-dld-legislation-fees",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Real Estate Legislation and Fee Table",
+      "publisher": "Dubai Land Department / Rental Disputes Center",
+      "status": "skipped_large_declared",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://rdc.dubailand.gov.ae/Assets/img/Real_Estate_Legislation_en.pdf",
+      "download": {
+        "status": "skipped_large_declared",
+        "url": "https://rdc.dubailand.gov.ae/Assets/img/Real_Estate_Legislation_en.pdf",
+        "http_status": 200,
+        "content_type": "application/pdf",
+        "content_length": 3422349,
+        "bytes_written": 0,
+        "sample_path": null,
+        "sha256": null,
+        "error": "Declared payload 3422349 bytes exceeds 1048576."
+      }
+    },
+    {
+      "source_id": "ae-dld-projects-buildings-open",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD Projects and Buildings Open",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.gslb.dubaipulse.gov.ae/data/dld-registration/dld_buildings-open-api?category=housing&dataset=dld_projects-open-api&organisation=dld&page=2&s=s2&service=dld-registration&subcategory=housing-units",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dld-real-estate-data-current",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD Real Estate Data",
+      "publisher": "Dubai Land Department",
+      "status": "reachable",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://dubailand.gov.ae/en/open-data/real-estate-data/",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "content_length": null
+    },
+    {
+      "source_id": "ae-dld-rental-index",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD Rental Index / Rental Calculator",
+      "publisher": "Dubai Land Department",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://dubailand.gov.ae/en/eservices/rental-index/rental-index/",
+      "download": {
+        "status": "sampled",
+        "url": "https://dubailand.gov.ae/en/eservices/rental-index/rental-index/",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "content_length": 236314,
+        "bytes_written": 236314,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\ae-dld-rental-index__page_snapshot.bin",
+        "sha256": "5e7cfa55ce5e08c9c4f74e25bafbc14ce822deee1b30abad766782e5a5ecc66e",
+        "error": null
+      }
+    },
+    {
+      "source_id": "ae-dld-service-charges-open",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD OA Service Charges",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dld-records/dld_oa_service_charges-open",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dld-units-open",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD Units Open",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.gslb.dubaipulse.gov.ae/data/dld-registration/dld_buildings-open-api?category=housing&dataset=dld_projects-open-api&organisation=dld&page=2&s=s2&service=dld-registration&subcategory=housing-units",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dsc-average-construction-material-prices",
+      "market": "dubai",
+      "domain": "renovation",
+      "source_name": "Average Construction Material Prices",
+      "publisher": "Dubai Statistics Center via Dubai Pulse",
+      "status": "network_error",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dsc-statistics/dsc_average_construction_material_prices-open?page=1",
+      "download": {
+        "status": "network_error",
+        "url": "https://www.dubaipulse.gov.ae/data/dsc-statistics/dsc_average_construction_material_prices-open?page=1",
+        "http_status": null,
+        "content_type": null,
+        "content_length": null,
+        "bytes_written": 0,
+        "sample_path": null,
+        "sha256": null,
+        "error": "<urlopen error timed out>"
+      }
+    },
+    {
+      "source_id": "ae-dubai-cpi",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Consumer Price Index",
+      "publisher": "Dubai Statistics Center via Dubai Pulse",
+      "status": "network_error",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dsc-statistics/dsc_consumer_price_index-open",
+      "download": {
+        "status": "network_error",
+        "url": "https://www.dubaipulse.gov.ae/data/dsc-statistics/dsc_consumer_price_index-open",
+        "http_status": null,
+        "content_type": null,
+        "content_length": null,
+        "bytes_written": 0,
+        "sample_path": null,
+        "sha256": null,
+        "error": "<urlopen error timed out>"
+      }
+    },
+    {
+      "source_id": "ae-dubai-pulse-dld-transactions-api",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Pulse DLD Transactions API",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dld-transactions/dld_transactions-open-api?organisation=dld&service=dld-transactions",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dubai-pulse-dld-transactions-csv",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Pulse DLD Transactions CSV",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dld-transactions/dld_transactions-open",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dubai-pulse-ejari-rent-contracts-api",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Pulse DLD Rent Contracts API",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dld-registration/dld_rent_contracts-open-api",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-dubai-pulse-ejari-rent-contracts-csv",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai Pulse DLD Rent Contracts CSV",
+      "publisher": "Dubai Land Department via Dubai Pulse",
+      "status": "network_unavailable_from_current_session",
+      "strategy": "dubai_pulse_probe_only",
+      "source_url": "https://www.dubaipulse.gov.ae/data/dld-registration/dld_rent_contracts-open",
+      "notes": "Dubai Pulse often blocks or times out from automated sessions. This smoke ingest records availability and leaves full extraction for token/API or manual bulk download mode.",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "source_id": "ae-mollak-service-charge-index",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Mollak Service Charge Index",
+      "publisher": "Dubai Land Department / Mollak",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://mollak.dubailand.gov.ae/publicpages/service-charge-index.html",
+      "download": {
+        "status": "sampled",
+        "url": "https://mollak.dubailand.gov.ae/publicpages/service-charge-index.html",
+        "http_status": 200,
+        "content_type": "text/html",
+        "content_length": 39990,
+        "bytes_written": 39990,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\ae-mollak-service-charge-index__page_snapshot.html",
+        "sha256": "79a66efc380b5794cf033758caa7549f16674c5528139e5c59b6f13995ba1167",
+        "error": null
+      }
+    },
+    {
+      "source_id": "ae-dld-house-price-methodology",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "Dubai House Price Index Methodology",
+      "publisher": "Dubai Land Department",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://dubailand.gov.ae/media/qnslugbi/the-dubai-house-price-index-methodology.pdf",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "ae-dld-residential-price-index",
+      "market": "dubai",
+      "domain": "investment",
+      "source_name": "DLD Residential Properties Price Index",
+      "publisher": "Dubai Land Department",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://dubailand.gov.ae/en/open-data/residential-properties-price-index-rppi/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "ae-dsc-construction-materials-indicator-2020",
+      "market": "dubai",
+      "domain": "renovation",
+      "source_name": "Construction Materials Prices Indicator",
+      "publisher": "Dubai Statistics Center",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.dsc.gov.ae/Publication/Construction%20Materials%20prices%20Indicator%202020.pdf",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "ae-mawadonline",
+      "market": "dubai",
+      "domain": "renovation",
+      "source_name": "MawadOnline",
+      "publisher": "MawadOnline",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://business.mawadonline.com/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "ae-scad-building-material-prices",
+      "market": "dubai",
+      "domain": "renovation",
+      "source_name": "Building Materials Prices Statistics",
+      "publisher": "Statistics Centre - Abu Dhabi",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://scad.gov.ae/documents/20122/322309/Building%2BMaterials%2BPrices%2BMethodology.pdf/d06b8736-85c0-f234-a13a-62531aa2f165?t=1654162611372&version=1.0",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-ademe-dpe-api",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "API DPE logements",
+      "publisher": "ADEME via data.gouv.fr",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.data.gouv.fr/fr/dataservices/api-dpe-logements/",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.data.gouv.fr/fr/dataservices/api-dpe-logements/",
+        "http_status": 200,
+        "content_type": "text/html;charset=utf-8",
+        "content_length": 107791,
+        "bytes_written": 107791,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-ademe-dpe-api__page_snapshot.bin",
+        "sha256": "d56c0362fbc32390d3d40a71af68aded7ac1a8c20d1e7b410560dc6f442ec451",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-ademe-renovation-isolation-costs",
+      "market": "france",
+      "domain": "renovation",
+      "source_name": "Couts des travaux de renovation - Isolation",
+      "publisher": "ADEME via data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "couts-des-travaux-de-renovation-isolation",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/couts-des-travaux-de-renovation-isolation/",
+      "source_url": "https://www.data.gouv.fr/datasets/couts-des-travaux-de-renovation-isolation/",
+      "resources": [
+        {
+          "id": "392b2e2e-2fae-46cc-93c5-e001aae49386",
+          "title": "Consultez les donn\u00e9es",
+          "format": "url",
+          "url": "https://data.ademe.fr/datasets/isolation",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/392b2e2e-2fae-46cc-93c5-e001aae49386",
+          "filesize": "remote",
+          "mime": "text/html",
+          "created_at": "2021-12-03T11:13:45.381000+00:00",
+          "last_modified": "2026-03-31T02:50:25.530356+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://data.ademe.fr/datasets/isolation",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 67693,
+            "bytes_written": 67693,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-ademe-renovation-isolation-costs__1_consultez_les_donn_es.bin",
+            "sha256": "b786ea4bde294aa5ce178a78efb7d01f46c6cce14e196204ff3269fa78395687",
+            "error": null
+          }
+        },
+        {
+          "id": "8f96d7cc-1444-4133-8163-773e4aae73e5",
+          "title": "Description des champs",
+          "format": "url",
+          "url": "https://data.ademe.fr/datasets/isolation",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/8f96d7cc-1444-4133-8163-773e4aae73e5",
+          "filesize": "remote",
+          "mime": "text/html",
+          "created_at": "2026-03-24T13:38:30.319000+00:00",
+          "last_modified": "2026-03-28T14:42:17.042581+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://data.ademe.fr/datasets/isolation",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 67693,
+            "bytes_written": 67693,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-ademe-renovation-isolation-costs__2_description_des_champs.bin",
+            "sha256": "b786ea4bde294aa5ce178a78efb7d01f46c6cce14e196204ff3269fa78395687",
+            "error": null
+          }
+        },
+        {
+          "id": "82e03e8a-ef49-4e2f-8020-257460ae78bf",
+          "title": "Documentation de l'API",
+          "format": "url",
+          "url": "https://data.ademe.fr/datasets/isolation/api-doc",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/82e03e8a-ef49-4e2f-8020-257460ae78bf",
+          "filesize": "remote",
+          "mime": "text/html",
+          "created_at": "2025-09-11T07:28:22.562000+00:00",
+          "last_modified": "2026-04-03T15:01:07.146638+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://data.ademe.fr/datasets/isolation/api-doc",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 56380,
+            "bytes_written": 56380,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-ademe-renovation-isolation-costs__3_documentation_de_l_api.bin",
+            "sha256": "6c889557633b18f18969cb72f73e7945ce553152e896cbcd4a13644a6fc94d48",
+            "error": null
+          }
+        },
+        {
+          "id": "b3242bd1-512c-4a64-a6ab-95902c4f4c95",
+          "title": "Fichier csv",
+          "format": "csv",
+          "url": "https://data.ademe.fr/data-fair/api/v1/datasets/isolation/raw",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/b3242bd1-512c-4a64-a6ab-95902c4f4c95",
+          "filesize": 611789,
+          "mime": "text/csv",
+          "created_at": "2021-12-03T11:13:45.382000+00:00",
+          "last_modified": "2026-01-29T21:34:32+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://data.ademe.fr/data-fair/api/v1/datasets/isolation/raw",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": 611789,
+            "bytes_written": 611789,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-ademe-renovation-isolation-costs__4_fichier_csv.bin",
+            "sha256": "2389d6fe661daa32e45bbcf4aea59ad2607ce6a274ab6a1763427e89320283d1",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Co\u00fbts des travaux de r\u00e9novation - Isolation",
+      "dataset_id": "5eccec16de4847c368e3ea20",
+      "dataset_page": "https://www.data.gouv.fr/datasets/couts-des-travaux-de-renovation-isolation",
+      "last_modified": "2026-03-24T13:38:30.264000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-ademe-renovation-isolation-costs__data_gouv_metadata.json",
+      "resource_count": 4,
+      "sampled_resource_count": 4,
+      "skipped_resource_count": 0,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-banque-france-housing-loans",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Credits aux particuliers - housing loans",
+      "publisher": "Banque de France",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.banque-france.fr/fr/statistiques/credit/credits-aux-particuliers-2026-01",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.banque-france.fr/fr/statistiques/credit/credits-aux-particuliers-2026-01",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 383381,
+        "bytes_written": 383381,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-banque-france-housing-loans__page_snapshot.bin",
+        "sha256": "42be4836fa4eef258d31c8bf4a55b37835666377cf5d524a114bf2175116f651",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-banque-france-taux-usure",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Taux d'usure",
+      "publisher": "Banque de France",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q2",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q2",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 306798,
+        "bytes_written": 306798,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-banque-france-taux-usure__page_snapshot.bin",
+        "sha256": "4f976a284e423b2fe92a1cab9c95f71e797afa17a1c5494a61ccc1cc9fb4f185",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-dvf-api",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "API DVF",
+      "publisher": "Etalab / data.gouv.fr",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.data.gouv.fr/fr/dataservices/api-dvf/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-dvf-official",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Demandes de valeurs foncieres",
+      "publisher": "DGFiP via data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "demandes-de-valeurs-foncieres",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/demandes-de-valeurs-foncieres/",
+      "source_url": "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres/",
+      "resources": [
+        {
+          "id": "902db087-b0eb-4cbb-a968-0b499bde5bc4",
+          "title": "Valeurs fonci\u00e8res 2025",
+          "format": "txt.zip",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20260405-002321/valeursfoncieres-2025.txt.zip",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/902db087-b0eb-4cbb-a968-0b499bde5bc4",
+          "filesize": 69665132,
+          "mime": "application/zip",
+          "created_at": "2026-04-05T00:23:28.759000+00:00",
+          "last_modified": "2026-04-05T00:23:29.884000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "63379bf14b2f2edc47b6b0e78c733472e86e419f"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 69665132,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "99a26050-b94f-4ffc-9eb0-73ed28a895d1",
+          "title": "Valeurs fonci\u00e8res 2024",
+          "format": "txt.zip",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20260405-002306/valeursfoncieres-2024.txt.zip",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/99a26050-b94f-4ffc-9eb0-73ed28a895d1",
+          "filesize": 65334157,
+          "mime": "application/zip",
+          "created_at": "2026-04-05T00:23:18.496000+00:00",
+          "last_modified": "2026-04-05T00:23:19.571000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "8a9c7c2684108a4bb9a8ce3e77a30d037954b340"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 65334157,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "025b9d29-8efb-40bb-8ce6-5bddf97a4e51",
+          "title": "Valeurs fonci\u00e8res 2023",
+          "format": "txt.zip",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20260405-002251/valeursfoncieres-2023.txt.zip",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/025b9d29-8efb-40bb-8ce6-5bddf97a4e51",
+          "filesize": 71675691,
+          "mime": "application/zip",
+          "created_at": "2026-04-05T00:23:03.094000+00:00",
+          "last_modified": "2026-04-05T00:23:04.257000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "d88f73f1512cedb04f08104627d3a1fc68c1d8a9"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 71675691,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "be6e092d-292a-4568-90bf-4254a261ff3b",
+          "title": "Valeurs fonci\u00e8res 2022",
+          "format": "txt.zip",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20260405-002236/valeursfoncieres-2022.txt.zip",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/be6e092d-292a-4568-90bf-4254a261ff3b",
+          "filesize": 87222404,
+          "mime": "application/zip",
+          "created_at": "2026-04-05T00:22:48.531000+00:00",
+          "last_modified": "2026-04-05T00:22:49.745000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "79b08a0e6a9919db2737da7b2a1b62bfe40d00c4"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 87222404,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "947677ab-ad21-48f4-a9ac-ad217c99cf39",
+          "title": "Valeurs fonci\u00e8res 2021",
+          "format": "txt.zip",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20260405-002223/valeursfoncieres-2021.txt.zip",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/947677ab-ad21-48f4-a9ac-ad217c99cf39",
+          "filesize": 86810248,
+          "mime": "application/zip",
+          "created_at": "2026-04-05T00:22:32.990000+00:00",
+          "last_modified": "2026-04-05T00:22:34.139000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "1c52a959914429d14a2f679141f78463b50d382e"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 86810248,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "087ec735-74fd-48a7-a82e-0b1cd3ea6fe9",
+          "title": "Foire aux questions",
+          "format": "pdf",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20221017-153257/faq-20221017.pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/087ec735-74fd-48a7-a82e-0b1cd3ea6fe9",
+          "filesize": 73665,
+          "mime": "application/pdf",
+          "created_at": "2019-10-30T17:17:34.266000+00:00",
+          "last_modified": "2022-10-17T15:33:05.467000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "d4e2fc9917e183d8973b15f50383aacc1838dd97"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20221017-153257/faq-20221017.pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 73665,
+            "bytes_written": 73665,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-dvf-official__6_foire_aux_questions.pdf",
+            "sha256": "56e72520e66205b5dd42b5c0807a326c4c2ca204214b96f8cfbce51a701039ec",
+            "error": null
+          }
+        },
+        {
+          "id": "99549bdd-91f1-4a99-ac00-855b9a14e5f6",
+          "title": "Conditions g\u00e9n\u00e9rales d'utilisation",
+          "format": "pdf",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20201026-172435/conditions-generales-dutilisation-20201016.pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/99549bdd-91f1-4a99-ac00-855b9a14e5f6",
+          "filesize": 82775,
+          "mime": "application/pdf",
+          "created_at": "2019-04-19T09:16:44.006000+00:00",
+          "last_modified": "2020-10-26T17:25:12.972000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "5fd247c28b035ece501eae53af496d65c931f53e"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20201026-172435/conditions-generales-dutilisation-20201016.pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 82775,
+            "bytes_written": 82775,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-dvf-official__7_conditions_g_n_rales_d_utilisation.pdf",
+            "sha256": "0d2d7b0bbcb21a2f2f89a48783b43a3fa4bcb3335ac5376f6d0c8013ecf95746",
+            "error": null
+          }
+        },
+        {
+          "id": "d573456c-76eb-4276-b91c-e6b9c89d6656",
+          "title": "Notice descriptive des fichiers de valeurs fonci\u00e8res",
+          "format": "pdf",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20221017-153319/notice-descriptive-du-fichier-dvf-20221017.pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/d573456c-76eb-4276-b91c-e6b9c89d6656",
+          "filesize": 117377,
+          "mime": "application/pdf",
+          "created_at": "2019-04-19T09:17:45.283000+00:00",
+          "last_modified": "2022-10-17T15:33:35.153000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "917e3a89c1ebc8a1bb0dc0bde6fb92419bb3fb3f"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20221017-153319/notice-descriptive-du-fichier-dvf-20221017.pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 117377,
+            "bytes_written": 117377,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-dvf-official__8_notice_descriptive_des_fichiers_de_valeurs_fonci_res.pdf",
+            "sha256": "c5ea59dbc0bfb61faaa2710eefafbb83a4966bf9aff6980418f5438c67032e6d",
+            "error": null
+          }
+        },
+        {
+          "id": "2cacd01a-3492-47aa-8750-1b58535ad20b",
+          "title": "Information des personnes concern\u00e9es par le traitement informatique",
+          "format": "pdf",
+          "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20201026-172636/information-des-personnes-concernees-par-le-traitement-informatique-20201016.pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/2cacd01a-3492-47aa-8750-1b58535ad20b",
+          "filesize": 64249,
+          "mime": "application/pdf",
+          "created_at": "2019-04-29T11:43:13.739000+00:00",
+          "last_modified": "2020-10-26T17:27:09.036000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "a7602623c556595fd3f8396bbcfa9c8453cfc860"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20201026-172636/information-des-personnes-concernees-par-le-traitement-informatique-20201016.pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 64249,
+            "bytes_written": 64249,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-dvf-official__9_information_des_personnes_concern_es_par_le_traitement_informatique.pdf",
+            "sha256": "d7a3c23d8654bab9e0e4cdae56fc7a0db34f16082e757ff763de45a9eff44150",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Demandes de valeurs fonci\u00e8res",
+      "dataset_id": "5c4ae55a634f4117716d5656",
+      "dataset_page": "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres",
+      "last_modified": "2026-04-07T15:08:32.041000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-dvf-official__data_gouv_metadata.json",
+      "resource_count": 9,
+      "sampled_resource_count": 4,
+      "skipped_resource_count": 5,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-dvfplus-cerema",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "DVF+ open-data",
+      "publisher": "Cerema / Datafoncier",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://datafoncier.cerema.fr/donnees/autres-donnees-foncieres/dvfplus-open-data",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-encadrement-loyers",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Logement - Encadrement des loyers",
+      "publisher": "data.gouv.fr / Paris and public authorities",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "logement-encadrement-des-loyers",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/logement-encadrement-des-loyers/",
+      "source_url": "https://www.data.gouv.fr/datasets/logement-encadrement-des-loyers/",
+      "resources": [
+        {
+          "id": "d72d537a-2f7f-40af-bf1a-289ee25d5ae9",
+          "title": "logement-encadrement-des-loyers.csv",
+          "format": "csv",
+          "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/csv?use_labels=true",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/d72d537a-2f7f-40af-bf1a-289ee25d5ae9",
+          "filesize": "remote",
+          "mime": "text/csv",
+          "created_at": "2025-06-17T15:23:33+00:00",
+          "last_modified": "2025-06-17T15:23:33+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/csv?use_labels=true",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "34b4597c251616089e221a8c655c3c68e459be284d627124a17fa92bd7838d4d",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "7debec64-28eb-43d1-9f6d-9f646e872e10",
+          "title": "logement-encadrement-des-loyers.json",
+          "format": "json",
+          "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/json",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/7debec64-28eb-43d1-9f6d-9f646e872e10",
+          "filesize": "remote",
+          "mime": "application/json",
+          "created_at": "2025-06-17T15:23:33+00:00",
+          "last_modified": "2025-06-17T15:23:33+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/json",
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "2ea30b60be5e76adb7bae9256009db7eb4b4bb9fc156979932888ca1c639c8b5",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "41a1c199-14ca-4cc7-a827-cc4779fed8c0",
+          "title": "logement-encadrement-des-loyers.geojson",
+          "format": "json",
+          "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/geojson",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/41a1c199-14ca-4cc7-a827-cc4779fed8c0",
+          "filesize": "remote",
+          "mime": "application/json",
+          "created_at": "2025-06-17T15:23:33+00:00",
+          "last_modified": "2025-06-17T15:23:33+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/geojson",
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "5f0414c4042249d14bb8d0f09f5af68c8eeab9f70953156d57873df33855a4ed",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "56673243-c63c-418b-b30e-c426a256db45",
+          "title": "logement-encadrement-des-loyers.zip",
+          "format": "zip",
+          "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/shp",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/56673243-c63c-418b-b30e-c426a256db45",
+          "filesize": "remote",
+          "mime": "application/zip",
+          "created_at": "2025-06-17T15:23:33+00:00",
+          "last_modified": "2025-06-17T15:23:33+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/logement-encadrement-des-loyers/exports/shp",
+            "http_status": 200,
+            "content_type": "application/zip; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "6b015012f2f65b220f15a44c712ea2770377f16105c12e30c1e94716f029a1ab",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "a4e27ba6-953f-4a59-810a-bdeea4fe633a",
+          "title": "Arrete_IDF-2019-05-28-013.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/datasets/1.0/logement-encadrement-des-loyers/attachments/arrete_idf_2019_05_28_013_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/a4e27ba6-953f-4a59-810a-bdeea4fe633a",
+          "filesize": "file",
+          "mime": "application/pdf",
+          "created_at": "2019-09-04T06:10:18.239000+00:00",
+          "last_modified": "2022-06-29T14:01:40+00:00",
+          "checksum": null,
+          "download": {
+            "status": "http_error",
+            "url": "https://opendata.paris.fr/api/datasets/1.0/logement-encadrement-des-loyers/attachments/arrete_idf_2019_05_28_013_pdf",
+            "http_status": 404,
+            "content_type": null,
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": null,
+            "error": "HTTP Error 404: Not Found"
+          }
+        },
+        {
+          "id": "ea16671e-c88c-4dd0-9ec5-57db888de29a",
+          "title": "Annexe-3-Plan_d_ensemble.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/annexe_3_plan_d_ensemble_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/ea16671e-c88c-4dd0-9ec5-57db888de29a",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2019-09-04T06:10:18.239000+00:00",
+          "last_modified": "2019-07-08T14:28:36+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_declared",
+            "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/annexe_3_plan_d_ensemble_pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 4333083,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": null,
+            "error": "Declared payload 4333083 bytes exceeds 1048576."
+          }
+        },
+        {
+          "id": "21b3f4b9-b0da-459f-9eb9-4bf10a913481",
+          "title": "Arr\u00eat\u00e9 pr\u00e9fectoral encadrement des loyers 01 06 2022 publi\u00e9.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_prefectoral_encadrement_des_loyers_01_06_2022_publie_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/21b3f4b9-b0da-459f-9eb9-4bf10a913481",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2022-07-01T06:02:11.921000+00:00",
+          "last_modified": "2022-06-30T09:56:34+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_declared",
+            "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_prefectoral_encadrement_des_loyers_01_06_2022_publie_pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 5311059,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": null,
+            "error": "Declared payload 5311059 bytes exceeds 1048576."
+          }
+        },
+        {
+          "id": "aaa31005-c166-4c1e-a95c-f968018c07bf",
+          "title": "arr\u00eat\u00e9 pr\u00e9fectoral du 7 juin 2021 encadrement des loyers Paris.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_prefectoral_du_7_juin_2021_encadrement_des_loyers_paris_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/aaa31005-c166-4c1e-a95c-f968018c07bf",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2022-07-01T06:02:11.921000+00:00",
+          "last_modified": "2022-06-30T09:56:38+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_declared",
+            "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_prefectoral_du_7_juin_2021_encadrement_des_loyers_paris_pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 2200341,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": null,
+            "error": "Declared payload 2200341 bytes exceeds 1048576."
+          }
+        },
+        {
+          "id": "40fab33d-0594-4866-8a3c-25d50bd3bbae",
+          "title": "Arr\u00eat\u00e9 4 juin 2020 encadrement des loyers Paris.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_4_juin_2020_encadrement_des_loyers_paris_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/40fab33d-0594-4866-8a3c-25d50bd3bbae",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2022-07-01T06:02:11.921000+00:00",
+          "last_modified": "2022-06-30T09:56:44+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_declared",
+            "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_4_juin_2020_encadrement_des_loyers_paris_pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 7457322,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": null,
+            "error": "Declared payload 7457322 bytes exceeds 1048576."
+          }
+        },
+        {
+          "id": "9e64f164-76af-4d8d-9c1f-56ed01251bff",
+          "title": "Arr\u00eat\u00e9 28 mai 2019 encadrement des loyers Paris.pdf",
+          "format": "pdf",
+          "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_28_mai_2019_encadrement_des_loyers_paris_pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/9e64f164-76af-4d8d-9c1f-56ed01251bff",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2022-07-01T06:02:11.921000+00:00",
+          "last_modified": "2022-06-30T09:56:49+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://opendata.paris.fr/api/v2/catalog/datasets/logement-encadrement-des-loyers/attachments/arrete_28_mai_2019_encadrement_des_loyers_paris_pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 203716,
+            "bytes_written": 203716,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-encadrement-loyers__10_arr_t_28_mai_2019_encadrement_des_loyers_paris.pdf.bin",
+            "sha256": "c95e3093a4601a1d1412ebbc39b55a24738c6344c63752c3a16f06a5c6f02051",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Logement - Encadrement des loyers",
+      "dataset_id": "5d6f392a06e3e743b4d78afd",
+      "dataset_page": "https://www.data.gouv.fr/datasets/logement-encadrement-des-loyers",
+      "last_modified": "2025-06-17T15:23:33+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-encadrement-loyers__data_gouv_metadata.json",
+      "resource_count": 10,
+      "sampled_resource_count": 1,
+      "skipped_resource_count": 8,
+      "failed_resource_count": 1
+    },
+    {
+      "source_id": "fr-fiscalite-locale-particuliers",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Fiscalite locale des particuliers - Geo",
+      "publisher": "DGFiP / data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "fiscalite-locale-des-particuliers-geo",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/fiscalite-locale-des-particuliers-geo/",
+      "source_url": "https://www.data.gouv.fr/fr/datasets/fiscalite-locale-des-particuliers-geo/",
+      "resources": [
+        {
+          "id": "a17e1e27-3745-4738-9e56-32add99b2508",
+          "title": "fiscalite-locale-des-particuliers-geo.csv",
+          "format": "csv",
+          "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/csv?use_labels=true",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/a17e1e27-3745-4738-9e56-32add99b2508",
+          "filesize": "remote",
+          "mime": "text/csv",
+          "created_at": "2026-01-26T07:41:42.940000+00:00",
+          "last_modified": "2026-01-26T07:41:42.940000+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/csv?use_labels=true",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "0c1bb181cde8b61d543c7efbfcee8f45d392859254161f5f8c78b1be50e6b7c2",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "ed12b083-923c-4c07-b7cf-d95958c810dd",
+          "title": "fiscalite-locale-des-particuliers-geo.json",
+          "format": "json",
+          "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/json",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/ed12b083-923c-4c07-b7cf-d95958c810dd",
+          "filesize": "remote",
+          "mime": "application/json",
+          "created_at": "2026-01-26T07:41:42.940000+00:00",
+          "last_modified": "2026-01-26T07:41:42.940000+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/json",
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "e31cc6490e5c48f224c9e0766bba860643f259a21e4d4dbbf9b8fdc09e91ec1e",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "c49b4aa6-12eb-49d3-9d08-25d4e02eb183",
+          "title": "fiscalite-locale-des-particuliers-geo.geojson",
+          "format": "json",
+          "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/geojson",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/c49b4aa6-12eb-49d3-9d08-25d4e02eb183",
+          "filesize": "remote",
+          "mime": "application/json",
+          "created_at": "2026-01-26T07:41:42.940000+00:00",
+          "last_modified": "2026-01-26T07:41:42.940000+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/geojson",
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "400638363a2cea25947c535c5735c068fbbebf0773187f00ea082addf4222dc2",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "165b7a18-997a-412c-bdc2-e4af8fd77d4f",
+          "title": "fiscalite-locale-des-particuliers-geo.zip",
+          "format": "zip",
+          "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/shp",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/165b7a18-997a-412c-bdc2-e4af8fd77d4f",
+          "filesize": "remote",
+          "mime": "application/zip",
+          "created_at": "2026-01-26T07:41:42.940000+00:00",
+          "last_modified": "2026-01-26T07:41:42.940000+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/fiscalite-locale-des-particuliers-geo/exports/shp",
+            "http_status": 200,
+            "content_type": "application/zip; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "9750c75e3119af3a1fbaa5c5cc804dc0e2d5110357064eba3b4fb6ecdf4a7d31",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        }
+      ],
+      "dataset_title": "Fiscalit\u00e9 locale des particuliers - G\u00e9o",
+      "dataset_id": "66512be37d2d55cbd2e5a98b",
+      "dataset_page": "https://www.data.gouv.fr/datasets/fiscalite-locale-des-particuliers-geo",
+      "last_modified": "2026-01-26T07:41:42.940000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-fiscalite-locale-particuliers__data_gouv_metadata.json",
+      "resource_count": 4,
+      "sampled_resource_count": 0,
+      "skipped_resource_count": 4,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-insee-bdm-api",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "API BDM",
+      "publisher": "INSEE via data.gouv.fr",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.data.gouv.fr/fr/dataservices/api-bdm//",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-insee-bt-construction-indices",
+      "market": "france",
+      "domain": "renovation",
+      "source_name": "Building indices, civil engineering indices and various indices for construction",
+      "publisher": "INSEE",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.insee.fr/en/statistiques/8897487",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.insee.fr/en/statistiques/8897487",
+        "http_status": 200,
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 96356,
+        "bytes_written": 96356,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-insee-bt-construction-indices__page_snapshot.bin",
+        "sha256": "5410178c9d32d4868130a5ed38bee7372bc21fd2cc6c6a535c186495d84b4854",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-insee-cpi",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Indice des prix a la consommation",
+      "publisher": "INSEE via data.gouv.fr",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.data.gouv.fr/datasets/indice-des-prix-a-la-consommation-dataset-principal",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.data.gouv.fr/datasets/indice-des-prix-a-la-consommation-dataset-principal",
+        "http_status": 200,
+        "content_type": "text/html;charset=utf-8",
+        "content_length": 78211,
+        "bytes_written": 78211,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-insee-cpi__page_snapshot.bin",
+        "sha256": "4d826619f5fdf11aac8eedb4455189a392e47112e05d43eaacea44c2acedf113",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-insee-ipea",
+      "market": "france",
+      "domain": "renovation",
+      "source_name": "Indice de prix des travaux d'entretien-amelioration de batiments",
+      "publisher": "INSEE",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.insee.fr/fr/metadonnees/source/indicateur/p1655/presentation",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.insee.fr/fr/metadonnees/source/indicateur/p1655/presentation",
+        "http_status": 200,
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 63629,
+        "bytes_written": 63629,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-insee-ipea__page_snapshot.bin",
+        "sha256": "e11eab0c08a56a25d95be049e5411e8fd5c3ddc2835b41c91b5ed03983fadffe",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-insee-tourism-occupancy",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Frequentation des hebergements touristiques",
+      "publisher": "INSEE via data.gouv.fr",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.data.gouv.fr/datasets/frequentations-touristiques",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.data.gouv.fr/datasets/frequentations-touristiques",
+        "http_status": 200,
+        "content_type": "text/html;charset=utf-8",
+        "content_length": 78898,
+        "bytes_written": 78898,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-insee-tourism-occupancy__page_snapshot.bin",
+        "sha256": "53b69b9a32fe0f4f854b5eb86bc240f56ac36fb83af9bf9ec11218b53825b58a",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-lovac-vacant-housing",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Logements vacants du parc prive",
+      "publisher": "Cerema / data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/",
+      "source_url": "https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region",
+      "resources": [
+        {
+          "id": "41744167-0321-4e22-8e4f-6974522d5185",
+          "title": "LOVAC open data 2020 \u00e0 2025 version xlsx",
+          "format": "xlsx",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20250602-140231/lovac-open-data-2020-a-2025-vd.xlsx",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/41744167-0321-4e22-8e4f-6974522d5185",
+          "filesize": 4716557,
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "created_at": "2025-06-02T14:02:32.452000+00:00",
+          "last_modified": "2025-06-02T14:03:48.635000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "38ecea9d3168f0e8d85d2efc0d8eb175452bbfee"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 4716557,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "c4058680-1c02-45ed-99f2-3dcdd1002c81",
+          "title": "Lovac_opendata_schema.csv",
+          "format": "csv",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103307/lovac-opendata-metadonnees2.csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/c4058680-1c02-45ed-99f2-3dcdd1002c81",
+          "filesize": 6032,
+          "mime": "text/csv",
+          "created_at": "2025-05-28T08:57:17.205000+00:00",
+          "last_modified": "2025-12-09T10:38:35.765000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "5a469d21468ff18980ae24cdb4e303019ace1c20"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103307/lovac-opendata-metadonnees2.csv",
+            "http_status": 200,
+            "content_type": "text/csv",
+            "content_length": 6032,
+            "bytes_written": 6032,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-lovac-vacant-housing__2_lovac_opendata_schema.csv.csv",
+            "sha256": "e381d94884ddd9c9b6a9d60cc3fbd82d61d9325182dfc5323e73b01fc124b5bf",
+            "error": null
+          }
+        },
+        {
+          "id": "2e0417b4-902d-4c60-90e7-bf5df148cb87",
+          "title": "Lovac_opendata_Communes.csv",
+          "format": "csv",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-lovac-par-commune-departement-region-et-france/20250528-090420/lovac-opendata-communes.csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/2e0417b4-902d-4c60-90e7-bf5df148cb87",
+          "filesize": 5374077,
+          "mime": "text/csv",
+          "created_at": "2025-05-28T09:04:21.027000+00:00",
+          "last_modified": "2025-05-28T09:04:21.276000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "59acf4e92cb8b4c5d83b8de6cf52a1075d2ec8de"
+          },
+          "download": {
+            "status": "skipped_large_metadata",
+            "declared_bytes": 5374077,
+            "max_bytes": 1048576
+          }
+        },
+        {
+          "id": "42a34c0a-7c97-4463-b00e-5913ea5f7077",
+          "title": "Lovac_opendata_Departements.csv",
+          "format": "csv",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103759/lovac-opendata-departements.csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/42a34c0a-7c97-4463-b00e-5913ea5f7077",
+          "filesize": 21255,
+          "mime": "text/csv",
+          "created_at": "2025-05-28T09:03:51.502000+00:00",
+          "last_modified": "2025-12-09T10:38:00.083000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "d57507cc55fe065983a52cf1d31d5eb24a53c51c"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103759/lovac-opendata-departements.csv",
+            "http_status": 200,
+            "content_type": "text/csv",
+            "content_length": 21255,
+            "bytes_written": 21255,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-lovac-vacant-housing__4_lovac_opendata_departements.csv.csv",
+            "sha256": "f68f610c1334557cb96f6af9dadd0c1330001fad42c4c486fd491cb26f72703d",
+            "error": null
+          }
+        },
+        {
+          "id": "1471825a-4b22-4bd0-ba1a-f99e729cff66",
+          "title": "Lovac_opendata_Regions.csv",
+          "format": "csv",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103722/lovac-opendata-regions.csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/1471825a-4b22-4bd0-ba1a-f99e729cff66",
+          "filesize": 4375,
+          "mime": "text/csv",
+          "created_at": "2025-05-28T09:03:22.798000+00:00",
+          "last_modified": "2025-12-09T10:37:22.980000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "d57507cc55fe065983a52cf1d31d5eb24a53c51c"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103722/lovac-opendata-regions.csv",
+            "http_status": 200,
+            "content_type": "text/csv",
+            "content_length": 4375,
+            "bytes_written": 4375,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-lovac-vacant-housing__5_lovac_opendata_regions.csv.csv",
+            "sha256": "fcb3badebac6929fb7439b4935451c01e4b86e90cbf9a67b14783fb0ccfd1cc4",
+            "error": null
+          }
+        },
+        {
+          "id": "7a6544d9-8932-443c-a82e-ce3ed19feaf8",
+          "title": "Lovac_opendata_France.csv",
+          "format": "csv",
+          "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103641/lovac-opendata-france.csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/7a6544d9-8932-443c-a82e-ce3ed19feaf8",
+          "filesize": 531,
+          "mime": "text/csv",
+          "created_at": "2025-05-28T09:02:58.441000+00:00",
+          "last_modified": "2025-12-09T10:36:42.647000+00:00",
+          "checksum": {
+            "type": "sha1",
+            "value": "d57507cc55fe065983a52cf1d31d5eb24a53c51c"
+          },
+          "download": {
+            "status": "sampled",
+            "url": "https://static.data.gouv.fr/resources/logements-vacants-du-parc-prive-en-france-et-par-commune-departement-region/20251209-103641/lovac-opendata-france.csv",
+            "http_status": 200,
+            "content_type": "text/csv",
+            "content_length": 531,
+            "bytes_written": 531,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-lovac-vacant-housing__6_lovac_opendata_france.csv.csv",
+            "sha256": "4a9fad2ef799f9608048069033580e15b915419b8fab28fc251c39b45709db75",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Logements vacants du parc priv\u00e9 par commune, d\u00e9partement, r\u00e9gion, France",
+      "dataset_id": "61816c6e23197bb34835228e",
+      "dataset_page": "https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-par-commune-departement-region-france",
+      "last_modified": "2025-12-17T15:51:03.215000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-lovac-vacant-housing__data_gouv_metadata.json",
+      "resource_count": 6,
+      "sampled_resource_count": 4,
+      "skipped_resource_count": 2,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-meuble-tourisme-rules",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Location touristique meublee rules",
+      "publisher": "Ministere de la Transition ecologique",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.ecologie.gouv.fr/politiques-publiques/location-touristique-meublee",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-notaires-insee-indices",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Notaires-INSEE second-hand dwelling price indices",
+      "publisher": "INSEE and Notaires de France",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.insee.fr/fr/statistiques/8669035",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-notaires-valeur-verte",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Valeur verte des logements",
+      "publisher": "Notaires de France",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.notaires.fr/fr/immobilier-fiscalite/etudes-et-analyses-immobilieres/performance-energetique-la-valeur-verte-des-logements",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.notaires.fr/fr/immobilier-fiscalite/etudes-et-analyses-immobilieres/performance-energetique-la-valeur-verte-des-logements",
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 95751,
+        "bytes_written": 95751,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-notaires-valeur-verte__page_snapshot.bin",
+        "sha256": "56e2c45737a7be1446446010e4631e326f527e35a05c707f2c6d2e506dbcb68c",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-oll-rents",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Resultats nationaux des observatoires locaux des loyers",
+      "publisher": "Observatoires locaux des loyers via data.gouv.fr",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.data.gouv.fr/fr/datasets/56fd8e8788ee387079c352f7/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-service-public-notary-fees",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Calculer les frais de notaire",
+      "publisher": "Service Public / DILA",
+      "status": "ok",
+      "strategy": "page_or_file_snapshot",
+      "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/R54267",
+      "download": {
+        "status": "sampled",
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/R54267",
+        "http_status": 200,
+        "content_type": "text/html;charset=UTF-8",
+        "content_length": 62584,
+        "bytes_written": 62584,
+        "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-service-public-notary-fees__page_snapshot.bin",
+        "sha256": "70633754e22bb37793c282fe953c579f048e8032961c92d3241e28289f04bcda",
+        "error": null
+      }
+    },
+    {
+      "source_id": "fr-sitadel-housing-starts",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Logements autorises et commences - Sitadel",
+      "publisher": "SDES / data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "logements-autorises-et-commences-nombre-et-surfaces-series-annuelles",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/logements-autorises-et-commences-nombre-et-surfaces-series-annuelles/",
+      "source_url": "https://www.data.gouv.fr/datasets/logements-autorises-et-commences-nombre-et-surfaces-series-annuelles/",
+      "resources": [
+        {
+          "id": "d2ebe5a4-213d-4305-8143-73a928b34da7",
+          "title": "Donn\u00e9es annuelles communales - Logements",
+          "format": "html",
+          "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=9c90a880-4ba0-49b4-b99d-d7dd6c810dd0",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/d2ebe5a4-213d-4305-8143-73a928b34da7",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2025-08-13T07:47:02.360000+00:00",
+          "last_modified": "2026-04-29T16:56:13+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=9c90a880-4ba0-49b4-b99d-d7dd6c810dd0",
+            "http_status": 200,
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 64392,
+            "bytes_written": 64392,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-sitadel-housing-starts__1_donn_es_annuelles_communales_-_logements.bin",
+            "sha256": "968ae9f82508ed8b82c4ef5c5a5cd1a60d4fe141d40f4879588eb587b9804509",
+            "error": null
+          }
+        },
+        {
+          "id": "0debc675-369e-4d32-aec6-8716d48d64e7",
+          "title": "Donn\u00e9es annuelles communales - Logements",
+          "format": "csv",
+          "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/9c90a880-4ba0-49b4-b99d-d7dd6c810dd0/csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/0debc675-369e-4d32-aec6-8716d48d64e7",
+          "filesize": "remote",
+          "mime": "text/csv",
+          "created_at": "2025-08-13T07:47:02.072000+00:00",
+          "last_modified": "2026-04-28T14:04:31.226276+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/9c90a880-4ba0-49b4-b99d-d7dd6c810dd0/csv",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "bda644e326fe74a874dc8a0d380c66369c31a51e5c09ea334a05ee427cb0816f",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        },
+        {
+          "id": "ad1e6cf1-401d-4c11-aa82-c96fab11284e",
+          "title": "Donn\u00e9es annuelles d\u00e9partementales - Logements",
+          "format": "html",
+          "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=a0ae7112-5184-4ad7-842d-87b09fd27df1",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/ad1e6cf1-401d-4c11-aa82-c96fab11284e",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2025-08-13T07:47:01.837000+00:00",
+          "last_modified": "2026-04-30T02:03:54+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=a0ae7112-5184-4ad7-842d-87b09fd27df1",
+            "http_status": 200,
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 64392,
+            "bytes_written": 64392,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-sitadel-housing-starts__3_donn_es_annuelles_d_partementales_-_logements.bin",
+            "sha256": "88c12f4fa03b3ef5dbf084818f07ce49ecfa3db969a8f56cbec713764d692b79",
+            "error": null
+          }
+        },
+        {
+          "id": "ae0d7970-0860-4418-a1b7-874eca038c11",
+          "title": "Donn\u00e9es annuelles d\u00e9partementales - Logements",
+          "format": "csv",
+          "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/a0ae7112-5184-4ad7-842d-87b09fd27df1/csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/ae0d7970-0860-4418-a1b7-874eca038c11",
+          "filesize": "remote",
+          "mime": "text/csv",
+          "created_at": "2025-08-13T07:47:01.561000+00:00",
+          "last_modified": "2026-04-28T14:03:36.016219+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/a0ae7112-5184-4ad7-842d-87b09fd27df1/csv",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": 360736,
+            "bytes_written": 360736,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-sitadel-housing-starts__4_donn_es_annuelles_d_partementales_-_logements.bin",
+            "sha256": "acdafad5fd659241abbc25233cd5e537d182afbe5a1b3722cfe76f1b1f13c478",
+            "error": null
+          }
+        },
+        {
+          "id": "45e1e066-cc61-45e4-bfcb-f727594f4426",
+          "title": "Donn\u00e9es annuelles par EPCI - Logements",
+          "format": "html",
+          "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=cb3c0612-e7d9-4a87-91be-cc0fb6448a4f",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/45e1e066-cc61-45e4-bfcb-f727594f4426",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2025-08-13T07:47:01.334000+00:00",
+          "last_modified": "2026-04-29T21:58:47+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://www.statistiques.developpement-durable.gouv.fr/catalogue?page=datafile&datafileRid=cb3c0612-e7d9-4a87-91be-cc0fb6448a4f",
+            "http_status": 200,
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 64392,
+            "bytes_written": 64392,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-sitadel-housing-starts__5_donn_es_annuelles_par_epci_-_logements.bin",
+            "sha256": "5a4991ccbc88589e8327d413d11bf469d18cac633b06666229e91983fbe8e235",
+            "error": null
+          }
+        },
+        {
+          "id": "79c41b99-be89-485c-bf74-170c03111252",
+          "title": "Donn\u00e9es annuelles par EPCI - Logements",
+          "format": "csv",
+          "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/cb3c0612-e7d9-4a87-91be-cc0fb6448a4f/csv",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/79c41b99-be89-485c-bf74-170c03111252",
+          "filesize": "remote",
+          "mime": "text/csv",
+          "created_at": "2025-08-13T07:47:01.125000+00:00",
+          "last_modified": "2026-04-28T14:03:38.088148+00:00",
+          "checksum": null,
+          "download": {
+            "status": "skipped_large_stream",
+            "url": "https://data.statistiques.developpement-durable.gouv.fr/dido/api/v1/datafiles/cb3c0612-e7d9-4a87-91be-cc0fb6448a4f/csv",
+            "http_status": 200,
+            "content_type": "text/csv; charset=utf-8",
+            "content_length": null,
+            "bytes_written": 0,
+            "sample_path": null,
+            "sha256": "33048dd1b2625f3a206265ba6a462ded03a1e8a7e1ca28282a4e72a4df1c4062",
+            "error": "Stream exceeded smoke max 1048576 bytes."
+          }
+        }
+      ],
+      "dataset_title": "Logements autoris\u00e9s et commenc\u00e9s, nombre et surfaces, s\u00e9ries annuelles (donn\u00e9es non estim\u00e9es)",
+      "dataset_id": "689c42f436bd7334aaed7c6f",
+      "dataset_page": "https://www.data.gouv.fr/datasets/logements-autorises-et-commences-nombre-et-surfaces-series-annuelles-donnees-non-estimees-1",
+      "last_modified": "2026-04-28T13:00:06.262000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-sitadel-housing-starts__data_gouv_metadata.json",
+      "resource_count": 6,
+      "sampled_resource_count": 4,
+      "skipped_resource_count": 2,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-zones-tendues",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Simulateur des zones tendues",
+      "publisher": "DILA / data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "simulateur-des-zones-tendues",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/simulateur-des-zones-tendues/",
+      "source_url": "https://www.data.gouv.fr/datasets/simulateur-des-zones-tendues/",
+      "resources": [
+        {
+          "id": "7c7e2894-23a1-45f0-861f-54449265c023",
+          "title": "Pr\u00e9sentation du simulateur des zones tendues",
+          "format": "pdf",
+          "url": "https://echanges.dila.gouv.fr/OPENDATA/DILA_Simulateur_zone_tendue_Presentation_20181002.pdf",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/7c7e2894-23a1-45f0-861f-54449265c023",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2018-10-16T17:49:21.115000+00:00",
+          "last_modified": "2018-10-12T14:16:44+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://echanges.dila.gouv.fr/OPENDATA/DILA_Simulateur_zone_tendue_Presentation_20181002.pdf",
+            "http_status": 200,
+            "content_type": "application/pdf",
+            "content_length": 265179,
+            "bytes_written": 265179,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-zones-tendues__1_pr_sentation_du_simulateur_des_zones_tendues.pdf",
+            "sha256": "123580a59d4ab2ac498f80b0a031e3c25e6771b7ca1d601a4a0f0b55ac64e1e8",
+            "error": null
+          }
+        },
+        {
+          "id": "8bef8f39-12d5-43fe-8992-824bbd8998f4",
+          "title": "R\u00e8gles de calcul du simulateur des zones tendues",
+          "format": "xml",
+          "url": "https://gitlab.com/pidila/sp-simulateurs-data/blob/master/definitions-des-simulateurs/zones-tendues.xml",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/8bef8f39-12d5-43fe-8992-824bbd8998f4",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2018-10-16T17:47:35.074000+00:00",
+          "last_modified": "2026-04-30T17:43:11.344784+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://gitlab.com/pidila/sp-simulateurs-data/blob/master/definitions-des-simulateurs/zones-tendues.xml",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 37554,
+            "bytes_written": 37554,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-zones-tendues__2_r_gles_de_calcul_du_simulateur_des_zones_tendues.bin",
+            "sha256": "93bf8ea5449ae8d534b568c2ac1d17905804508dd4d5752f8ac792283530a679",
+            "error": null
+          }
+        },
+        {
+          "id": "7a061cfe-5d9d-4c89-ad9d-45b3441f55e7",
+          "title": " Feuille de style du simulateur des zones tendues",
+          "format": "css",
+          "url": "https://gitlab.com/pidila/sp-simulateurs-data/blob/master/feuilles-de-styles/zones-tendues.css",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/7a061cfe-5d9d-4c89-ad9d-45b3441f55e7",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2018-10-16T17:43:00.150000+00:00",
+          "last_modified": "2026-04-15T03:47:35.865882+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://gitlab.com/pidila/sp-simulateurs-data/blob/master/feuilles-de-styles/zones-tendues.css",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 37428,
+            "bytes_written": 37428,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-zones-tendues__3__feuille_de_style_du_simulateur_des_zones_tendues.bin",
+            "sha256": "cc129a4d20394664d15a222a759435a6d6aa550f53aefe57e60c513e28af1a37",
+            "error": null
+          }
+        },
+        {
+          "id": "0b3e2ac6-5c5f-4071-b279-07096e229a25",
+          "title": "Donn\u00e9es de r\u00e9f\u00e9rence du simulateur des zones tendues  (JSON)",
+          "format": "json",
+          "url": "https://gitlab.com/pidila/sp-simulateurs-data/-/blob/master/donnees-de-reference/TaxeLogementVacant.json",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/0b3e2ac6-5c5f-4071-b279-07096e229a25",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2018-10-16T17:41:56.318000+00:00",
+          "last_modified": "2026-04-14T01:52:22.175147+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://gitlab.com/pidila/sp-simulateurs-data/-/blob/master/donnees-de-reference/TaxeLogementVacant.json",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 37546,
+            "bytes_written": 37546,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-zones-tendues__4_donn_es_de_r_f_rence_du_simulateur_des_zones_tendues_json.json",
+            "sha256": "7305822b28d9eafd014a14460fa2fb93e2a7a3fbf0a0bd92f79de2e6d7fdd7b3",
+            "error": null
+          }
+        },
+        {
+          "id": "ceb40a38-63dc-4a8d-a461-a50e40c970f9",
+          "title": "Sch\u00e9ma des donn\u00e9es de r\u00e9f\u00e9rence (Sch\u00e9ma JSON) du simulateur des zones tendues",
+          "format": "schema.json",
+          "url": "https://gitlab.com/pidila/sp-simulateurs-data/-/blob/master/donnees-de-reference/TaxeLogementVacant.schema.json",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/ceb40a38-63dc-4a8d-a461-a50e40c970f9",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2018-10-16T17:39:12.815000+00:00",
+          "last_modified": "2026-04-14T02:00:19.243201+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "https://gitlab.com/pidila/sp-simulateurs-data/-/blob/master/donnees-de-reference/TaxeLogementVacant.schema.json",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 37644,
+            "bytes_written": 37644,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-zones-tendues__5_sch_ma_des_donn_es_de_r_f_rence_sch_ma_json_du_simulateur_des_zones_tendues.json",
+            "sha256": "dca9e90f2d0c92ce9afa6e63f6473b94ad426271dabdaccb54a7fe5ba1993473",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Simulateur des ZONES TENDUES",
+      "dataset_id": "5bc605788b4c414795053dca",
+      "dataset_page": "https://www.data.gouv.fr/datasets/simulateur-des-zones-tendues",
+      "last_modified": "2024-02-05T14:01:27.117000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-zones-tendues__data_gouv_metadata.json",
+      "resource_count": 5,
+      "sampled_resource_count": 5,
+      "skipped_resource_count": 0,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-api-meubles-tourisme",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "API meubles - guichet unique",
+      "publisher": "Direction generale des Entreprises",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.entreprises.gouv.fr/espace-entreprises/s-informer-sur-la-reglementation/lapi-meubles-guichet-unique-de-centralisation",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-carte-des-loyers",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Carte des loyers",
+      "publisher": "Ministere de la Transition ecologique / ANIL",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.ecologie.gouv.fr/carte-des-loyers",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-dmtg-assiette-droits-mutation",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Assiette des droits de mutation immobiliers",
+      "publisher": "DGFiP / CGEDD via data.gouv.fr",
+      "status": "ok",
+      "strategy": "data_gouv_dataset_api",
+      "dataset_slug": "assiette-des-droits-de-mutation-immobiliers",
+      "api_url": "https://www.data.gouv.fr/api/1/datasets/assiette-des-droits-de-mutation-immobiliers/",
+      "source_url": "https://www.data.gouv.fr/fr/datasets/assiette-des-droits-de-mutation-immobiliers/",
+      "resources": [
+        {
+          "id": "40780dc2-2a2c-4d90-8b9c-2cf62227b5d1",
+          "title": "Assiette des droits de mutation immobiliers",
+          "format": "html",
+          "url": "http://www.igedd.developpement-durable.gouv.fr/droits-de-mutation-immobiliers-par-a1652.html",
+          "latest": "https://www.data.gouv.fr/api/1/datasets/r/40780dc2-2a2c-4d90-8b9c-2cf62227b5d1",
+          "filesize": "remote",
+          "mime": null,
+          "created_at": "2014-05-07T03:40:39.990000+00:00",
+          "last_modified": "2026-04-30T17:48:10+00:00",
+          "checksum": null,
+          "download": {
+            "status": "sampled",
+            "url": "http://www.igedd.developpement-durable.gouv.fr/droits-de-mutation-immobiliers-par-a1652.html",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "content_length": 62628,
+            "bytes_written": 62628,
+            "sample_path": "90_processed\\fonatprop_official_ingest\\samples\\fr-dmtg-assiette-droits-mutation__1_assiette_des_droits_de_mutation_immobiliers.html",
+            "sha256": "eb38b4eaa50db0c5de59ee6834f04769624466e7b909a633437fffafed016a05",
+            "error": null
+          }
+        }
+      ],
+      "dataset_title": "Assiette des droits de mutation immobiliers",
+      "dataset_id": "53698f17a3a729239d20364d",
+      "dataset_page": "https://www.data.gouv.fr/datasets/assiette-des-droits-de-mutation-immobiliers",
+      "last_modified": "2025-03-17T06:40:15.924000+00:00",
+      "metadata_path": "90_processed\\fonatprop_official_ingest\\metadata\\fr-dmtg-assiette-droits-mutation__data_gouv_metadata.json",
+      "resource_count": 1,
+      "sampled_resource_count": 1,
+      "skipped_resource_count": 0,
+      "failed_resource_count": 0
+    },
+    {
+      "source_id": "fr-dvf-statistiques",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Statistiques DVF",
+      "publisher": "data.gouv.fr community/public producers",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.data.gouv.fr/datasets/statistiques-dvf/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-igedd-long-series",
+      "market": "france",
+      "domain": "investment",
+      "source_name": "Long series for French housing prices",
+      "publisher": "IGEDD",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.igedd.developpement-durable.gouv.fr/evolution-du-prix-de-l-immobilier-d-habitation-a-a2056.html",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    },
+    {
+      "source_id": "fr-manomano",
+      "market": "france",
+      "domain": "renovation",
+      "source_name": "ManoMano France",
+      "publisher": "ManoMano",
+      "status": "not_actionable_in_smoke",
+      "strategy": "registry_only",
+      "source_url": "https://www.manomano.fr/",
+      "notes": "Registered as high-value source, but needs partner feed, dedicated parser, or full-mode connector."
+    }
+  ],
+  "summary": {
+    "generated_at": "2026-05-01T00:39:38.301300+00:00",
+    "mode": "smoke",
+    "source_count": 49,
+    "status_counts": {
+      "http_error": 2,
+      "network_error": 2,
+      "network_unavailable_from_current_session": 7,
+      "not_actionable_in_smoke": 17,
+      "ok": 19,
+      "reachable": 1,
+      "skipped_large_declared": 1
+    },
+    "strategy_counts": {
+      "data_gouv_dataset_api": 8,
+      "dubai_pulse_probe_only": 8,
+      "page_or_file_snapshot": 16,
+      "registry_only": 17
+    },
+    "discovered_resource_count": 45,
+    "sampled_resource_count": 23,
+    "skipped_resource_count": 21,
+    "failed_resource_count": 1,
+    "sample_bytes_written": 3959124,
+    "local_inventory_file_count": 27,
+    "local_inventory_total_bytes": 6604736432,
+    "manifest_path": "data\\catalog\\fonatprop_official_ingestion_manifest.json",
+    "data_lake_output_root": "90_processed\\fonatprop_official_ingest",
+    "next_actions": [
+      "Turn sampled official metadata into normalized Postgres tables for price history, inflation, yields, taxes, and renovation cost ranges.",
+      "Run full mode only for selected large CSV/ZIP sources after choosing storage targets outside the frontend repo.",
+      "Use Dubai Pulse token/API or manual bulk export for DLD transactions, Ejari rents, service charges, units, and projects when the public portal blocks automation.",
+      "Attach source attribution and confidence level to every investment and renovation result shown in FonatProp."
+    ]
+  }
+}

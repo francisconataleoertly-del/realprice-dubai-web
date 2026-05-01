@@ -65,7 +65,7 @@ export default function ValorarSection() {
   }, [googleLoaded, zones]);
 
   useEffect(() => {
-    fetch(`${API}/zones`).then((r) => r.json()).then((d) => { if (d.zones) setZones(d.zones.sort()); }).catch(() => {});
+    fetch(`${API}/zones`).then((r) => r.json()).then((d) => { if (d.zones) setZones(d.zones.sort()); }).catch((err) => console.error('[melanie/ValorarSection] Failed to load zones:', err));
   }, []);
 
   const submit = async () => {

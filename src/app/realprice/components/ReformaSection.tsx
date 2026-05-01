@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronDown, Info, Loader2 } from "lucide-react";
+import RenovationMaterialSearch from "@/components/renovation/RenovationMaterialSearch";
 
 const API = "/api/fonatprop";
 
@@ -70,7 +71,7 @@ export default function ReformaSection() {
           setData(null);
         }
       })
-      .catch(() => {});
+      .catch((err) => console.error('[ReformaSection] Failed to load reformation data:', err));
   }, []);
 
   const tierData = data?.types[tier];
@@ -144,6 +145,7 @@ export default function ReformaSection() {
             <span className="font-mono text-[11px]">Loading catalog...</span>
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* ── LEFT: Inputs ── */}
             <div className="space-y-6">
@@ -397,6 +399,12 @@ export default function ReformaSection() {
               </div>
             </div>
           </div>
+          <RenovationMaterialSearch
+            market="dubai"
+            title="Search Dubai materials by room and finish."
+            description="Initial UAE catalog for the renovation engine: bathroom fittings, tile adhesives, paint finishes and pool-cost benchmarks from ACE UAE, Danube Home, NQCART and contractor guides."
+          />
+          </>
         )}
       </div>
       </div>

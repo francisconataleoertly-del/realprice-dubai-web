@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { animate, motion, useInView } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -11,15 +12,22 @@ import {
   Euro,
   Home,
   Map,
+  MessageCircle,
   Paintbrush,
   ShieldCheck,
   Sparkles,
   TrendingUp,
+  X,
 } from "lucide-react";
 
 import GoogleMapsLoader, { useGoogleMaps } from "@/app/realprice/components/GoogleMapsLoader";
 import FonatPropLogo from "@/components/brand/FonatPropLogo";
+import RenovationMaterialSearch from "@/components/renovation/RenovationMaterialSearch";
 import marketData from "@/data/france-dvf-market.json";
+
+import FranceRadarSection from "./components/FranceRadarSection";
+import FranceMapSection from "./components/FranceMapSection";
+import FranceInvestmentSection from "./components/FranceInvestmentSection";
 
 type PropertyType = "Appartement" | "Maison";
 
@@ -139,6 +147,45 @@ const renovationCategories = [
   },
 ];
 
+const franceDataLayers = [
+  {
+    icon: Database,
+    label: "DVF",
+    title: "Official transaction backbone",
+    body: "DGFiP/Etalab sale history gives France a national transaction layer that can be cleaned, segmented and backtested.",
+  },
+  {
+    icon: Home,
+    label: "DPE",
+    title: "Energy performance as price signal",
+    body: "DPE changes buyer appetite, rentability and renovation risk. It should become a first-class model feature, not a footnote.",
+  },
+  {
+    icon: ShieldCheck,
+    label: "Georisques",
+    title: "Risk and due diligence",
+    body: "Flood, soil, radon, industrial and natural risk layers turn valuation into investment-grade property intelligence.",
+  },
+  {
+    icon: Map,
+    label: "BAN + Geo",
+    title: "Address and commune precision",
+    body: "Geocoding quality controls confidence. Bad coordinates can break risk, transport and comparable selection.",
+  },
+  {
+    icon: TrendingUp,
+    label: "Rental law",
+    title: "Investment reality check",
+    body: "Zones tendues and rent-control data keep yield estimates grounded in what can legally be charged.",
+  },
+  {
+    icon: BarChart3,
+    label: "Notaires",
+    title: "Premium validation path",
+    body: "Perval and BIEN can later become paid validation benchmarks for high-confidence professional reports.",
+  },
+];
+
 const navItems = [
   { id: "valorar", label: "Valuation", icon: Home },
   { id: "mapa", label: "Map", icon: Map },
@@ -146,49 +193,6 @@ const navItems = [
   { id: "inversion", label: "Investment", icon: TrendingUp },
   { id: "reforma", label: "Renovation", icon: Paintbrush },
 ];
-
-const cityCoords: Record<string, { lat: number; lng: number }> = {
-  Paris: { lat: 48.8566, lng: 2.3522 },
-  "Paris 01": { lat: 48.864, lng: 2.336 },
-  "Paris 02": { lat: 48.868, lng: 2.343 },
-  "Paris 03": { lat: 48.864, lng: 2.361 },
-  "Paris 04": { lat: 48.854, lng: 2.357 },
-  "Paris 05": { lat: 48.844, lng: 2.35 },
-  "Paris 06": { lat: 48.849, lng: 2.333 },
-  "Paris 07": { lat: 48.856, lng: 2.312 },
-  "Paris 08": { lat: 48.872, lng: 2.312 },
-  "Paris 09": { lat: 48.878, lng: 2.337 },
-  "Paris 10": { lat: 48.876, lng: 2.36 },
-  "Paris 11": { lat: 48.858, lng: 2.38 },
-  "Paris 12": { lat: 48.84, lng: 2.39 },
-  "Paris 13": { lat: 48.832, lng: 2.355 },
-  "Paris 14": { lat: 48.833, lng: 2.326 },
-  "Paris 15": { lat: 48.841, lng: 2.3 },
-  "Paris 16": { lat: 48.863, lng: 2.276 },
-  "Paris 17": { lat: 48.887, lng: 2.307 },
-  "Paris 18": { lat: 48.892, lng: 2.344 },
-  "Paris 19": { lat: 48.883, lng: 2.383 },
-  "Paris 20": { lat: 48.864, lng: 2.398 },
-  Lyon: { lat: 45.764, lng: 4.8357 },
-  Marseille: { lat: 43.2965, lng: 5.3698 },
-  Toulouse: { lat: 43.6047, lng: 1.4442 },
-  Nice: { lat: 43.7102, lng: 7.262 },
-  Nantes: { lat: 47.2184, lng: -1.5536 },
-  Montpellier: { lat: 43.6119, lng: 3.8772 },
-  Bordeaux: { lat: 44.8378, lng: -0.5792 },
-  Lille: { lat: 50.6292, lng: 3.0573 },
-  Rennes: { lat: 48.1173, lng: -1.6778 },
-  Strasbourg: { lat: 48.5734, lng: 7.7521 },
-  Grenoble: { lat: 45.1885, lng: 5.7245 },
-  Cannes: { lat: 43.5528, lng: 7.0174 },
-  Antibes: { lat: 43.5804, lng: 7.1251 },
-  "Aix-en-Provence": { lat: 43.5297, lng: 5.4474 },
-  "Boulogne-Billancourt": { lat: 48.8397, lng: 2.2399 },
-  "Neuilly-sur-Seine": { lat: 48.8846, lng: 2.2697 },
-  "Levallois-Perret": { lat: 48.8932, lng: 2.2879 },
-  "Saint-Tropez": { lat: 43.2677, lng: 6.6407 },
-  "La Rochelle": { lat: 46.1603, lng: -1.1511 },
-};
 
 const eur = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -243,14 +247,6 @@ function estimateValue(record: CommuneRecord | undefined, type: PropertyType, ar
   return Math.round(base * (1 + layoutAdjustment));
 }
 
-function getPriceColor(price: number) {
-  if (price >= 9_000) return "#f8fafc";
-  if (price >= 6_000) return "#60a5fa";
-  if (price >= 4_000) return "#38bdf8";
-  if (price >= 2_500) return "#22c55e";
-  return "#94a3b8";
-}
-
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-blue-200/55">
@@ -277,6 +273,179 @@ function SectionBackdrop({
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,10,0.96),rgba(5,6,10,0.82)_48%,rgba(5,6,10,0.62))]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_18%,rgba(59,130,246,0.14),transparent_34%)]" />
     </>
+  );
+}
+
+function CountUp({
+  target,
+  format = "int",
+  duration = 2.4,
+  delay = 0,
+}: {
+  target: number;
+  format?: "int" | "decimal" | "compact";
+  duration?: number;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15%" });
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, target, {
+      duration,
+      delay,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setValue(v),
+    });
+    return () => controls.stop();
+  }, [inView, target, duration, delay]);
+
+  const formatted =
+    format === "compact"
+      ? value >= 1_000_000
+        ? `${(value / 1_000_000).toFixed(1)}M`
+        : value >= 1_000
+          ? `${(value / 1_000).toFixed(0)}K`
+          : Math.round(value).toLocaleString("fr-FR")
+      : format === "decimal"
+        ? value.toFixed(1)
+        : Math.round(value).toLocaleString("fr-FR");
+
+  return <span ref={ref}>{formatted}</span>;
+}
+
+function ProgressRing({ percentage, size = 320 }: { percentage: number; size?: number }) {
+  const ref = useRef<SVGCircleElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15%" });
+  const radius = (size - 56) / 2;
+  const circumference = 2 * Math.PI * radius;
+
+  useEffect(() => {
+    if (!inView || !ref.current) return;
+    const circle = ref.current;
+    circle.style.transition = "stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1)";
+    circle.style.strokeDashoffset = String(circumference * (1 - percentage / 100));
+  }, [inView, percentage, circumference]);
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      className="absolute inset-0 m-auto"
+      style={{ overflow: "visible" }}
+    >
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius + 18}
+        stroke="rgba(255,255,255,0.03)"
+        strokeWidth={0.5}
+        fill="none"
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        stroke="rgba(255,255,255,0.05)"
+        strokeWidth={1}
+        fill="none"
+      />
+      <circle
+        ref={ref}
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        stroke="rgba(255,255,255,0.85)"
+        strokeWidth={1.5}
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={circumference}
+        transform={`rotate(-90 ${size / 2} ${size / 2})`}
+      />
+    </svg>
+  );
+}
+
+function Constellation() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf = 0;
+    const dpr = window.devicePixelRatio || 1;
+    const resize = () => {
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const particles = Array.from({ length: 28 }, () => ({
+      x: Math.random() * canvas.offsetWidth,
+      y: Math.random() * canvas.offsetHeight,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+    }));
+
+    const draw = () => {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      });
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 180) {
+            const alpha = (1 - d / 180) * 0.08;
+            ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach((p) => {
+        ctx.fillStyle = "rgba(255,255,255,0.25)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 0.9, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+    />
   );
 }
 
@@ -318,27 +487,41 @@ function FranceNavBar() {
   };
 
   return (
-    <nav className="fixed left-1/2 top-5 z-50 -translate-x-1/2 px-3">
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+      className="fixed top-5 md:top-7 left-1/2 -translate-x-1/2 z-50"
+    >
       <div
-        className={`flex items-center rounded-full border backdrop-blur-2xl transition-all duration-500 ${
+        className={`absolute -inset-3 rounded-full blur-xl transition-opacity duration-700 pointer-events-none ${
+          scrolled ? "opacity-40" : "opacity-20"
+        }`}
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className={`relative flex items-center rounded-full border backdrop-blur-2xl transition-all duration-700 ${
           scrolled
-            ? "border-white/12 bg-[#07080d]/82 shadow-[0_18px_60px_rgba(0,0,0,0.46)]"
-            : "border-white/10 bg-[#07080d]/42"
+            ? "bg-[#0a0a0f]/75 border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]"
+            : "bg-[#0a0a0f]/35 border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
         }`}
       >
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex items-center gap-2 py-1.5 pl-3 pr-3"
+          className="pl-3 pr-3 py-1.5 flex items-center gap-2"
           aria-label="Back to top"
         >
           <FonatPropLogo
             variant="mark"
-            className="h-8 w-8 rounded-full border border-white/10"
+            className="h-8 w-8 rounded-full border border-white/10 shadow-[0_0_18px_rgba(59,130,246,0.18)]"
             imageClassName="scale-125"
             priority
           />
         </button>
-        <div className="h-5 w-px bg-white/10" />
+        <div className="w-px h-5 bg-white/[0.08]" />
         <div className="flex items-center px-1">
           {navItems.map(({ id, label }) => {
             const isActive = active === id;
@@ -346,24 +529,35 @@ function FranceNavBar() {
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
-                className="group relative px-3 py-2.5 md:px-4"
+                className="relative px-4 md:px-5 py-2.5 group"
               >
                 <span
-                  className={`text-xs transition ${
-                    isActive ? "text-white" : "text-white/42 group-hover:text-white/80"
+                  className={`relative text-[12px] tracking-[0.01em] transition-colors duration-300 ${
+                    isActive
+                      ? "text-white font-medium"
+                      : "text-white/45 group-hover:text-white/85 font-normal"
                   }`}
                 >
                   {label}
                 </span>
-                {isActive ? (
-                  <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.95)]" />
-                ) : null}
+                {isActive && (
+                  <motion.div
+                    layoutId="france-nav-active-dot"
+                    transition={{ type: "spring", stiffness: 380, damping: 28 }}
+                    className="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-1 h-1 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)]"
+                  />
+                )}
+                <span
+                  className={`absolute inset-1 rounded-full transition-opacity duration-300 pointer-events-none ${
+                    isActive ? "opacity-0" : "opacity-0 group-hover:opacity-100 bg-white/[0.04]"
+                  }`}
+                />
               </button>
             );
           })}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
 
@@ -380,52 +574,69 @@ function HeroSection() {
   }, []);
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden">
+    <section className="relative min-h-[100svh] w-full overflow-hidden md:min-h-screen">
       {franceSlides.map((item, index) => (
         <div
           key={item.label}
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-[1600ms] ${
-            index === slide ? "scale-105 opacity-100" : "scale-100 opacity-0"
-          }`}
-          style={{ backgroundImage: `url('${item.image}')` }}
-        />
+          className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
+          style={{ opacity: index === slide ? 1 : 0, zIndex: index === slide ? 1 : 0 }}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url('${item.image}')`,
+              animation:
+                index === slide ? "kenburns 12s ease-in-out infinite alternate" : "none",
+            }}
+          />
+        </div>
       ))}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,10,0.92),rgba(5,6,10,0.62)_42%,rgba(5,6,10,0.18)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(59,130,246,0.2),transparent_32%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#05060a] to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-[#0a0a0f] z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10" />
+      <div
+        className="absolute inset-0 z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(10,10,15,0.35) 80%)",
+        }}
+      />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-28 md:px-10">
+      <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-7xl flex-col items-start justify-center px-6 py-28 md:min-h-screen md:px-12 lg:px-24">
         <FonatPropLogo
           variant="lockup"
-          className="mb-14 h-24 w-[360px] max-w-[78vw] opacity-90 md:h-32 md:w-[520px]"
+          className="mb-10 h-auto w-full max-w-[390px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
           priority
         />
-        <SectionLabel>
-          France / official DVF transactions / separate market engine
-        </SectionLabel>
-        <h1 className="mt-7 max-w-5xl font-['Fraunces'] text-[clamp(4.5rem,11vw,11rem)] font-light leading-[0.78] tracking-[-0.085em] text-white">
-          Know the
-          <span className="block text-white/42 italic">French value.</span>
+        <p className="font-mono text-[10px] tracking-[0.32em] uppercase text-white/28 mb-4">
+          France / official DVF engine / separate market
+        </p>
+        <h1 className="font-['Fraunces'] font-light tracking-[-0.02em] leading-[0.95] text-white mb-10">
+          <span className="block text-[clamp(3.2rem,9vw,8rem)]">Know the</span>
+          <span className="block text-[clamp(3.2rem,9vw,8rem)] italic font-extralight text-white/40">
+            French value.
+          </span>
         </h1>
-        <p className="mt-9 max-w-2xl text-lg leading-9 text-white/68 md:text-xl">
-          A France product surface built from official DVF transactions, kept fully separate
-          from Dubai so each country has its own data, model logic and compliance story.
+        <p className="font-['Inter'] text-[clamp(1rem,1.25vw,1.2rem)] text-white/55 font-light leading-[1.7] max-w-xl mb-12">
+          A France market intelligence surface built on official DVF transactions.
+          Same premium product language as Dubai, but with its own data stack,
+          valuation logic and compliance story.
         </p>
 
-        <div className="mt-12 flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={() => document.getElementById("valorar")?.scrollIntoView({ behavior: "smooth" })}
-            className="group flex min-w-[230px] items-center justify-between bg-white px-8 py-5 font-mono text-[11px] uppercase tracking-[0.28em] text-[#05060a] transition hover:scale-[1.015]"
+            className="group relative inline-flex items-center gap-4 px-10 py-4 bg-white text-[#0a0a0f] text-[11px] tracking-[0.3em] uppercase font-medium rounded-none hover:bg-white/90 transition-all duration-500"
           >
-            Open France engine
-            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+            <span>Open France Engine</span>
+            <span className="transition-transform duration-500 group-hover:translate-x-1.5">
+              &rarr;
+            </span>
           </button>
           <Link
             href="/fonatprop"
-            className="flex min-w-[190px] items-center justify-between border border-white/14 bg-white/[0.035] px-8 py-5 font-mono text-[11px] uppercase tracking-[0.28em] text-white transition hover:bg-white/10"
+            className="inline-flex items-center gap-3 px-10 py-4 text-white/80 text-[11px] tracking-[0.3em] uppercase font-medium hover:text-white transition-all duration-500 border-b border-white/20 hover:border-white/60"
           >
-            Open Dubai
-            <ChevronRight className="h-4 w-4" />
+            <span>Open Dubai</span>
           </Link>
         </div>
 
@@ -448,24 +659,42 @@ function HeroSection() {
           ))}
         </div>
 
-        <div className="absolute bottom-10 right-8 hidden items-center gap-3 lg:flex">
-          <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/32">
+      </div>
+
+      <div className="absolute bottom-10 left-6 md:left-12 lg:left-24 right-6 md:right-12 lg:right-24 z-20 flex items-end justify-between">
+        <div className="flex-1">
+          <span className="hidden lg:inline font-mono text-[10px] uppercase tracking-[0.3em] text-white/35">
             {current.kicker}
           </span>
-          <div className="flex gap-2">
-            {franceSlides.map((item, index) => (
-              <button
-                key={item.label}
-                onClick={() => setSlide(index)}
-                className={`h-1 rounded-full transition-all ${
-                  index === slide ? "w-12 bg-white" : "w-5 bg-white/25"
-                }`}
-                aria-label={`Open ${item.label} slide`}
-              />
-            ))}
-          </div>
+        </div>
+        <div className="hidden md:flex gap-1.5">
+          {franceSlides.map((item, index) => (
+            <button
+              key={item.label}
+              onClick={() => setSlide(index)}
+              className={`h-[2px] rounded-full transition-all duration-500 ${
+                index === slide
+                  ? "w-10 bg-white"
+                  : "w-4 bg-white/15 hover:bg-white/40"
+              }`}
+              aria-label={`Open ${item.label} slide`}
+            />
+          ))}
+        </div>
+        <div className="flex-1 flex items-center justify-end gap-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">
+            Scroll
+          </span>
+          <div className="w-px h-10 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
         </div>
       </div>
+
+      <style>{`
+        @keyframes kenburns {
+          0% { transform: scale(1) translate(0, 0); }
+          100% { transform: scale(1.08) translate(-1.5%, -1%); }
+        }
+      `}</style>
     </section>
   );
 }
@@ -643,361 +872,6 @@ function ValuationSection({
   );
 }
 
-function FranceGoogleMap({
-  records,
-  onSelect,
-}: {
-  records: CommuneRecord[];
-  onSelect: (record: CommuneRecord) => void;
-}) {
-  const loaded = useGoogleMaps();
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<google.maps.Map | null>(null);
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
-
-  const initMap = useCallback(() => {
-    if (!loaded || !mapRef.current || mapInstance.current) return;
-    const google = window.google;
-
-    mapInstance.current = new google.maps.Map(mapRef.current, {
-      center: { lat: 46.7, lng: 2.25 },
-      zoom: 5,
-      mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "2258c8a7-7ee7-4bbe-9891-b6121da134c7",
-      disableDefaultUI: true,
-      zoomControl: true,
-      zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },
-      styles: [
-        { elementType: "geometry", stylers: [{ color: "#090a10" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#7c8193" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#090a10" }] },
-        { featureType: "road", elementType: "geometry", stylers: [{ color: "#171b2a" }] },
-        { featureType: "water", elementType: "geometry", stylers: [{ color: "#07111f" }] },
-        { featureType: "poi", stylers: [{ visibility: "off" }] },
-      ],
-    });
-  }, [loaded]);
-
-  useEffect(() => {
-    initMap();
-  }, [initMap]);
-
-  useEffect(() => {
-    if (!loaded || !mapInstance.current) return;
-    const google = window.google;
-
-    markersRef.current.forEach((marker) => {
-      marker.map = null;
-    });
-    markersRef.current = [];
-
-    const infoWindow = new google.maps.InfoWindow();
-
-    records.forEach((record) => {
-      const coords = cityCoords[record.commune];
-      if (!coords) return;
-
-      const color = getPriceColor(record.median_price_per_m2);
-      const size = Math.max(18, Math.min(44, record.median_price_per_m2 / 230));
-      const markerEl = document.createElement("button");
-      markerEl.type = "button";
-      markerEl.style.cssText = `
-        width:${size}px;height:${size}px;border-radius:999px;
-        border:2px solid ${color};background:${color}28;
-        box-shadow:0 0 26px ${color}35;
-        cursor:pointer;transition:transform .18s ease, background .18s ease;
-      `;
-      markerEl.onmouseenter = () => {
-        markerEl.style.transform = "scale(1.24)";
-        markerEl.style.background = `${color}52`;
-      };
-      markerEl.onmouseleave = () => {
-        markerEl.style.transform = "scale(1)";
-        markerEl.style.background = `${color}28`;
-      };
-
-      const marker = new google.maps.marker.AdvancedMarkerElement({
-        map: mapInstance.current,
-        position: coords,
-        content: markerEl,
-        title: record.commune,
-      });
-
-      marker.addListener("click", () => {
-        onSelect(record);
-        infoWindow.setContent(`
-          <div style="font-family:system-ui;min-width:180px;color:#111827;padding:4px">
-            <strong>${record.commune}</strong>
-            <div style="margin-top:6px;color:#2563eb;font-weight:700">${number.format(record.median_price_per_m2)} EUR/m2</div>
-            <div style="margin-top:4px;color:#4b5563">${number.format(record.transactions)} official transactions</div>
-          </div>
-        `);
-        infoWindow.open({ anchor: marker, map: mapInstance.current });
-      });
-
-      markersRef.current.push(marker);
-    });
-  }, [loaded, records, onSelect]);
-
-  return (
-    <div className="relative h-[560px] overflow-hidden rounded-[32px] border border-white/10 bg-[#07080d]">
-      <div ref={mapRef} className="absolute inset-0" />
-      {!loaded ? (
-        <div className="absolute inset-0 grid place-items-center bg-[#07080d]">
-          <div className="text-center">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border border-white/10 border-t-blue-300" />
-            <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-white/42">
-              Loading France map
-            </p>
-          </div>
-        </div>
-      ) : null}
-      <div className="absolute bottom-5 left-5 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-xl">
-        <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/36">
-          Google Maps layer
-        </p>
-        <p className="mt-1 text-sm text-white/70">Markers = high-volume DVF commune markets</p>
-      </div>
-    </div>
-  );
-}
-
-function MapSection({
-  mapRecords,
-  selectedMapRecord,
-  setSelectedMapRecord,
-}: {
-  mapRecords: CommuneRecord[];
-  selectedMapRecord: CommuneRecord;
-  setSelectedMapRecord: (record: CommuneRecord) => void;
-}) {
-  return (
-    <section id="mapa" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <SectionBackdrop image={sectionBackdrops.map} opacity={0.18} position="center" />
-      <div className="relative mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <div>
-            <SectionLabel>Map intelligence</SectionLabel>
-            <h2 className="mt-5 max-w-3xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-              France market geography, live on Google Maps.
-            </h2>
-          </div>
-          <div className="max-w-md rounded-3xl border border-white/10 bg-white/[0.035] p-5 text-sm leading-7 text-white/58">
-            The Dubai map pattern is reused here, but the data layer is France-only:
-            commune benchmarks, transaction volume and EUR/m2 signals.
-          </div>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <FranceGoogleMap records={mapRecords} onSelect={setSelectedMapRecord} />
-          <aside className="rounded-[32px] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-xl">
-            <SectionLabel>Selected market</SectionLabel>
-            <h3 className="mt-5 font-['Fraunces'] text-5xl font-light tracking-[-0.06em]">
-              {selectedMapRecord.commune}
-            </h3>
-            <p className="mt-3 text-white/44">Department {selectedMapRecord.department_code}</p>
-
-            <div className="mt-8 grid gap-3">
-              {[
-                [eur.format(selectedMapRecord.median_price_per_m2), "median price / m2"],
-                [number.format(selectedMapRecord.transactions), "transactions"],
-                [eur.format(selectedMapRecord.median_value_eur), "median sale"],
-                [`${selectedMapRecord.avg_area_m2} m2`, "avg surface"],
-              ].map(([value, label]) => (
-                <div key={label} className="rounded-2xl border border-white/10 bg-black/22 p-4">
-                  <p className="text-2xl text-white">{value}</p>
-                  <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.24em] text-white/32">
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function RadarSection({ featured }: { featured: CommuneRecord[] }) {
-  return (
-    <section id="radar" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <SectionBackdrop image={sectionBackdrops.radar} opacity={0.18} position="center" />
-      <div className="relative mx-auto max-w-7xl">
-        <SectionLabel>Radar</SectionLabel>
-        <div className="mt-5 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <h2 className="max-w-3xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-            High-signal French markets.
-          </h2>
-          <p className="max-w-md text-base leading-8 text-white/56">
-            For France, radar starts with market liquidity and official prices before we add
-            listings, renovation and neighborhood-level scoring.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {featured.slice(0, 8).map((record, index) => (
-            <article
-              key={`${record.commune}-${record.property_type}-${index}`}
-              className="group overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.035] p-5 transition hover:-translate-y-1 hover:border-blue-300/24 hover:bg-white/[0.055]"
-            >
-              <div className="mb-8 flex items-start justify-between">
-                <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-blue-200/48">
-                    {record.property_type}
-                  </p>
-                  <h3 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-white">
-                    {record.commune}
-                  </h3>
-                  <p className="mt-1 text-sm text-white/36">Dept. {record.department_code}</p>
-                </div>
-                <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-[10px] text-white/44">
-                  #{index + 1}
-                </span>
-              </div>
-              <p className="font-['Fraunces'] text-4xl font-light tracking-[-0.05em]">
-                {eur.format(record.median_price_per_m2)}
-              </p>
-              <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.24em] text-white/34">
-                median price / m2
-              </p>
-              <div className="mt-6 h-px bg-white/10" />
-              <div className="mt-5 flex justify-between text-sm text-white/48">
-                <span>{number.format(record.transactions)} tx</span>
-                <span>{eur.format(record.median_value_eur)}</span>
-              </div>
-              <div className="mt-5 rounded-2xl border border-blue-300/10 bg-blue-400/[0.06] p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-blue-100/54">
-                Liquidity score: {Math.min(99, Math.round(record.transactions / 420))}/100
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function InvestmentSection({ propertyType }: { propertyType: PropertyType }) {
-  const trend = yearRows.filter((row) => row.property_type === propertyType);
-  const maxPsm = Math.max(...trend.map((row) => row.median_price_per_m2));
-  const first = trend[0];
-  const last = trend[trend.length - 1];
-  const movementNumber = first && last ? (last.median_price_per_m2 / first.median_price_per_m2 - 1) * 100 : 0;
-  const movement = movementNumber.toFixed(1);
-  const annualized =
-    first && last && last.year > first.year
-      ? (Math.pow(last.median_price_per_m2 / first.median_price_per_m2, 1 / (last.year - first.year)) - 1) * 100
-      : 0;
-  const basePsm = last?.median_price_per_m2 ?? latestTypeMedian(propertyType);
-  const scenarioRows = [
-    {
-      label: "Conservative",
-      growth: Math.max(-2, annualized - 1.8),
-      note: "Uses a softer cycle and slower buyer absorption.",
-    },
-    {
-      label: "Base case",
-      growth: annualized,
-      note: "Extends the cleaned DVF trend without assuming a boom.",
-    },
-    {
-      label: "Upside",
-      growth: annualized + 1.8,
-      note: "Adds stronger demand and renovation-driven positioning.",
-    },
-  ];
-
-  return (
-    <section id="inversion" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <SectionBackdrop image={sectionBackdrops.investment} opacity={0.2} position="center" />
-      <div className="relative mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <SectionLabel>Investment</SectionLabel>
-          <h2 className="mt-5 font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-            France investment layer.
-          </h2>
-          <p className="mt-6 text-base leading-8 text-white/58">
-            Investment starts with official DVF price history, liquidity and scenario ranges.
-            France stays separate from Dubai so returns, fees and renovation assumptions can
-            evolve into their own model.
-          </p>
-          <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.035] p-6">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/38">
-              2021 to {data.coverage.max_year} median movement
-            </p>
-            <p className="mt-4 font-['Fraunces'] text-6xl font-light tracking-[-0.06em]">
-              {movement}%
-            </p>
-            <p className="mt-3 text-sm text-white/44">
-              Based on clean residential DVF transactions for {propertyType.toLowerCase()}.
-            </p>
-          </div>
-
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            {[
-              [`${annualized.toFixed(1)}%`, "annualized trend"],
-              [eur.format(basePsm), "latest median / m2"],
-              [compact(last?.transactions ?? 0), "latest tx volume"],
-            ].map(([value, label]) => (
-              <div key={label} className="rounded-2xl border border-white/10 bg-black/24 p-4">
-                <p className="text-2xl text-white">{value}</p>
-                <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.22em] text-white/32">
-                  {label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-[32px] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-          <div className="flex items-center justify-between">
-            <SectionLabel>Price history</SectionLabel>
-            <BarChart3 className="h-5 w-5 text-blue-200/70" />
-          </div>
-          <div className="mt-8 grid gap-5">
-            {trend.map((row) => (
-              <div key={`${row.year}-${row.property_type}`}>
-                <div className="mb-2 flex items-center justify-between text-sm text-white/58">
-                  <span>{row.year}</span>
-                  <span>{eur.format(row.median_price_per_m2)} / m2</span>
-                </div>
-                <div className="h-3 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-blue-600 via-sky-300 to-white"
-                    style={{ width: `${Math.max(12, (row.median_price_per_m2 / maxPsm) * 100)}%` }}
-                  />
-                </div>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.22em] text-white/28">
-                  {number.format(row.transactions)} transactions
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 grid gap-3 md:grid-cols-3">
-            {scenarioRows.map((scenario) => {
-              const projected = Math.round(basePsm * Math.pow(1 + scenario.growth / 100, 3));
-              return (
-                <div key={scenario.label} className="rounded-2xl border border-white/10 bg-black/24 p-4">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-blue-200/52">
-                    {scenario.label}
-                  </p>
-                  <p className="mt-3 font-['Fraunces'] text-3xl font-light tracking-[-0.05em]">
-                    {eur.format(projected)}
-                  </p>
-                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">
-                    3-year EUR/m2
-                  </p>
-                  <p className="mt-4 text-xs leading-5 text-white/46">{scenario.note}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function RenovationSection() {
   const cards = [
     {
@@ -1070,6 +944,263 @@ function RenovationSection() {
             </article>
           ))}
         </div>
+
+        <RenovationMaterialSearch
+          market="france"
+          title="Search French materials and installed ranges."
+          description="Initial France catalog for renovation scenarios: tile, laminate, shower mixers, shower screens, bathroom installed ranges and pool benchmarks from Leroy Merlin, Castorama, Brico Depot and published cost guides."
+        />
+      </div>
+    </section>
+  );
+}
+
+function FranceDataMoatSection() {
+  return (
+    <section className="relative overflow-hidden border-y border-white/[0.05] bg-[#05060a] px-6 py-28 md:px-10">
+      <SectionBackdrop image={sectionBackdrops.map} opacity={0.13} position="center" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-end">
+          <div>
+            <SectionLabel>France intelligence stack</SectionLabel>
+            <h2 className="mt-5 max-w-4xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
+              More than DVF.
+              <br />
+              <span className="italic text-white/38">A compound data moat.</span>
+            </h2>
+          </div>
+          <p className="max-w-2xl text-base leading-8 text-white/56 lg:justify-self-end">
+            France is the market where FonatProp can become unusually defensible: valuation,
+            energy, risk, rent regulation, transport and renovation can sit in one workflow
+            instead of scattered across public portals.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-px overflow-hidden border border-white/[0.07] bg-white/[0.06] md:grid-cols-2 xl:grid-cols-3">
+          {franceDataLayers.map(({ icon: Icon, label, title, body }) => (
+            <article
+              key={title}
+              className="min-h-[250px] bg-[#0a0a0f]/94 p-7 transition-colors duration-500 hover:bg-[#0e111a]"
+            >
+              <div className="mb-7 flex items-center justify-between gap-4">
+                <div className="rounded-full border border-blue-300/16 bg-blue-400/10 p-3 text-blue-200">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/34">
+                  {label}
+                </p>
+              </div>
+              <h3 className="text-2xl font-medium tracking-[-0.045em] text-white">
+                {title}
+              </h3>
+              <p className="mt-5 text-sm leading-7 text-white/52">{body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FranceChatWidget() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(!open)}
+        className={`fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-300 ${
+          open
+            ? "rotate-90 border border-white/10 bg-white/[0.06] backdrop-blur-xl"
+            : "bg-[#3b82f6] hover:scale-105 hover:bg-[#2563eb]"
+        }`}
+        aria-label={open ? "Close chat" : "Open chat"}
+      >
+        {open ? (
+          <X size={20} className="text-white" />
+        ) : (
+          <MessageCircle size={22} className="text-white" />
+        )}
+      </button>
+
+      <div
+        className={`fixed bottom-24 right-6 z-[55] h-[220px] w-[380px] max-w-[calc(100vw-3rem)] transition-all duration-500 ${
+          open
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-4 opacity-0"
+        }`}
+      >
+        <div className="h-full w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0f] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+          <FonatPropLogo variant="nav" className="mb-5 h-10 w-[176px] opacity-90" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#3b82f6]/70">
+            AI Assistant
+          </p>
+          <p className="mt-2 text-[14px] font-light text-white">FonatProp France</p>
+          <p className="mt-4 text-sm text-white/60">Chat coming soon.</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function FranceStatsSection() {
+  const yearSpan = data.coverage.max_year - data.coverage.min_year + 1;
+  const coverageScore = Math.min(95, 65 + yearSpan * 4);
+
+  return (
+    <section className="relative overflow-hidden border-y border-white/[0.04] bg-[#080810] px-6 py-32 md:px-12 lg:px-24">
+      <Constellation />
+
+      <div className="relative mx-auto max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="mb-6 flex items-center gap-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/35">
+              Chapter II
+            </span>
+            <div className="h-px w-12 bg-white/20" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/35">
+              Couverture
+            </span>
+          </div>
+          <h2 className="max-w-3xl font-['Fraunces'] text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.02em] text-white">
+            Built on official
+            <span className="font-extralight italic text-white/40"> France </span>
+            DVF transactions.
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 gap-px bg-white/[0.04] lg:grid-cols-12">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="group relative flex min-h-[500px] flex-col justify-between overflow-hidden bg-[#0a0a0f] p-10 md:p-12 lg:col-span-5 lg:row-span-2"
+          >
+            <div
+              className="absolute inset-0 opacity-40"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 60%, rgba(255,255,255,0.04) 0%, transparent 60%)",
+              }}
+            />
+
+            <div className="relative z-10">
+              <p className="mb-1 font-['Fraunces'] text-[14px] font-light italic text-white/40">
+                No. 01
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/50">
+                DVF Coverage Score
+              </p>
+            </div>
+
+            <div className="relative my-8 flex items-center justify-center" style={{ height: 340 }}>
+              <ProgressRing percentage={coverageScore} size={340} />
+              <div className="relative z-10 text-center">
+                <p className="font-['Fraunces'] text-[clamp(5rem,9vw,8rem)] font-extralight leading-[0.9] tracking-[-0.04em] text-white">
+                  <CountUp target={coverageScore} format="int" />
+                  <span className="text-white/40">%</span>
+                </p>
+                <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.4em] text-white/35">
+                  Etalab DVF &middot; Confidence
+                </p>
+              </div>
+            </div>
+
+            <div className="relative z-10 grid grid-cols-3 gap-6 border-t border-white/[0.04] pt-6">
+              {[
+                { label: "Year Start", value: String(data.coverage.min_year) },
+                { label: "Year End", value: String(data.coverage.max_year) },
+                { label: "Source", value: "Etalab" },
+              ].map((m) => (
+                <div key={m.label}>
+                  <p className="mb-1.5 font-mono text-[8px] uppercase tracking-[0.3em] text-white/30">
+                    {m.label}
+                  </p>
+                  <p className="font-['Fraunces'] text-[20px] font-light text-white/80">
+                    {m.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {[
+            {
+              value: data.coverage.clean_rows,
+              label: "Clean DVF Rows",
+              format: "compact" as const,
+              num: "02",
+            },
+            {
+              value: data.coverage.communes,
+              label: "Commune Markets",
+              format: "int" as const,
+              num: "03",
+            },
+            {
+              value: data.coverage.departments,
+              label: "Departments",
+              format: "int" as const,
+              num: "04",
+            },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.num}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{ duration: 0.8, delay: 0.1 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative flex items-center justify-between overflow-hidden bg-[#0a0a0f] p-10 transition-colors duration-700 hover:bg-[#0d0d14] md:p-12 lg:col-span-7"
+            >
+              <div className="flex items-baseline gap-6 md:gap-10">
+                <p className="font-['Fraunces'] text-[14px] font-light italic text-white/25">
+                  No. {stat.num}
+                </p>
+                <p className="font-['Fraunces'] text-[clamp(2.5rem,5vw,4.5rem)] font-extralight leading-none tracking-[-0.03em] text-white">
+                  <CountUp target={stat.value} format={stat.format} delay={0.1 + i * 0.1} />
+                </p>
+              </div>
+
+              <div className="text-right">
+                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
+                  {stat.label}
+                </p>
+                <div className="relative ml-auto mt-3 h-px w-16 overflow-hidden bg-white/10">
+                  <div className="absolute inset-0 -translate-x-full bg-white/50 transition-transform duration-700 ease-out group-hover:translate-x-0" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-20 flex items-center justify-between"
+        >
+          <p className="max-w-md font-['Fraunces'] text-[15px] font-light italic leading-relaxed text-white/30">
+            &ldquo;Signal over noise. Every figure is sourced from official DVF
+            transactions published by etalab.gouv.fr.&rdquo;
+          </p>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
+              Refreshed
+            </span>
+            <div className="h-1 w-1 rounded-full bg-white/40" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">
+              Quarterly
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -1089,38 +1220,12 @@ function FranceExperience() {
     communeRows.find((row) => row.commune === commune && row.property_type === propertyType) ??
     communeOptions[0];
 
-  const featured = data.featured
-    .filter((row) => row.property_type === propertyType)
-    .slice(0, 12);
-
-  const mapRecords =
-    featured.filter((row) => cityCoords[row.commune]).length >= 4
-      ? featured.filter((row) => cityCoords[row.commune])
-      : communeRows
-          .filter((row) => row.property_type === propertyType && cityCoords[row.commune])
-          .slice(0, 18);
-
-  const [selectedMapRecord, setSelectedMapRecord] = useState<CommuneRecord>(
-    mapRecords[0] ?? selectedRecord ?? communeRows[0],
-  );
-
-  useEffect(() => {
-    const next = mapRecords[0] ?? selectedRecord;
-    if (next) setSelectedMapRecord(next);
-  }, [propertyType]);
-
-  useEffect(() => {
-    if (!selectedRecord) return;
-    const matchingMapRecord = mapRecords.find((row) => row.commune === selectedRecord.commune);
-    if (matchingMapRecord) {
-      setSelectedMapRecord(matchingMapRecord);
-    }
-  }, [commune, selectedRecord, mapRecords]);
-
   return (
     <main className="min-h-screen bg-[#05060a] text-white">
       <FranceNavBar />
       <HeroSection />
+      <FranceStatsSection />
+      <FranceDataMoatSection />
       <ValuationSection
         propertyType={propertyType}
         setPropertyType={setPropertyType}
@@ -1133,13 +1238,9 @@ function FranceExperience() {
         selectedRecord={selectedRecord}
         communeOptions={communeOptions}
       />
-      <MapSection
-        mapRecords={mapRecords}
-        selectedMapRecord={selectedMapRecord}
-        setSelectedMapRecord={setSelectedMapRecord}
-      />
-      <RadarSection featured={featured} />
-      <InvestmentSection propertyType={propertyType} />
+      <FranceMapSection />
+      <FranceRadarSection />
+      <FranceInvestmentSection />
       <RenovationSection />
       <footer className="border-t border-white/10 bg-[#05060a] px-6 py-12 md:px-10">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 md:flex-row md:items-center">
@@ -1156,6 +1257,7 @@ function FranceExperience() {
           </Link>
         </div>
       </footer>
+      <FranceChatWidget />
     </main>
   );
 }

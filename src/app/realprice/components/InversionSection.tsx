@@ -62,7 +62,7 @@ export default function InversionSection() {
       .then((d) => {
         if (Array.isArray(d?.zones)) setZones(d.zones.sort());
       })
-      .catch(() => {});
+      .catch((err) => console.error('[InversionSection] Failed to load zones:', err));
     fetch(`${API}/trends`)
       .then((r) => r.json())
       .then((d) => {
@@ -72,7 +72,7 @@ export default function InversionSection() {
           setTrends(null);
         }
       })
-      .catch(() => {});
+      .catch((err) => console.error('[InversionSection] Failed to load trends:', err));
   }, []);
 
   // Fetch zone-specific trend when zone changes

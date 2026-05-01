@@ -40,7 +40,7 @@ export default function InversionSection() {
     fetch(`${API}/zones`)
       .then((r) => r.json())
       .then((d) => { if (d.zones) setZones(d.zones.sort()); })
-      .catch(() => {});
+      .catch((err) => console.error('[melanie/InversionSection] Failed to load zones:', err));
   }, []);
 
   const calculate = async () => {
