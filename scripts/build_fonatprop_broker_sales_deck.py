@@ -327,13 +327,13 @@ def slide_2() -> Image.Image:
     img = premium_bg(BG_IMAGES[1], 74)
     draw = ImageDraw.Draw(img)
     paste_logo(img)
-    label(draw, "Trust", 96, 184)
+    label(draw, "Founders", 96, 184)
     draw.text((96, 262), "Who builds FonatProp.", font=SERIF_78, fill=WHITE)
-    draw.text((96, 350), "Young operators.", font=SERIF_I_58, fill=SOFT)
+    draw.text((96, 350), "Real operators.", font=SERIF_I_58, fill=SOFT)
     copy_block(
         draw,
         (96, 470, 1010, 656),
-        "FonatProp is led by Francisco, a professional footballer, Sagrado Corazon graduate and 4th-year UAI student. The project is being built by a young team working inside real estate and applying AI to it.",
+        "FonatProp is led by Francisco, a professional footballer who completed secondary school at Sagrado Corazon and is now in his 4th year at UAI. The product is being built by a young team already working around real estate and focused on applying AI to brokerage workflows.",
         body_font=SANS_28,
         fill=(8, 13, 25, 168),
         outline=(61, 92, 144),
@@ -346,7 +346,7 @@ def slide_2() -> Image.Image:
     draw.text((130, 800), "Personal profile", font=SANS_B_34, fill=WHITE)
     paragraph(
         draw,
-        "Professional footballer. Sagrado Corazon graduate. UAI, 4th year. Building the product while staying close to the market.",
+        "Professional footballer. Secondary school at Sagrado Corazon. UAI, 4th year. Building product and market knowledge in parallel.",
         130,
         872,
         560,
@@ -357,12 +357,12 @@ def slide_2() -> Image.Image:
     bullet_panel(
         draw,
         (1096, 206, 1812, 890),
-        "FonatProp today",
+        "Why this matters",
         [
-            "Young team working across the real estate industry and AI implementation.",
-            "Dubai workflow live today: private valuations plus public lead capture.",
-            "France portal already in build as the second market inside the product.",
-            "Trust matters: agencies should know who is behind the platform they buy.",
+            "Agencies should know who is behind the platform they buy.",
+            "FonatProp is being built by a young team working across real estate and AI.",
+            "Dubai is live today: private AI valuations plus public lead capture.",
+            "France is already in build as the next portal inside the same product.",
         ],
     )
     footer(draw, 2)

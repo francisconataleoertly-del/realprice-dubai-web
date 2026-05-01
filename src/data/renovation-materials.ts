@@ -1015,6 +1015,41 @@ export const RENOVATION_MATERIALS: RenovationMaterial[] = [
   },
 ];
 
+export function getRenovationMaterialsForMarket(market: RenovationMarket) {
+  return RENOVATION_MATERIALS.filter((item) => item.market === market);
+}
+
+export function summarizeRenovationMaterials(materials: RenovationMaterial[]) {
+  const byRoom = materials.reduce<Record<string, number>>((acc, item) => {
+    acc[item.room] = (acc[item.room] || 0) + 1;
+    return acc;
+  }, {});
+
+  const byTier = materials.reduce<Record<string, number>>((acc, item) => {
+    acc[item.tier] = (acc[item.tier] || 0) + 1;
+    return acc;
+  }, {});
+
+  const priceFloor = materials.reduce<number | null>(
+    (min, item) => (min === null ? item.priceLow : Math.min(min, item.priceLow)),
+    null,
+  );
+
+  const priceCeiling = materials.reduce<number | null>(
+    (max, item) =>
+      max === null ? (item.priceHigh ?? item.priceLow) : Math.max(max, item.priceHigh ?? item.priceLow),
+    null,
+  );
+
+  return {
+    total: materials.length,
+    byRoom,
+    byTier,
+    priceFloor,
+    priceCeiling,
+  };
+}
+
 export function formatMaterialPrice(item: RenovationMaterial) {
   const formatter = new Intl.NumberFormat(item.market === "france" ? "fr-FR" : "en-AE", {
     maximumFractionDigits: item.priceLow < 100 ? 2 : 0,
