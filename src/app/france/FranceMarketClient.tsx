@@ -47,6 +47,7 @@ import SectionDivider from "@/components/design/SectionDivider";
 import CursorGlow from "@/components/design/CursorGlow";
 import MeshBackground from "@/components/design/MeshBackground";
 import MeshGradient3D from "@/components/design/MeshGradient3D";
+import ScrollProgress from "@/components/design/ScrollProgress";
 import {
   dvfFullInseeCode,
   type AddressSuggestion,
@@ -326,8 +327,9 @@ function SectionBackdrop({
         src={image}
         alt=""
         aria-hidden
-        loading="lazy"
-        decoding="async"
+        loading="eager"
+        decoding="sync"
+        fetchPriority="high"
         className="absolute inset-0 h-full w-full object-cover will-change-transform [transform:translateZ(0)]"
         style={{ objectPosition: position, opacity }}
       />
@@ -1583,35 +1585,35 @@ function FranceStatsSection() {
                     market shaping. This is the usable layer behind the France valuation experience.
                   </p>
                 </div>
-                <div className="grid w-full grid-cols-[1.12fr_0.88fr] gap-3 self-start xl:self-end">
+                <div className="grid w-full max-w-[392px] grid-cols-[188px_188px] gap-3 self-start justify-start xl:self-end">
                   {[
                     {
                       label: "Refresh cadence",
                       value: "Quarterly",
-                      valueClassName:
-                        "text-[15px] leading-[1.02] sm:text-[16px] lg:text-[17px] xl:text-[18px]",
+                        valueClassName:
+                          "text-[14px] leading-[1.04] sm:text-[15px] lg:text-[16px]",
                     },
                     {
                       label: "Coverage span",
                       value: `${data.coverage.min_year}-${data.coverage.max_year}`,
-                      valueClassName:
-                        "text-[15px] leading-[1.02] sm:text-[16px] lg:text-[17px] xl:text-[18px]",
+                        valueClassName:
+                          "text-[14px] leading-[1.04] sm:text-[15px] lg:text-[16px]",
                     },
                   ].map((meta) => (
                     <div
                       key={meta.label}
-                      className="relative flex min-h-[148px] min-w-0 flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(6,10,20,0.82),rgba(10,15,28,0.68))] px-5 py-5 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm"
+                        className="relative flex min-h-[148px] min-w-0 flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(6,10,20,0.82),rgba(10,15,28,0.68))] px-5 py-5 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm"
                     >
                       <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-[#9fd6ff]/30 to-transparent" />
                       <div className="absolute -right-10 top-10 h-24 w-24 rounded-full bg-[#7ab7ff]/8 blur-2xl" />
                       <p className="font-mono text-[8px] uppercase tracking-[0.32em] text-white/36">
                         {meta.label}
                       </p>
-                      <p
-                        className={`mt-5 break-keep font-[family:var(--font-display)] text-white/96 ${meta.valueClassName}`}
-                      >
-                        {meta.value}
-                      </p>
+                        <p
+                          className={`mt-5 max-w-full text-balance break-normal font-[family:var(--font-display)] text-white/96 ${meta.valueClassName}`}
+                        >
+                          {meta.value}
+                        </p>
                     </div>
                   ))}
                 </div>
@@ -1751,6 +1753,7 @@ function FranceExperience() {
   return (
     <main className="min-h-screen bg-[#05060a] text-white">
       <CursorGlow />
+      <ScrollProgress />
       <FranceNavBar />
       <HeroSection />
       <FranceStatsSection />
