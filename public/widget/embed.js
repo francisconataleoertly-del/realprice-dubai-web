@@ -8,7 +8,9 @@
 
   var API_BASE_DEFAULT = "https://web-production-9051f.up.railway.app";
   var ADDRESS_API_BASE_DEFAULT = "https://fonatprop.com/api/widget";
+  var WIDGET_CONFIG_DEFAULT = "https://fonatprop.com/api/widget/config";
   var DEFAULT_BRAND_COLOR = "#3b82f6";
+  var DEFAULT_LEAD_WEBHOOK = "https://fonatprop.com/api/leads";
   var DEFAULT_TITLE = "Estimate your property's value";
   var DEFAULT_SUBTITLE = "AI-powered market estimate in under a minute. Backed by 234K Dubai transactions.";
   // Banner mode (horizontal hero card on agency websites)
@@ -114,16 +116,15 @@
     return merged;
   }
 
-  function loadZones(apiBase) {
+  function loadZones(apiBase, config) {
     if (ZONE_CACHE.options && ZONE_CACHE.options.length) {
       return Promise.resolve(ZONE_CACHE.options);
     }
     if (ZONE_CACHE.promise) return ZONE_CACHE.promise;
 
-    ZONE_CACHE.promise = fetch(apiBase.replace(/\/$/, "") + "/zones", {
+    ZONE_CACHE.promise = fetchWidgetJson(apiBase.replace(/\/$/, "") + "/zones", {
       method: "GET",
-      headers: { Accept: "application/json" },
-    })
+    }, config)
       .then(function (response) {
         if (!response.ok) throw new Error("Failed to load zones");
         return response.text();
@@ -145,11 +146,11 @@
     return ZONE_CACHE.promise;
   }
 
-  function sendWebhook(url, payload) {
+  function sendWebhook(url, payload, config) {
     if (!url) return Promise.resolve(false);
     return fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: buildWidgetHeaders(config, { "Content-Type": "application/json" }),
       body: JSON.stringify(payload),
       mode: "cors",
       keepalive: true,
@@ -161,6 +162,60 @@
       .catch(function (error) {
         console.error("[FonatProp Widget] webhook failed", error);
         return false;
+      });
+  }
+
+  function buildWidgetHeaders(config, extraHeaders) {
+    var headers = {
+      Accept: "application/json",
+      "X-FonatProp-Agency": config && config.agencyId ? config.agencyId : "",
+      "X-FonatProp-Token": config && config.agencyToken ? config.agencyToken : "",
+    };
+    if (!extraHeaders) return headers;
+    Object.keys(extraHeaders).forEach(function (key) {
+      headers[key] = extraHeaders[key];
+    });
+    return headers;
+  }
+
+  function fetchWidgetJson(url, options, config) {
+    var requestOptions = options || {};
+    requestOptions.headers = buildWidgetHeaders(config, requestOptions.headers || {});
+    return fetch(url, requestOptions);
+  }
+
+  function hydrateWidgetConfig(config) {
+    var endpoint =
+      (config.configEndpoint || WIDGET_CONFIG_DEFAULT).replace(/\/$/, "") +
+      "?agencyId=" + encodeURIComponent(config.agencyId) +
+      "&token=" + encodeURIComponent(config.agencyToken || "");
+
+    return fetchWidgetJson(endpoint, { method: "GET" }, config)
+      .then(function (response) {
+        if (!response.ok) throw new Error("Failed to load widget config");
+        return response.json();
+      })
+      .then(function (runtime) {
+        return {
+          agencyId: config.agencyId,
+          agencyToken: config.agencyToken,
+          brandColor: config.brandColor,
+          mode: config.mode,
+          bannerTitle: config.bannerTitle,
+          bannerCta: config.bannerCta,
+          bannerImage: config.bannerImage,
+          configEndpoint: config.configEndpoint,
+          agentPhone: runtime.agentPhone || "",
+          agentEmail: runtime.agentEmail || "",
+          leadWebhook: runtime.leadWebhook || DEFAULT_LEAD_WEBHOOK,
+          apiBase: runtime.apiBase || runtime.widgetApiBase || config.apiBase || ADDRESS_API_BASE_DEFAULT,
+          addressApiBase:
+            runtime.widgetApiBase || runtime.apiBase || config.addressApiBase || ADDRESS_API_BASE_DEFAULT,
+        };
+      })
+      .catch(function (error) {
+        console.error("[FonatProp Widget] config load failed", error);
+        return config;
       });
   }
 
@@ -699,12 +754,12 @@
       '<div class="rp-banner-result-copy">',
       '<div class="rp-banner-eyebrow"><span class="rp-dot"></span><span>Free general estimate</span></div>',
       '<h3>Tell us where it is.</h3>',
-      '<p>Type the address or building name. We&rsquo;ll show you a wide market range based on real Dubai transactions. <strong>Your agent will follow up with a precise, unit-level valuation.</strong></p>',
+      '<p>Type a real Dubai property address or residential building. We&rsquo;ll show you a wide market range based on real Dubai transactions. <strong>Your agent will follow up with a precise, unit-level valuation.</strong></p>',
       '</div>',
       '<div class="rp-general-result">',
       '<form class="rp-form rp-banner-address-form" autocomplete="off" novalidate>',
-      '<div class="rp-field"><span class="rp-label">Property address or building</span>',
-      '<input class="rp-input" name="address" type="text" placeholder="e.g. Marina Promenade, Dubai Marina" required />',
+      '<div class="rp-field"><span class="rp-label">Property address or residential building</span>',
+      '<input class="rp-input" name="address" type="text" placeholder="e.g. Jumeirah Village St 2, Dubai" required />',
       '</div>',
       '<div class="rp-grid-2">',
       '<div class="rp-field"><span class="rp-label">Bedrooms</span>',
@@ -869,12 +924,14 @@
       setLoading(leadSubmit, true, "Saving…");
       sendWebhook(config.leadWebhook, {
         event: "banner_lead_captured",
+        market: "dubai",
+        source: "public-widget",
         agency_id: config.agencyId,
         agent_email: config.agentEmail,
         agent_phone: config.agentPhone,
         name: name, email: email, phone: fullPhone,
         timestamp: new Date().toISOString(),
-      }).finally(function () {
+      }, config).finally(function () {
         setLoading(leadSubmit, false, "Continue");
         switchTo(resultStep);
       });
@@ -891,7 +948,17 @@
     var rangeLoEl = shadowRoot.querySelector(".rp-banner-range-lo");
     var rangeHiEl = shadowRoot.querySelector(".rp-banner-range-hi");
 
-    function isValidAddress(v) { return String(v || "").trim().length >= 4; }
+    function isValidAddress(v) {
+      var text = String(v || "").trim();
+      if (text.length < 6) return false;
+      if (/\b(bridge|station|metro|airport|tram|bus station|train station|subway|monorail)\b/i.test(text)) return false;
+      if (/\d/.test(text)) return true;
+      if (/\b(street|st|road|rd|avenue|ave|boulevard|blvd|lane|ln|drive|dr|circle|way|tower|residence|residences|building|villa|apartment|unit|phase|block)\b/i.test(text)) return true;
+      var normalized = text.toLowerCase().replace(/[^a-z0-9,]+/g, " ").trim();
+      var parts = normalized.split(",").map(function (part) { return part.trim(); }).filter(Boolean);
+      var words = normalized.split(/\s+/).filter(Boolean);
+      return parts.length >= 2 && words.length >= 4;
+    }
     function isValidArea(v) { var n = Number(v); return isFinite(n) && n >= 20 && n <= 2000; }
     function updateAddressSubmit() {
       addressSubmit.disabled = !(
@@ -942,7 +1009,7 @@
       var rooms = (roomsSelect.value || "1 BR").trim();
       var areaM2 = Number(areaInput.value);
 
-      if (!isValidAddress(address)) { showError(addressError, "Please type the property address or building name."); return; }
+      if (!isValidAddress(address)) { showError(addressError, "Use a real Dubai property address or residential building. Stations, bridges and generic landmarks are not supported."); return; }
       if (!isValidArea(areaM2)) { showError(addressError, "Please enter an area between 20 and 2000 m²."); return; }
 
       var apiRooms = rooms === "Studio" ? "Studio" : rooms.replace(" BR", " B/R");
@@ -950,9 +1017,9 @@
       setLoading(addressSubmit, true, "Estimating…");
 
       var url = config.addressApiBase.replace(/\/$/, "") + "/predict-address";
-      fetch(url, {
+      fetchWidgetJson(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: address,
           building_name: address,
@@ -960,7 +1027,7 @@
           rooms: apiRooms,
           area_m2: areaM2,
         }),
-      })
+      }, config)
         .then(function (r) {
           return r.json().then(function (data) { return { ok: r.ok, data: data }; });
         })
@@ -987,6 +1054,8 @@
           // Send the enriched lead (now including the address + estimate) to the agency
           sendWebhook(config.leadWebhook, {
             event: "banner_address_estimate",
+            market: "dubai",
+            source: "public-widget",
             agency_id: config.agencyId,
             agent_email: config.agentEmail,
             agent_phone: config.agentPhone,
@@ -1001,7 +1070,7 @@
             estimated_high_aed: Math.round(hi),
             raw_prediction: result.data,
             timestamp: new Date().toISOString(),
-          });
+          }, config);
         })
         .catch(function (error) {
           console.error("[FonatProp Widget] address estimate failed", error);
@@ -1024,16 +1093,18 @@
 
     var mode = (host.getAttribute("data-mode") || "inline").toLowerCase();
     var brandColor = host.getAttribute("data-brand-color") || DEFAULT_BRAND_COLOR;
-    var apiBase = host.getAttribute("data-api-base") || API_BASE_DEFAULT;
+    var apiBase = host.getAttribute("data-api-base") || ADDRESS_API_BASE_DEFAULT;
     var config = {
       agencyId: host.getAttribute("data-agency-id") || "agency-unknown",
-      agentPhone: host.getAttribute("data-agent-phone") || "",
-      agentEmail: host.getAttribute("data-agent-email") || "",
+      agencyToken: host.getAttribute("data-agency-token") || "",
+      agentPhone: "",
+      agentEmail: "",
       brandColor: brandColor,
-      leadWebhook: host.getAttribute("data-lead-webhook") || "",
+      leadWebhook: DEFAULT_LEAD_WEBHOOK,
       mode: mode === "popup" || mode === "drawer" || mode === "banner" ? mode : "inline",
       apiBase: apiBase,
-      addressApiBase: host.getAttribute("data-address-api") || ADDRESS_API_BASE_DEFAULT,
+      addressApiBase: ADDRESS_API_BASE_DEFAULT,
+      configEndpoint: host.getAttribute("data-config-endpoint") || WIDGET_CONFIG_DEFAULT,
       bannerTitle: host.getAttribute("data-banner-title") || "",
       bannerCta: host.getAttribute("data-banner-cta") || "",
       bannerImage: host.getAttribute("data-banner-image") || "",
@@ -1045,6 +1116,9 @@
     var mount = document.createElement("div");
     mount.innerHTML = createTemplate(config);
     shadowRoot.appendChild(mount);
+
+    hydrateWidgetConfig(config).then(function (resolvedConfig) {
+    config = resolvedConfig;
 
     if (config.mode === "banner") {
       mountBanner(shadowRoot, config);
@@ -1142,7 +1216,7 @@
       });
     });
 
-    loadZones(config.apiBase).then(function (zones) {
+    loadZones(config.apiBase, config).then(function (zones) {
       zoneSelect.innerHTML = '<option value="">Select a zone</option>' +
         zones.map(function (z) { return '<option value="' + escapeHtml(z) + '">' + escapeHtml(z) + '</option>'; }).join("");
     });
@@ -1169,13 +1243,15 @@
       setLoading(leadSubmitButton, true, "Saving…");
       sendWebhook(config.leadWebhook, {
         event: "lead_captured",
+        market: "dubai",
+        source: "public-widget",
         agency_id: config.agencyId,
         agent_email: config.agentEmail,
         agent_phone: config.agentPhone,
         name: name, email: email, phone: fullPhone,
         estimated_value: null, property: null,
         timestamp: new Date().toISOString(),
-      }).finally(function () {
+      }, config).finally(function () {
         setLoading(leadSubmitButton, false, "Continue");
         switchStep(2);
       });
@@ -1211,11 +1287,11 @@
 
       setLoading(estimateSubmitButton, true, "Estimating…");
 
-      fetch(config.apiBase.replace(/\/$/, "") + "/predict", {
+      fetchWidgetJson(config.apiBase.replace(/\/$/, "") + "/predict", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      })
+      }, config)
         .then(function (r) {
           if (!r.ok) throw new Error("Prediction failed");
           return r.json();
@@ -1267,6 +1343,8 @@
 
           sendWebhook(config.leadWebhook, {
             event: "valuation_completed",
+            market: "dubai",
+            source: "public-widget",
             agency_id: config.agencyId,
             name: state.lead ? state.lead.name : "",
             email: state.lead ? state.lead.email : "",
@@ -1275,7 +1353,7 @@
             property: state.valuation.property,
             raw_prediction: prediction,
             timestamp: new Date().toISOString(),
-          });
+          }, config);
         })
         .catch(function (error) {
           console.error("[FonatProp Widget] predict failed", error);
@@ -1284,6 +1362,7 @@
         .finally(function () {
           setLoading(estimateSubmitButton, false, "Get Estimate");
         });
+    });
     });
   }
 

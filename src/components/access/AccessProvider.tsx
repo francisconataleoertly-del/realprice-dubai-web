@@ -30,6 +30,7 @@ import { fetchOwnProfile } from "@/lib/supabase/profiles";
 type AuthInput = {
   email: string;
   name?: string;
+  nextPath?: string;
   password: string;
   phone?: string;
 };
@@ -171,6 +172,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
     password,
     name,
     phone,
+    nextPath,
   }: AuthInput): Promise<AuthResult> => {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
@@ -181,7 +183,7 @@ export function AccessProvider({ children }: { children: ReactNode }) {
 
     const redirectTo =
       typeof window !== "undefined"
-        ? `${window.location.origin}/auth/callback?next=/app`
+        ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath || "/app")}`
         : undefined;
 
     const { data, error } = await supabase.auth.signUp({
@@ -198,19 +200,22 @@ export function AccessProvider({ children }: { children: ReactNode }) {
 
     if (error) throw error;
 
-    const nextSession = await sessionFromUser(data.user);
     const pendingConfirmation = !data.session;
 
-    if (!pendingConfirmation) {
-      setSession(nextSession);
+    if (pendingConfirmation) {
+      return {
+        session: DEFAULT_SESSION,
+        pendingConfirmation: true,
+        message: "Check your email to confirm the account, then come back and log in.",
+      };
     }
 
+    const nextSession = await sessionFromUser(data.user);
+    setSession(nextSession);
+
     return {
-      session: pendingConfirmation ? DEFAULT_SESSION : nextSession,
-      pendingConfirmation,
-      message: pendingConfirmation
-        ? "Check your email to confirm the account, then come back and log in."
-        : undefined,
+      session: nextSession,
+      pendingConfirmation: false,
     };
   };
 

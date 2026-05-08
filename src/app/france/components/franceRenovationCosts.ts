@@ -123,6 +123,56 @@ export const MAPRIMERENOV_2025 = {
   income_bands: 4, // bleu / jaune / violet / rose
 };
 
+// French VAT rates on renovation work (Article 279-0 bis CGI, BOI-TVA-LIQ-30-20-90)
+// Source: bofip.impots.gouv.fr + service-public.gouv.fr
+// - 5.5%: travaux d'amélioration énergétique (isolation, PAC, fenêtres, ventilation double flux)
+// - 10%: travaux d'amélioration, transformation, aménagement, entretien sur logements >2 ans
+// - 20%: construction neuve, agrandissement, gros œuvre structurel
+export type TvaCategory = "energy" | "renovation" | "new_construction";
+export const FRANCE_TVA_RATES: Record<TvaCategory, number> = {
+  energy: 5.5,
+  renovation: 10,
+  new_construction: 20,
+};
+
+// Map each renovation scope to the TVA category that applies on labour + materials
+// for an existing dwelling >2 years old.
+export const FRANCE_TVA_BY_SCOPE: Record<string, TvaCategory> = {
+  Cuisine: "renovation",
+  "Salle de bain": "renovation",
+  "Sols (parquet, carrelage)": "renovation",
+  "Peinture et murs": "renovation",
+  "Menuiseries (fenêtres double vitrage)": "energy",
+  "Isolation murs / combles": "energy",
+  "Pompe à chaleur air/eau": "energy",
+  "Pompe à chaleur géothermique": "energy",
+};
+
+// Éco-PTZ — Prêt à Taux Zéro for energy renovation
+// Source: service-public.gouv.fr/particuliers/vosdroits/F19905 (2025 update)
+// Zero-interest loan up to €50,000 over 20 years for energy improvement work.
+// Eligible scopes: same list as MaPrimeRénov "geste" + "rénovation d'ampleur".
+export const ECO_PTZ_2025 = {
+  max_loan_eur: 50_000,
+  // For "rénovation d'ampleur" with 35%+ energy gain (new since 2024)
+  max_loan_renovation_ampleur_eur: 50_000,
+  max_term_years: 20,
+  reference_rate_pct: 3.45, // Banque de France Q1 2026 — interest you'd pay on a regular loan
+};
+
+export function computeEcoPtzInterestSavings(loanAmount: number, years: number) {
+  // Compare against a 3.45% reference loan (Banque de France average), simple sum of interest
+  const principal = Math.min(loanAmount, ECO_PTZ_2025.max_loan_eur);
+  const referenceRate = ECO_PTZ_2025.reference_rate_pct / 100 / 12;
+  const months = years * 12;
+  if (referenceRate === 0) return 0;
+  const monthly =
+    (principal * referenceRate * Math.pow(1 + referenceRate, months)) /
+    (Math.pow(1 + referenceRate, months) - 1);
+  const totalReference = monthly * months;
+  return Math.round(totalReference - principal);
+}
+
 export const FRANCE_RENOVATION_CARDS = [
   {
     title: "DVF + DPE crossover",

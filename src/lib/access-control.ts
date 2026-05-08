@@ -104,7 +104,7 @@ export function resolveSessionFromUser(
     coercePlan(userMeta.plan) ||
     (coerceRole(appMeta.role) === "admin" || coerceRole(userMeta.role) === "admin"
       ? "pro"
-      : "pro");
+      : "member");
 
   if (inferredRole === "admin" && inferredPlan !== "pro") {
     inferredPlan = "pro";

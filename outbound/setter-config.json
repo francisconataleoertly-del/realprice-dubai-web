@@ -1,0 +1,15 @@
+{
+  "sender_name": "Francisco Nataleo",
+  "brand": "FonatProp",
+  "new_email": "fonatprop@gmail.com",
+  "whatsapp_business": "PUT_NEW_WHATSAPP_BUSINESS_NUMBER_HERE",
+  "calendar_link": "",
+  "website_dubai": "https://fonatprop.com/fonatprop",
+  "website_france": "https://fonatprop.com/france",
+  "broker_demo": "https://fonatprop.com/broker-demo",
+  "daily_manual_limit_email": 40,
+  "daily_manual_limit_whatsapp": 15,
+  "default_language_dubai": "en",
+  "default_language_france": "fr"
+}
+

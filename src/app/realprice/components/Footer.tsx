@@ -1,6 +1,7 @@
 "use client";
 
 import FonatPropLogo from "@/components/brand/FonatPropLogo";
+import { FONATPROP_CONTACT } from "@/lib/fonatprop-contact";
 
 const LINKS = {
   Platform: [
@@ -14,7 +15,7 @@ const LINKS = {
     { label: "About", href: "#" },
     { label: "Methodology", href: "#" },
     { label: "API Access", href: "#" },
-    { label: "Contact", href: "mailto:hello@fonatprop.com" },
+    { label: "Contact", href: FONATPROP_CONTACT.emailHref },
   ],
   Legal: [
     { label: "Terms", href: "#" },
@@ -41,15 +42,25 @@ export default function Footer() {
           <div className="col-span-2">
             <FonatPropLogo variant="nav" className="mb-5 h-12 w-[210px]" />
             <p className="text-white/40 text-[14px] font-light leading-relaxed max-w-xs mb-6">
-              FonatProp is an AI-powered automated valuation platform for Dubai real estate.
-              Instant estimates, live market intelligence.
+              FonatProp is an AI-powered automated valuation platform for Dubai and France real estate.
+              Instant estimates, live market intelligence and qualified lead capture.
             </p>
-            <a
-              href="mailto:hello@fonatprop.com"
-              className="font-mono text-[12px] text-white/50 hover:text-white transition-colors border-b border-white/10 hover:border-white/30 pb-0.5"
-            >
-              hello@fonatprop.com
-            </a>
+            <div className="flex flex-col gap-2">
+              <a
+                href={FONATPROP_CONTACT.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[12px] text-white/55 hover:text-white transition-colors border-b border-white/10 hover:border-white/30 pb-0.5 w-fit"
+              >
+                WhatsApp {FONATPROP_CONTACT.whatsappDisplay}
+              </a>
+              <a
+                href={FONATPROP_CONTACT.emailHref}
+                className="font-mono text-[12px] text-white/55 hover:text-white transition-colors border-b border-white/10 hover:border-white/30 pb-0.5 w-fit"
+              >
+                {FONATPROP_CONTACT.email}
+              </a>
+            </div>
           </div>
 
           {/* Link columns */}

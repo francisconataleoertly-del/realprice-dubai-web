@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 
 import { useGoogleMaps } from "@/app/realprice/components/GoogleMapsLoader";
 import marketData from "@/data/france-dvf-market.json";
+import ParallaxBackdrop from "@/components/design/ParallaxBackdrop";
+import NoiseTexture from "@/components/design/NoiseTexture";
 import { LAYER_DEFS, type LayerDef, type POIItem } from "./francePOIs";
 
 type PropertyType = "Appartement" | "Maison";
@@ -282,11 +284,9 @@ export default function FranceMapSection() {
 
   return (
     <section id="mapa" className="relative min-h-screen overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center md:bg-fixed"
-        style={{ backgroundImage: "url('/france/lyon-skyline.jpg')" }}
-      />
+      <ParallaxBackdrop image="/france/lyon-skyline.jpg" speed={0.4} opacity={0.42} />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/60 via-[#0a0a0f]/75 to-[#0a0a0f]" />
+      <NoiseTexture intensity={0.05} blend="overlay" />
 
       <div className="relative z-10 px-4 py-28 md:px-8 lg:px-16">
         <div className="mx-auto max-w-7xl">
@@ -433,7 +433,7 @@ export default function FranceMapSection() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
             <div className="relative border-b border-t border-white/[0.08] bg-[#0a0a0f]/70 p-4 backdrop-blur-2xl">
               <div className="absolute left-0 top-0 h-5 w-5 border-l border-t border-white/20" />
               <div className="absolute bottom-0 right-0 h-5 w-5 border-b border-r border-white/20" />

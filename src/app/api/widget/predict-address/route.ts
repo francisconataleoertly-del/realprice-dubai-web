@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
 
+import { isLikelyDubaiAddressText } from "@/lib/dubai-address-guard";
+import { buildDubaiReliability } from "@/lib/valuation-reliability";
+import {
+  buildWidgetCorsHeaders,
+  readWidgetCredentials,
+  validateWidgetRequest,
+} from "@/lib/widget-security";
+
 const UPSTREAM_API =
   process.env.NEXT_PUBLIC_FONATPROP_API_BASE_URL ||
   process.env.NEXT_PUBLIC_NEXOPROP_API_BASE_URL ||
   process.env.NEXT_PUBLIC_REALPRICE_API_BASE_URL ||
   "https://web-production-9051f.up.railway.app";
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Accept",
-  "Access-Control-Max-Age": "86400",
-};
 
 const ZONE_ALIASES = [
   {
@@ -91,16 +92,35 @@ function normalizeRooms(value: unknown) {
   return text || "1 B/R";
 }
 
-export async function OPTIONS() {
+export async function OPTIONS(request: Request) {
   return new NextResponse(null, {
     status: 204,
-    headers: CORS_HEADERS,
+    headers: buildWidgetCorsHeaders(request.headers.get("origin")),
   });
 }
 
 export async function POST(request: Request) {
+  const credentials = readWidgetCredentials(request);
+  const validation = await validateWidgetRequest(request, credentials);
+  if (!validation.ok) {
+    return validation.response;
+  }
+
   try {
     const body = await request.json();
+    if (!isLikelyDubaiAddressText(body?.address)) {
+      return NextResponse.json(
+        {
+          detail:
+            "Use a real Dubai property address or residential building. Stations, bridges and generic landmarks are not supported.",
+        },
+        {
+          status: 422,
+          headers: buildWidgetCorsHeaders(validation.origin),
+        }
+      );
+    }
+
     const lookupText = [body.address, body.zona, body.building_name].filter(Boolean).join(" ");
     const fallbackZone = resolveZoneFallback(lookupText);
     const normalizedBody = {
@@ -118,11 +138,18 @@ export async function POST(request: Request) {
 
     const data = await upstreamResponse.json().catch(() => ({}));
     if (upstreamResponse.ok) {
+      const responseData = {
+        ...data,
+        widget_normalized_zone: fallbackZone || data.resolved_zone || null,
+      };
       return NextResponse.json(
-        { ...data, widget_normalized_zone: fallbackZone || data.resolved_zone || null },
+        {
+          ...responseData,
+          reliability: responseData.reliability || buildDubaiReliability(responseData),
+        },
         {
           status: upstreamResponse.status,
-          headers: CORS_HEADERS,
+          headers: buildWidgetCorsHeaders(validation.origin),
         }
       );
     }
@@ -148,19 +175,23 @@ export async function POST(request: Request) {
 
       const fallbackData = await fallbackResponse.json().catch(() => ({}));
       if (fallbackResponse.ok) {
+        const responseData = {
+          ...fallbackData,
+          resolved_zone: fallbackData.resolved_zone || fallbackZone,
+          inferred_from_address: body.address || null,
+          inference_source: "widget_zone_fallback",
+          inferred_details_used: true,
+          widget_normalized_zone: fallbackZone,
+          widget_fallback_reason: data?.detail || "Address profile not found; used zone fallback.",
+        };
         return NextResponse.json(
           {
-            ...fallbackData,
-            resolved_zone: fallbackData.resolved_zone || fallbackZone,
-            inferred_from_address: body.address || null,
-            inference_source: "widget_zone_fallback",
-            inferred_details_used: true,
-            widget_normalized_zone: fallbackZone,
-            widget_fallback_reason: data?.detail || "Address profile not found; used zone fallback.",
+            ...responseData,
+            reliability: responseData.reliability || buildDubaiReliability(responseData),
           },
           {
             status: 200,
-            headers: CORS_HEADERS,
+            headers: buildWidgetCorsHeaders(validation.origin),
           }
         );
       }
@@ -168,13 +199,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data, {
       status: upstreamResponse.status,
-      headers: CORS_HEADERS,
+      headers: buildWidgetCorsHeaders(validation.origin),
     });
   } catch (error) {
     console.error("widget predict-address failed", error);
     return NextResponse.json(
       { detail: "Widget valuation failed. Please try again." },
-      { status: 500, headers: CORS_HEADERS }
+      { status: 500, headers: buildWidgetCorsHeaders(validation.origin) }
     );
   }
 }

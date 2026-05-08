@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { estimateFranceValue } from "@/lib/france-market";
+import { estimateFranceValueV2 } from "@/lib/server/france-valuation-v2";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const result = estimateFranceValue(body);
+    const result = estimateFranceValueV2(body);
     return NextResponse.json(result);
   } catch (error) {
     console.error("France valuation failed", error);

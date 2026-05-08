@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { animate, motion, useInView } from "framer-motion";
 import {
   ArrowRight,
@@ -22,12 +22,41 @@ import {
 
 import GoogleMapsLoader, { useGoogleMaps } from "@/app/realprice/components/GoogleMapsLoader";
 import FonatPropLogo from "@/components/brand/FonatPropLogo";
+import DealIntelligencePanel from "@/components/intelligence/DealIntelligencePanel";
 import RenovationMaterialSearch from "@/components/renovation/RenovationMaterialSearch";
+import ValuationReliabilityPanel from "@/components/valuation/ValuationReliabilityPanel";
 import marketData from "@/data/france-dvf-market.json";
+import { FONATPROP_CONTACT } from "@/lib/fonatprop-contact";
+import { buildValuationIntelligence } from "@/lib/deal-intelligence";
+import { buildFranceReliability } from "@/lib/valuation-reliability";
 
 import FranceRadarSection from "./components/FranceRadarSection";
 import FranceMapSection from "./components/FranceMapSection";
 import FranceInvestmentSection from "./components/FranceInvestmentSection";
+import FranceReformaSection from "./components/FranceReformaSection";
+import {
+  dpeAdjustmentPct,
+  FRANCE_DPE_IMPACT,
+  type DpeClass,
+} from "./components/franceDPE";
+import FranceAddressAutocomplete from "./components/FranceAddressAutocomplete";
+import FranceReportCTA from "./components/FranceReportCTA";
+import FranceComparablesPanel from "./components/FranceComparablesPanel";
+import DvfLiveTicker from "./components/DvfLiveTicker";
+import SectionDivider from "@/components/design/SectionDivider";
+import CursorGlow from "@/components/design/CursorGlow";
+import MeshBackground from "@/components/design/MeshBackground";
+import MeshGradient3D from "@/components/design/MeshGradient3D";
+import {
+  dvfFullInseeCode,
+  type AddressSuggestion,
+} from "./components/franceBANService";
+import {
+  lookupDpeByAddress,
+  pickPrimaryDpeClass,
+  type DpeLookupResult,
+} from "./components/franceADEMEService";
+import { FranceMarketProvider, useFranceMarket } from "./components/FranceMarketContext";
 
 type PropertyType = "Appartement" | "Maison";
 
@@ -186,6 +215,33 @@ const franceDataLayers = [
   },
 ];
 
+const franceCommercialCards = [
+  {
+    label: "Valuation",
+    title: "Official price range",
+    body: "DVF-backed commune pricing, DPE context and confidence bands for a client-ready estimate.",
+    href: "#valorar",
+  },
+  {
+    label: "Investment",
+    title: "Net yield underwriter",
+    body: "Rent cap, zone tendue, vacancy, tax regime, financing and acquisition fees in one flow.",
+    href: "#inversion",
+  },
+  {
+    label: "Renovation",
+    title: "DPE and capex studio",
+    body: "Works budget, MaPrimeRenov, Eco-PTZ, VAT logic and resale-uplift estimates.",
+    href: "#reforma",
+  },
+  {
+    label: "Report",
+    title: "Broker-ready summary",
+    body: "Every section can generate a lead and package the result into a professional follow-up.",
+    href: "#valorar",
+  },
+];
+
 const navItems = [
   { id: "valorar", label: "Valuation", icon: Home },
   { id: "mapa", label: "Map", icon: Map },
@@ -318,6 +374,8 @@ function CountUp({
 
 function ProgressRing({ percentage, size = 320 }: { percentage: number; size?: number }) {
   const ref = useRef<SVGCircleElement>(null);
+  const gradientId = useId().replace(/:/g, "");
+  const glowId = `${gradientId}-glow`;
   const inView = useInView(ref, { once: true, margin: "-15%" });
   const radius = (size - 56) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -336,6 +394,40 @@ function ProgressRing({ percentage, size = 320 }: { percentage: number; size?: n
       className="absolute inset-0 m-auto"
       style={{ overflow: "visible" }}
     >
+      <defs>
+        <linearGradient id={gradientId} x1="0%" x2="100%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor="rgba(241,247,255,0.98)" />
+          <stop offset="50%" stopColor="rgba(122,209,255,0.96)" />
+          <stop offset="100%" stopColor="rgba(247,196,124,0.94)" />
+        </linearGradient>
+        <filter id={glowId}>
+          <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      {Array.from({ length: 24 }).map((_, index) => {
+        const angle = (index / 24) * Math.PI * 2 - Math.PI / 2;
+        const outer = radius + 14;
+        const inner = index % 3 === 0 ? radius + 1 : radius + 8;
+        const x1 = size / 2 + Math.cos(angle) * inner;
+        const y1 = size / 2 + Math.sin(angle) * inner;
+        const x2 = size / 2 + Math.cos(angle) * outer;
+        const y2 = size / 2 + Math.sin(angle) * outer;
+        return (
+          <line
+            key={index}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke={index % 3 === 0 ? "rgba(255,255,255,0.22)" : "rgba(125,145,190,0.16)"}
+            strokeWidth={index % 3 === 0 ? 1.4 : 0.8}
+          />
+        );
+      })}
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -357,14 +449,16 @@ function ProgressRing({ percentage, size = 320 }: { percentage: number; size?: n
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        stroke="rgba(255,255,255,0.85)"
-        strokeWidth={1.5}
+        stroke={`url(#${gradientId})`}
+        strokeWidth={2.2}
         fill="none"
+        filter={`url(#${glowId})`}
         strokeLinecap="round"
         strokeDasharray={circumference}
         strokeDashoffset={circumference}
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
       />
+      <circle cx={size / 2} cy={size / 2} r={2.8} fill="rgba(255,255,255,0.92)" />
     </svg>
   );
 }
@@ -600,6 +694,15 @@ function HeroSection() {
             "radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(10,10,15,0.35) 80%)",
         }}
       />
+      <MeshBackground tone="violet" intensity={0.55} className="z-[11]" />
+      <div className="absolute inset-0 z-[12] mix-blend-screen" style={{ opacity: 0.42 }}>
+        <MeshGradient3D
+          colors={["#06070d", "#1e3a8a", "#7c3aed", "#f5d6a3"]}
+          speed={0.7}
+          intensity={0.85}
+          resolutionScale={0.55}
+        />
+      </div>
 
       <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-7xl flex-col items-start justify-center px-6 py-28 md:min-h-screen md:px-12 lg:px-24">
         <FonatPropLogo
@@ -616,7 +719,7 @@ function HeroSection() {
             French value.
           </span>
         </h1>
-        <p className="font-['Inter'] text-[clamp(1rem,1.25vw,1.2rem)] text-white/55 font-light leading-[1.7] max-w-xl mb-12">
+        <p className="fonatprop-dropcap font-['Inter'] text-[clamp(1rem,1.25vw,1.2rem)] text-white/55 font-light leading-[1.7] max-w-xl mb-12">
           A France market intelligence surface built on official DVF transactions.
           Same premium product language as Dubai, but with its own data stack,
           valuation logic and compliance story.
@@ -708,8 +811,15 @@ function ValuationSection({
   setArea,
   rooms,
   setRooms,
+  dpeClass,
+  setDpeClass,
   selectedRecord,
-  communeOptions,
+  addressMatch,
+  onSelectAddress,
+  dpeLookup,
+  dpeLookupLoading,
+  dpeUserOverride,
+  postcode,
 }: {
   propertyType: PropertyType;
   setPropertyType: (value: PropertyType) => void;
@@ -719,20 +829,125 @@ function ValuationSection({
   setArea: (value: number) => void;
   rooms: number;
   setRooms: (value: number) => void;
+  dpeClass: DpeClass;
+  setDpeClass: (value: DpeClass) => void;
   selectedRecord: CommuneRecord | undefined;
-  communeOptions: CommuneRecord[];
+  addressMatch: CommuneRecord | undefined;
+  onSelectAddress: (addr: AddressSuggestion) => void;
+  dpeLookup: DpeLookupResult | null;
+  dpeLookupLoading: boolean;
+  dpeUserOverride: boolean;
+  postcode: string | null;
 }) {
-  const estimate = estimateValue(selectedRecord, propertyType, area, rooms);
-  const pct = confidencePct(selectedRecord?.transactions ?? 0);
+  const [valuationData, setValuationData] = useState<{
+    valuation_mode?: string;
+    estimated_value_eur: number;
+    median_price_per_m2_eur: number;
+    confidence_pct: number;
+    record?: CommuneRecord | null;
+    reliability?: ReturnType<typeof buildFranceReliability>;
+    match_context?: { strategy?: string; postal_code?: string | null };
+    comparable_context?: {
+      source?: string;
+      used_count?: number;
+      exact_room_count?: number;
+      postcode?: string | null;
+    };
+  } | null>(null);
+  const [valuationLoading, setValuationLoading] = useState(false);
+
+  useEffect(() => {
+    if (!area || area <= 0) return;
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        setValuationLoading(true);
+        const response = await fetch("/api/france/valuation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            address: commune,
+            commune,
+            property_type: propertyType,
+            area_m2: area,
+            rooms,
+          }),
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error("France valuation request failed");
+        const payload = await response.json();
+        if (!controller.signal.aborted) {
+          setValuationData(payload);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("[france] valuation refresh failed", error);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setValuationLoading(false);
+        }
+      }
+    }, 220);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [area, commune, propertyType, rooms]);
+
+  const dpeSource: "ademe-exact" | "ademe-postcode" | "manual" = dpeLookup?.exact_match
+    ? "ademe-exact"
+    : dpeUserOverride
+      ? "manual"
+      : dpeLookup?.most_common_class
+        ? "ademe-postcode"
+        : "manual";
+  const dpeDistTotal =
+    dpeLookup?.nearby_records.length ?? dpeLookup?.total ?? 0;
+  const valuationRecord =
+    (valuationData?.record as CommuneRecord | undefined) ?? selectedRecord;
+  const valuationMode =
+    valuationData?.valuation_mode ??
+    (selectedRecord ? "dvf_commune_statistical_v1" : "national_dvf_fallback_v1");
+  const valuationMedianPsm =
+    valuationData?.median_price_per_m2_eur ??
+    valuationRecord?.median_price_per_m2 ??
+    latestTypeMedian(propertyType);
+  const valuationSupportCount = valuationRecord?.transactions ?? 0;
+  const postcodeComparableSource =
+    valuationData?.comparable_context?.source === "postcode_weighted_comparables";
+  const baseEstimate =
+    valuationData?.estimated_value_eur ??
+    estimateValue(selectedRecord, propertyType, area, rooms);
+  const dpeAdjustment = dpeAdjustmentPct(dpeClass, propertyType);
+  const estimate = Math.round(baseEstimate * (1 + dpeAdjustment / 100));
+  const dpeDelta = estimate - baseEstimate;
+  const pct =
+    valuationData?.confidence_pct != null
+      ? valuationData.confidence_pct / 100
+      : confidencePct(valuationSupportCount);
   const low = Math.round(estimate * (1 - pct));
   const high = Math.round(estimate * (1 + pct));
   const confidence = Math.max(58, Math.min(94, 100 - pct * 100));
+  const dpeImpact = FRANCE_DPE_IMPACT.find((i) => i.class === dpeClass);
+  const reliability =
+    valuationData?.reliability ??
+    buildFranceReliability({
+      valuation_mode: valuationMode,
+      confidence_pct: Math.round(pct * 1000) / 10,
+      record: valuationRecord || null,
+      match_context: valuationData?.match_context ?? {
+        strategy: selectedRecord ? "commune_lookup" : "national_fallback",
+        postal_code: postcode,
+      },
+    });
 
   return (
     <section id="valorar" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
       <SectionBackdrop image={sectionBackdrops.valuation} opacity={0.16} position="center 42%" />
-      <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-        <div className="rounded-[32px] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-xl md:p-8">
+      <div className="relative mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+        <div className="self-start rounded-[32px] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-xl md:p-8">
           <SectionLabel>Valuation engine</SectionLabel>
           <h2 className="mt-5 max-w-2xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
             Estimate with official France data.
@@ -745,23 +960,27 @@ function ValuationSection({
           <div className="mt-8 grid gap-4">
             <label className="grid gap-2">
               <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/38">
-                Commune
+                Address (Géoplateforme IGN — BAN)
               </span>
-              <select
+              <FranceAddressAutocomplete
                 value={commune}
-                onChange={(event) => setCommune(event.target.value)}
-                className="h-14 rounded-2xl border border-white/10 bg-[#0b0d14] px-4 text-white outline-none transition focus:border-blue-300/50"
-              >
-                {communeOptions.map((row) => (
-                  <option
-                    key={`${row.commune}-${row.department_code}-${row.property_type}`}
-                    value={row.commune}
-                    className="bg-[#0b0d14]"
-                  >
-                    {row.commune} ({row.department_code}) - {number.format(row.transactions)} tx
-                  </option>
-                ))}
-              </select>
+                onSelect={onSelectAddress}
+                onChange={(text) => setCommune(text)}
+              />
+              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/28">
+                {addressMatch ? (
+                  <>
+                    Matched DVF commune <span className="text-white/55">{addressMatch.commune}</span>{" "}
+                    (Dept. {addressMatch.department_code}) ·{" "}
+                    {number.format(addressMatch.transactions)} transactions
+                    {postcodeComparableSource ? <> · postcode comparables active</> : null}
+                  </>
+                ) : commune ? (
+                  <>No DVF match for "{commune}" - using national medians</>
+                ) : (
+                  <>Type a French address to anchor the valuation</>
+                )}
+              </p>
             </label>
 
             <div className="grid gap-4 md:grid-cols-3">
@@ -809,10 +1028,135 @@ function ValuationSection({
                 />
               </label>
             </div>
+
+            <div>
+              <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.3em] text-white/38">
+                DPE — classe énergétique
+              </span>
+              <div className="grid grid-cols-7 overflow-hidden rounded-2xl border border-white/10">
+                {FRANCE_DPE_IMPACT.map((impact) => {
+                  const active = impact.class === dpeClass;
+                  const adjPct =
+                    propertyType === "Maison" ? impact.house_pct : impact.apartment_pct;
+                  return (
+                    <button
+                      key={impact.class}
+                      type="button"
+                      onClick={() => setDpeClass(impact.class)}
+                      className={`group flex flex-col items-center justify-center gap-0.5 border-r border-white/[0.06] py-2.5 text-[11px] font-semibold transition-all duration-300 last:border-r-0 ${
+                        active ? "scale-[1.04] text-white" : "text-white/85 hover:text-white"
+                      }`}
+                      style={{
+                        background: active ? impact.color : `${impact.color}55`,
+                        boxShadow: active ? `inset 0 -3px 0 #fff` : "none",
+                      }}
+                      aria-label={`Classe DPE ${impact.class}`}
+                    >
+                      <span>{impact.class}</span>
+                      <span className="font-mono text-[8px] tracking-wider text-black/55 group-hover:text-black/80">
+                        {adjPct > 0 ? "+" : ""}
+                        {adjPct}%
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {dpeImpact ? (
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-white/38">
+                  Class {dpeImpact.class}
+                  {dpeImpact.rental_ban_year ? (
+                    <span className="ml-2 text-amber-300">
+                      ⚠ Rental ban from {dpeImpact.rental_ban_year}
+                    </span>
+                  ) : null}
+                </p>
+              ) : null}
+
+              <div className="mt-4 rounded-2xl border border-white/[0.06] bg-[#0b0d14] p-4">
+                <div className="flex items-center justify-between">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/40">
+                    DPE source
+                  </p>
+                  {dpeLookupLoading ? (
+                    <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-blue-200/70">
+                      <span className="relative inline-flex h-2 w-2 overflow-hidden rounded-full bg-blue-300/30">
+                        <span className="absolute inset-0 animate-ping rounded-full bg-blue-300/60" />
+                      </span>
+                      Querying ADEME 6M+ records…
+                    </span>
+                  ) : dpeSource === "ademe-exact" ? (
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-300">
+                      ✓ Exact match — ADEME observatoire
+                    </p>
+                  ) : dpeSource === "ademe-postcode" ? (
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-blue-200/70">
+                      Suggested from {dpeDistTotal} postcode DPEs
+                    </p>
+                  ) : (
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/35">
+                      Manual override
+                    </p>
+                  )}
+                </div>
+
+                {dpeLookup?.exact_match ? (
+                  <div className="mt-3 grid gap-1 border-t border-white/[0.06] pt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">
+                    <p>Address: {dpeLookup.exact_match.adresse_brut}</p>
+                    <p>
+                      DPE {dpeLookup.exact_match.etiquette_dpe} &middot; GES{" "}
+                      {dpeLookup.exact_match.etiquette_ges ?? "—"} &middot;{" "}
+                      {dpeLookup.exact_match.surface_habitable_logement ?? "—"} m²
+                      {dpeLookup.exact_match.date_etablissement_dpe ? (
+                        <span> &middot; {dpeLookup.exact_match.date_etablissement_dpe}</span>
+                      ) : null}
+                    </p>
+                  </div>
+                ) : null}
+
+                {!dpeLookup?.exact_match && dpeLookup && dpeDistTotal > 0 ? (
+                  <div className="mt-3 border-t border-white/[0.06] pt-3">
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/35">
+                      DPE distribution in this postcode (n={dpeDistTotal})
+                    </p>
+                    <div className="flex h-2 overflow-hidden rounded-full bg-white/5">
+                      {FRANCE_DPE_IMPACT.map((impact) => {
+                        const count = dpeLookup.distribution[impact.class] ?? 0;
+                        const pct = dpeDistTotal > 0 ? (count / dpeDistTotal) * 100 : 0;
+                        if (pct === 0) return null;
+                        return (
+                          <div
+                            key={impact.class}
+                            style={{
+                              width: `${pct}%`,
+                              background: impact.color,
+                            }}
+                            title={`${impact.class}: ${count} (${pct.toFixed(0)}%)`}
+                          />
+                        );
+                      })}
+                    </div>
+                    <div className="mt-2 grid grid-cols-7 gap-1 text-center font-mono text-[8px] uppercase tracking-[0.15em] text-white/35">
+                      {FRANCE_DPE_IMPACT.map((impact) => {
+                        const count = dpeLookup.distribution[impact.class] ?? 0;
+                        return (
+                          <span key={impact.class}>
+                            {impact.class} · {count}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
+                  Source: ADEME data.ademe.fr/datasets/dpe03existant — 6M+ DPEs
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0b11] p-6 shadow-[0_28px_120px_rgba(0,0,0,0.45)] md:p-8">
+        <div className="relative self-start overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0b11] p-6 shadow-[0_28px_120px_rgba(0,0,0,0.45)] md:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_16%,rgba(59,130,246,0.24),transparent_30%)]" />
           <div className="relative">
             <div className="flex items-start justify-between gap-6">
@@ -824,8 +1168,29 @@ function ValuationSection({
                     {number.format(estimate)}
                   </p>
                 </div>
+                {dpeAdjustment !== 0 ? (
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-white/38">
+                    DPE {dpeClass}: {dpeAdjustment > 0 ? "+" : ""}
+                    {dpeAdjustment}% ={" "}
+                    <span style={{ color: dpeImpact?.color }}>
+                      {dpeDelta > 0 ? "+" : ""}
+                      {eur.format(dpeDelta)}
+                    </span>{" "}
+                    vs class D baseline
+                  </p>
+                ) : (
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-white/38">
+                    DPE D - market baseline
+                  </p>
+                )}
               </div>
-              <div className="rounded-full border border-blue-300/20 bg-blue-400/10 p-4 text-blue-200">
+              <div
+                className="rounded-full border p-4 text-white"
+                style={{
+                  borderColor: `${dpeImpact?.color ?? "#3b82f6"}50`,
+                  background: `${dpeImpact?.color ?? "#3b82f6"}1a`,
+                }}
+              >
                 <Euro className="h-6 w-6" />
               </div>
             </div>
@@ -842,15 +1207,16 @@ function ValuationSection({
                 />
               </div>
               <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-white/35">
-                Confidence range based on {number.format(selectedRecord?.transactions ?? 0)} official transactions.
+                Confidence range based on {number.format(valuationSupportCount)} official transactions
+                {postcodeComparableSource ? " plus postcode-weighted comparables." : "."}
               </p>
             </div>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               {[
-                [eur.format(selectedRecord?.median_price_per_m2 ?? latestTypeMedian(propertyType)), "median / m2"],
-                [eur.format(selectedRecord?.median_value_eur ?? data.coverage.median_value_eur), "median sale"],
-                [`${selectedRecord?.avg_area_m2 ?? area} m2`, "avg area"],
+                [eur.format(valuationMedianPsm), "median / m2"],
+                [eur.format(valuationRecord?.median_value_eur ?? data.coverage.median_value_eur), "median sale"],
+                [`${valuationRecord?.avg_area_m2 ?? area} m2`, "avg area"],
               ].map(([value, label]) => (
                 <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
                   <p className="font-['Fraunces'] text-3xl">{value}</p>
@@ -861,9 +1227,62 @@ function ValuationSection({
               ))}
             </div>
 
+            <div className="mt-6">
+              <ValuationReliabilityPanel reliability={reliability} compact />
+            </div>
+
+            <div className="mt-6">
+              <DealIntelligencePanel
+                intelligence={buildValuationIntelligence({
+                  market: "france",
+                  estimate,
+                  low,
+                  high,
+                  supportCount: valuationSupportCount,
+                  confidencePct: Math.round(pct * 1000) / 10,
+                  valuationMode,
+                  dpeClass,
+                  currency: "EUR",
+                })}
+                title="AI valuation memo"
+              />
+            </div>
+
             <div className="mt-10 rounded-2xl border border-blue-300/16 bg-blue-500/8 p-5 text-sm leading-7 text-white/62">
-              France is not mixed with Dubai. This page uses the France DVF layer and can later
-              receive a separate ML model, separate address normalization and separate compliance wording.
+              France is not mixed with Dubai. This surface now prioritizes postcode-weighted DVF
+              comparables when address support exists, then falls back to commune-level pricing
+              when the address signal is still too broad.
+            </div>
+
+            <div className="mt-6">
+              <FranceComparablesPanel
+                postcode={postcode}
+                propertyType={propertyType}
+                surface={area}
+                estimatePerM2={
+                  valuationMedianPsm ??
+                  Math.round(estimate / Math.max(area, 1))
+                }
+              />
+            </div>
+
+            <div className="mt-6">
+              <FranceReportCTA
+                section="valuation"
+                printTargetId="valorar"
+                snapshot={{
+                  address: commune,
+                  property_type: propertyType,
+                  area_m2: area,
+                  rooms,
+                  dpe_class: dpeClass,
+                  estimate_eur: estimate,
+                  estimate_low: low,
+                  estimate_high: high,
+                  dpe_source: dpeSource,
+                  dpe_total_records: dpeDistTotal,
+                }}
+              />
             </div>
           </div>
         </div>
@@ -872,88 +1291,6 @@ function ValuationSection({
   );
 }
 
-function RenovationSection() {
-  const cards = [
-    {
-      icon: Database,
-      title: "DVF core",
-      text: "5.9M cleaned residential rows already processed locally from official transaction files.",
-    },
-    {
-      icon: Building2,
-      title: "RNC layer",
-      text: "Co-ownership files are in the data lake and can become building/context features.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Separate compliance",
-      text: "France keeps its own sources, language and disclaimers instead of reusing Dubai logic.",
-    },
-    {
-      icon: Paintbrush,
-      title: "Renovation next",
-      text: "A France renovation module can add energy upgrades, DPE and local cost ranges.",
-    },
-  ];
-
-  return (
-    <section id="reforma" className="relative scroll-mt-28 overflow-hidden bg-[#05060a] px-6 py-28 md:px-10">
-      <SectionBackdrop image={sectionBackdrops.renovation} opacity={0.19} position="center" />
-      <div className="relative mx-auto max-w-7xl">
-        <SectionLabel>Renovation and data roadmap</SectionLabel>
-        <h2 className="mt-5 max-w-4xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
-          Renovation intelligence for France.
-        </h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-white/58">
-          The France renovation module starts with practical cost ranges and later connects
-          them to DPE, co-ownership context and value uplift. It is not a contractor quote;
-          it is an investment planning layer.
-        </p>
-
-        <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {cards.map(({ icon: Icon, title, text }) => (
-            <article key={title} className="rounded-[28px] border border-white/10 bg-white/[0.035] p-6">
-              <div className="mb-6 inline-flex rounded-full border border-blue-300/16 bg-blue-400/10 p-3 text-blue-200">
-                <Icon className="h-5 w-5" />
-              </div>
-              <h3 className="text-2xl font-medium tracking-[-0.04em] text-white">{title}</h3>
-              <p className="mt-4 text-sm leading-7 text-white/52">{text}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {renovationCategories.map((item) => (
-            <article
-              key={item.scope}
-              className="rounded-[28px] border border-white/10 bg-black/28 p-6 backdrop-blur-xl"
-            >
-              <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-blue-200/50">
-                France beta range
-              </p>
-              <h3 className="mt-4 text-2xl font-medium tracking-[-0.04em] text-white">
-                {item.scope}
-              </h3>
-              <p className="mt-4 font-['Fraunces'] text-4xl font-light tracking-[-0.05em]">
-                {item.range}
-              </p>
-              <p className="mt-4 text-sm leading-7 text-white/54">{item.impact}</p>
-              <p className="mt-5 border-t border-white/10 pt-4 font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">
-                {item.note}
-              </p>
-            </article>
-          ))}
-        </div>
-
-        <RenovationMaterialSearch
-          market="france"
-          title="Search French materials and installed ranges."
-          description="Initial France catalog for renovation scenarios: tile, laminate, shower mixers, shower screens, bathroom installed ranges and pool benchmarks from Leroy Merlin, Castorama, Brico Depot and published cost guides."
-        />
-      </div>
-    </section>
-  );
-}
 
 function FranceDataMoatSection() {
   return (
@@ -995,6 +1332,51 @@ function FranceDataMoatSection() {
               </h3>
               <p className="mt-5 text-sm leading-7 text-white/52">{body}</p>
             </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FranceCommercialProductSection() {
+  return (
+    <section className="relative overflow-hidden border-y border-white/[0.05] bg-[#07080e] px-6 py-28 md:px-10">
+      <SectionBackdrop image={sectionBackdrops.investment} opacity={0.16} position="center" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-end">
+          <div>
+            <SectionLabel>Commercial France product</SectionLabel>
+            <h2 className="mt-5 max-w-4xl font-['Fraunces'] text-5xl font-light leading-[0.95] tracking-[-0.06em] md:text-7xl">
+              France is not a demo.
+              <br />
+              <span className="italic text-white/38">It is an underwriting tool.</span>
+            </h2>
+          </div>
+          <p className="max-w-2xl text-base leading-8 text-white/56 lg:justify-self-end">
+            The commercial promise is simple: price, rental legality, net yield and renovation
+            cost in one premium workflow. That is what a broker or investor needs before a deal.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-4 lg:grid-cols-4">
+          {franceCommercialCards.map((card) => (
+            <a
+              key={card.title}
+              href={card.href}
+              className="group rounded-[30px] border border-white/[0.08] bg-[#0a0a0f]/82 p-6 transition duration-500 hover:border-blue-200/30 hover:bg-[#0d111c]"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-200/55">
+                {card.label}
+              </p>
+              <h3 className="mt-8 text-2xl font-semibold tracking-[-0.045em] text-white">
+                {card.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-white/52">{card.body}</p>
+              <span className="mt-7 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-white/35 transition group-hover:text-white/75">
+                Open layer <ArrowRight className="h-3 w-3" />
+              </span>
+            </a>
           ))}
         </div>
       </div>
@@ -1048,8 +1430,10 @@ function FranceStatsSection() {
   const coverageScore = Math.min(95, 65 + yearSpan * 4);
 
   return (
-    <section className="relative overflow-hidden border-y border-white/[0.04] bg-[#080810] px-6 py-32 md:px-12 lg:px-24">
+    <section className="relative overflow-hidden border-y border-white/[0.05] bg-[#06070d] px-6 py-28 md:px-12 lg:px-24">
       <Constellation />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_22%,rgba(120,164,255,0.16),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(77,210,255,0.12),transparent_28%),radial-gradient(circle_at_78%_78%,rgba(246,193,120,0.10),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:160px_160px]" />
 
       <div className="relative mx-auto max-w-7xl">
         <motion.div
@@ -1057,73 +1441,108 @@ function FranceStatsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.8 }}
-          className="mb-20"
+          className="mb-16 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end"
         >
-          <div className="mb-6 flex items-center gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/35">
-              Chapter II
-            </span>
-            <div className="h-px w-12 bg-white/20" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/35">
-              Couverture
-            </span>
+          <div>
+            <div className="mb-6 flex items-center gap-4">
+              <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#96a8d8]/55">
+                Chapter II
+              </span>
+              <div className="h-px w-12 bg-white/20" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#96a8d8]/55">
+                French data observatory
+              </span>
+            </div>
+            <h2 className="max-w-4xl font-[family:var(--font-display)] text-[clamp(2.6rem,5vw,4.5rem)] font-light leading-[0.94] tracking-[-0.045em] text-white">
+              Not a generic dashboard.
+              <span className="block font-extralight italic text-white/38">
+                A valuation engine built on national evidence.
+              </span>
+            </h2>
           </div>
-          <h2 className="max-w-3xl font-['Fraunces'] text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.02em] text-white">
-            Built on official
-            <span className="font-extralight italic text-white/40"> France </span>
-            DVF transactions.
-          </h2>
+          <div className="rounded-[28px] border border-white/[0.08] bg-white/[0.03] px-6 py-6 backdrop-blur-sm">
+            <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-[#8eb0ff]/60">
+              Why this matters
+            </p>
+            <p className="mt-4 text-[17px] leading-8 text-white/62">
+              Every signal below comes from cleaned DVF history, not decorative placeholder metrics.
+              The goal is to make France feel like an <span className="text-white">investment-grade market surface</span>,
+              not another luxury landing with random counters.
+            </p>
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-px bg-white/[0.04] lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="group relative flex min-h-[500px] flex-col justify-between overflow-hidden bg-[#0a0a0f] p-10 md:p-12 lg:col-span-5 lg:row-span-2"
+            className="group relative flex min-h-[560px] flex-col justify-between overflow-hidden rounded-[38px] border border-[#7aa9ff]/16 bg-[linear-gradient(160deg,rgba(8,10,18,0.98),rgba(10,13,24,0.96))] p-10 shadow-[0_30px_80px_-35px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.02)_inset] md:p-12 lg:col-span-5"
           >
+            <div className="absolute inset-x-6 top-6 h-px bg-gradient-to-r from-transparent via-[#7dd3fc]/60 to-transparent opacity-70" />
             <div
-              className="absolute inset-0 opacity-40"
+              className="absolute inset-0 opacity-65"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 60%, rgba(255,255,255,0.04) 0%, transparent 60%)",
+                  "radial-gradient(circle at 35% 42%, rgba(111,173,255,0.14) 0%, transparent 42%), radial-gradient(circle at 75% 84%, rgba(243,197,125,0.10) 0%, transparent 28%)",
               }}
             />
+            <div className="pointer-events-none absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:24px_24px]" />
 
             <div className="relative z-10">
-              <p className="mb-1 font-['Fraunces'] text-[14px] font-light italic text-white/40">
-                No. 01
+              <div className="mb-4 flex flex-wrap gap-2">
+                {[
+                  `DVF ${data.coverage.min_year}-${data.coverage.max_year}`,
+                  `${data.coverage.departments} departments`,
+                  "Official Etalab backbone",
+                ].map((chip) => (
+                  <span
+                    key={chip}
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-white/56"
+                  >
+                    {chip}
+                  </span>
+                ))}
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#b8cbff]/72">
+                Coverage integrity
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/50">
-                DVF Coverage Score
+              <p className="mt-5 max-w-sm text-[16px] leading-7 text-white/62">
+                A fast read on how much of France&apos;s residential market has been normalized into a usable
+                valuation layer.
               </p>
             </div>
 
-            <div className="relative my-8 flex items-center justify-center" style={{ height: 340 }}>
+            <div className="relative my-6 flex items-center justify-center" style={{ height: 340 }}>
+              <div className="absolute inset-0 m-auto h-[340px] w-[340px] rounded-full border border-white/[0.04] bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_62%)]" />
               <ProgressRing percentage={coverageScore} size={340} />
               <div className="relative z-10 text-center">
-                <p className="font-['Fraunces'] text-[clamp(5rem,9vw,8rem)] font-extralight leading-[0.9] tracking-[-0.04em] text-white">
+                <p className="font-[family:var(--font-display)] text-[clamp(5rem,9vw,8rem)] font-extralight leading-[0.9] tracking-[-0.06em] text-white">
                   <CountUp target={coverageScore} format="int" />
                   <span className="text-white/40">%</span>
                 </p>
-                <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.4em] text-white/35">
-                  Etalab DVF &middot; Confidence
+                <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.42em] text-[#bfd8ff]/58">
+                  National valuation confidence
                 </p>
               </div>
             </div>
 
-            <div className="relative z-10 grid grid-cols-3 gap-6 border-t border-white/[0.04] pt-6">
+            <div className="relative z-10 grid grid-cols-3 gap-3 border-t border-white/[0.06] pt-6">
               {[
                 { label: "Year Start", value: String(data.coverage.min_year) },
                 { label: "Year End", value: String(data.coverage.max_year) },
                 { label: "Source", value: "Etalab" },
               ].map((m) => (
-                <div key={m.label}>
-                  <p className="mb-1.5 font-mono text-[8px] uppercase tracking-[0.3em] text-white/30">
+                <div
+                  key={m.label}
+                  className="relative overflow-hidden rounded-[24px] border border-white/[0.07] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+                >
+                  <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+                  <p className="mb-1.5 font-mono text-[8px] uppercase tracking-[0.32em] text-white/36">
                     {m.label}
                   </p>
-                  <p className="font-['Fraunces'] text-[20px] font-light text-white/80">
+                  <p className="font-[family:var(--font-display)] text-[20px] font-light text-white/92">
                     {m.value}
                   </p>
                 </div>
@@ -1131,53 +1550,117 @@ function FranceStatsSection() {
             </div>
           </motion.div>
 
-          {[
-            {
-              value: data.coverage.clean_rows,
-              label: "Clean DVF Rows",
-              format: "compact" as const,
-              num: "02",
-            },
-            {
-              value: data.coverage.communes,
-              label: "Commune Markets",
-              format: "int" as const,
-              num: "03",
-            },
-            {
-              value: data.coverage.departments,
-              label: "Departments",
-              format: "int" as const,
-              num: "04",
-            },
-          ].map((stat, i) => (
+          <div className="grid gap-6 lg:col-span-7">
             <motion.div
-              key={stat.num}
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.8, delay: 0.1 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative flex items-center justify-between overflow-hidden bg-[#0a0a0f] p-10 transition-colors duration-700 hover:bg-[#0d0d14] md:p-12 lg:col-span-7"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-[38px] border border-[#88b2ff]/16 bg-[linear-gradient(140deg,rgba(10,13,24,0.98),rgba(12,17,32,0.96))] p-10 md:p-12"
             >
-              <div className="flex items-baseline gap-6 md:gap-10">
-                <p className="font-['Fraunces'] text-[14px] font-light italic text-white/25">
-                  No. {stat.num}
-                </p>
-                <p className="font-['Fraunces'] text-[clamp(2.5rem,5vw,4.5rem)] font-extralight leading-none tracking-[-0.03em] text-white">
-                  <CountUp target={stat.value} format={stat.format} delay={0.1 + i * 0.1} />
-                </p>
-              </div>
-
-              <div className="text-right">
-                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
-                  {stat.label}
-                </p>
-                <div className="relative ml-auto mt-3 h-px w-16 overflow-hidden bg-white/10">
-                  <div className="absolute inset-0 -translate-x-full bg-white/50 transition-transform duration-700 ease-out group-hover:translate-x-0" />
+              <div
+                className="absolute inset-0 opacity-70"
+                style={{
+                  background:
+                    "radial-gradient(circle at 85% 18%, rgba(99, 167, 255, 0.18), transparent 26%), radial-gradient(circle at 82% 80%, rgba(237,241,198,0.08), transparent 22%), linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 100%)",
+                }}
+              />
+              <div className="relative z-10 grid gap-8 xl:grid-cols-[minmax(0,1fr)_440px] xl:items-end">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-[#b8cbff]/72">
+                    Cleaned transaction inventory
+                  </p>
+                  <p className="mt-4 font-[family:var(--font-display)] text-[clamp(4rem,9vw,7.4rem)] font-light leading-[0.88] tracking-[-0.06em] text-white">
+                    <CountUp target={data.coverage.clean_rows} format="compact" delay={0.1} />
+                  </p>
+                  <p className="mt-3 max-w-xl text-[16px] leading-7 text-white/62">
+                    Raw DVF becomes valuable only after cleaning, address normalization and commune-level
+                    market shaping. This is the usable layer behind the France valuation experience.
+                  </p>
+                </div>
+                <div className="grid w-full grid-cols-[1.12fr_0.88fr] gap-3 self-start xl:self-end">
+                  {[
+                    {
+                      label: "Refresh cadence",
+                      value: "Quarterly",
+                      valueClassName:
+                        "text-[15px] leading-[1.02] sm:text-[16px] lg:text-[17px] xl:text-[18px]",
+                    },
+                    {
+                      label: "Coverage span",
+                      value: `${data.coverage.min_year}-${data.coverage.max_year}`,
+                      valueClassName:
+                        "text-[15px] leading-[1.02] sm:text-[16px] lg:text-[17px] xl:text-[18px]",
+                    },
+                  ].map((meta) => (
+                    <div
+                      key={meta.label}
+                      className="relative flex min-h-[148px] min-w-0 flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(6,10,20,0.82),rgba(10,15,28,0.68))] px-5 py-5 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm"
+                    >
+                      <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-[#9fd6ff]/30 to-transparent" />
+                      <div className="absolute -right-10 top-10 h-24 w-24 rounded-full bg-[#7ab7ff]/8 blur-2xl" />
+                      <p className="font-mono text-[8px] uppercase tracking-[0.32em] text-white/36">
+                        {meta.label}
+                      </p>
+                      <p
+                        className={`mt-5 break-keep font-[family:var(--font-display)] text-white/96 ${meta.valueClassName}`}
+                      >
+                        {meta.value}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
-          ))}
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  value: data.coverage.communes,
+                  label: "Commune markets",
+                  note: "Where valuation ranges can be localized and defended.",
+                  accent: "rgba(106,179,255,0.18)",
+                  num: "03",
+                },
+                {
+                  value: data.coverage.departments,
+                  label: "Departments",
+                  note: "Breadth across France before deeper building-level enrichment.",
+                  accent: "rgba(247,196,124,0.14)",
+                  num: "04",
+                },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.num}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-15%" }}
+                  transition={{ duration: 0.8, delay: 0.18 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative overflow-hidden rounded-[36px] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(9,11,18,0.98),rgba(10,12,20,0.95))] p-9 shadow-[0_22px_60px_-30px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.03)]"
+                >
+                  <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                  <div
+                    className="absolute inset-0 opacity-70"
+                    style={{
+                      background: `radial-gradient(circle at 85% 18%, ${stat.accent}, transparent 28%)`,
+                    }}
+                  />
+                  <div className="relative z-10">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.38em] text-white/46">
+                      No. {stat.num}
+                    </p>
+                    <p className="mt-4 font-[family:var(--font-display)] text-[clamp(3rem,6vw,4.8rem)] font-light leading-none tracking-[-0.05em] text-white">
+                      <CountUp target={stat.value} format="int" delay={0.18 + i * 0.1} />
+                    </p>
+                    <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.34em] text-[#bfd0f0]/64">
+                      {stat.label}
+                    </p>
+                    <p className="mt-5 max-w-sm text-[15px] leading-7 text-white/62">{stat.note}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <motion.div
@@ -1185,20 +1668,20 @@ function FranceStatsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="mt-20 flex items-center justify-between"
+          className="mt-16 flex flex-col gap-5 border-t border-white/[0.05] pt-8 md:flex-row md:items-center md:justify-between"
         >
-          <p className="max-w-md font-['Fraunces'] text-[15px] font-light italic leading-relaxed text-white/30">
-            &ldquo;Signal over noise. Every figure is sourced from official DVF
-            transactions published by etalab.gouv.fr.&rdquo;
+          <p className="max-w-2xl font-[family:var(--font-display)] text-[18px] font-light italic leading-relaxed text-white/44">
+            &ldquo;Signal over noise. France should feel like a market you can underwrite, not just admire.&rdquo;
           </p>
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-              Refreshed
-            </span>
-            <div className="h-1 w-1 rounded-full bg-white/40" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">
-              Quarterly
-            </span>
+          <div className="flex flex-wrap items-center gap-3">
+            {["Quarterly refresh", "Etalab backbone", "France-first underwriting"].map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.26em] text-white/46"
+              >
+                {item}
+              </span>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -1207,25 +1690,67 @@ function FranceStatsSection() {
 }
 
 function FranceExperience() {
+  const market = useFranceMarket();
   const [propertyType, setPropertyType] = useState<PropertyType>("Appartement");
-  const [commune, setCommune] = useState("Paris 15");
   const [area, setArea] = useState(62);
   const [rooms, setRooms] = useState(3);
 
-  const communeOptions = communeRows
-    .filter((row) => row.property_type === propertyType)
-    .slice(0, 900);
+  const commune = market?.addressLabel ?? "";
+  const setCommune = (val: string) => market?.setAddressLabel(val);
+  const inseeCode = market?.inseeCode ?? null;
+  const dpeClass = market?.dpeClass ?? ("D" as DpeClass);
+  const dpeLookup = market?.dpeLookup ?? null;
+  const dpeLookupLoading = market?.dpeLookupLoading ?? false;
+  const dpeUserOverride = market?.dpeUserOverride ?? false;
 
-  const selectedRecord =
-    communeRows.find((row) => row.commune === commune && row.property_type === propertyType) ??
-    communeOptions[0];
+  // Compute the DVF record using the address fields from context + this section's
+  // current propertyType (the provider's matchedRecord uses Appartement only).
+  const normalize = (s: string) => {
+    let n = s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    n = n
+      .replace(/(\d+)(?:er|e|eme|ème)?\s*arrondissement/g, "$1")
+      .replace(/(\d+)(?:er|e|eme|ème)\b/g, "$1");
+    return n;
+  };
+
+  const addressMatch = (() => {
+    if (inseeCode) {
+      const found = communeRows.find(
+        (row) =>
+          row.property_type === propertyType &&
+          dvfFullInseeCode(row.department_code, row.commune_code) === inseeCode,
+      );
+      if (found) return found;
+    }
+    const target = normalize(commune);
+    return communeRows.find(
+      (row) => row.property_type === propertyType && normalize(row.commune) === target,
+    );
+  })();
+
+  const selectedRecord = addressMatch;
+
+  const handleAddressPick = (addr: AddressSuggestion) => {
+    market?.selectAddress(addr);
+  };
+
+  const handleDpeChange = (cls: DpeClass) => {
+    market?.setDpeClass(cls);
+  };
 
   return (
     <main className="min-h-screen bg-[#05060a] text-white">
+      <CursorGlow />
       <FranceNavBar />
       <HeroSection />
       <FranceStatsSection />
       <FranceDataMoatSection />
+      <FranceCommercialProductSection />
       <ValuationSection
         propertyType={propertyType}
         setPropertyType={setPropertyType}
@@ -1235,26 +1760,62 @@ function FranceExperience() {
         setArea={setArea}
         rooms={rooms}
         setRooms={setRooms}
+        dpeClass={dpeClass}
+        setDpeClass={handleDpeChange}
         selectedRecord={selectedRecord}
-        communeOptions={communeOptions}
+        addressMatch={addressMatch}
+        onSelectAddress={handleAddressPick}
+        dpeLookup={dpeLookup}
+        dpeLookupLoading={dpeLookupLoading}
+        dpeUserOverride={dpeUserOverride}
+        postcode={market?.postcode ?? null}
       />
+      <SectionDivider variant="ornament" />
       <FranceMapSection />
+      <SectionDivider variant="chapter" chapter="Chapter V" label="Opportunity radar" />
       <FranceRadarSection />
+      <SectionDivider variant="chapter" chapter="Chapter VI" label="Investment intelligence" />
       <FranceInvestmentSection />
-      <RenovationSection />
+      <SectionDivider variant="chapter" chapter="Chapter VII" label="Renovation studio" />
+      <FranceReformaSection />
+      <DvfLiveTicker />
       <footer className="border-t border-white/10 bg-[#05060a] px-6 py-12 md:px-10">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 md:flex-row md:items-center">
-          <FonatPropLogo variant="nav" className="h-12 w-[190px] opacity-80" />
-          <p className="max-w-xl text-sm leading-7 text-white/42">
-            France beta is powered by official DVF transaction processing. Dubai remains the
-            production market; France is prepared as a separate country surface.
-          </p>
-          <Link
-            href="/"
-            className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-200/70 transition hover:text-white"
-          >
-            Back to markets
-          </Link>
+        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-center">
+          <div>
+            <FonatPropLogo variant="nav" className="mb-5 h-12 w-[190px] opacity-80" />
+            <p className="max-w-xl text-sm leading-7 text-white/42">
+              France is a commercial beta powered by official DVF transaction processing,
+              DPE context, rent regulation checks and renovation economics. Dubai remains live;
+              France is a separate market surface with its own compliance logic.
+            </p>
+            <Link
+              href="/"
+              className="mt-5 inline-flex font-mono text-[10px] uppercase tracking-[0.3em] text-blue-200/70 transition hover:text-white"
+            >
+              Back to markets
+            </Link>
+          </div>
+          <div className="rounded-[26px] border border-white/10 bg-white/[0.035] p-5 md:min-w-[360px]">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-white/30">
+              Contact
+            </p>
+            <div className="flex flex-col gap-3">
+              <a
+                href={FONATPROP_CONTACT.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[12px] text-white/62 transition hover:text-white"
+              >
+                WhatsApp {FONATPROP_CONTACT.whatsappDisplay}
+              </a>
+              <a
+                href={FONATPROP_CONTACT.emailHref}
+                className="font-mono text-[12px] text-white/62 transition hover:text-white"
+              >
+                {FONATPROP_CONTACT.email}
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
       <FranceChatWidget />
@@ -1265,7 +1826,9 @@ function FranceExperience() {
 export default function FranceMarketClient() {
   return (
     <GoogleMapsLoader>
-      <FranceExperience />
+      <FranceMarketProvider communeRows={communeRows} propertyType="Appartement">
+        <FranceExperience />
+      </FranceMarketProvider>
     </GoogleMapsLoader>
   );
 }

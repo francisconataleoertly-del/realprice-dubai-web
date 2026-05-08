@@ -19,6 +19,10 @@ OUT_DESKTOP = Path.home() / "OneDrive" / "Desktop" / "FonatProp_Broker_Deck_PREM
 OUT_DOWNLOADS = Path.home() / "Downloads" / "FonatProp_Broker_Deck_PREMIUM.pptx"
 OUT_DATA_LAKE = Path.home() / "FonatProp_Data_Lake" / "05_decks" / "FonatProp_Broker_Deck_PREMIUM.pptx"
 DEMO_URL = "https://fonatprop.com/broker-demo"
+CONTACT_PHONE_DISPLAY = "+54 9 11 2640-9578"
+CONTACT_WHATSAPP_URL = "https://wa.me/5491126409578"
+CONTACT_EMAIL = "fonatprop@gmail.com"
+CONTACT_EMAIL_URL = f"mailto:{CONTACT_EMAIL}"
 DECK_MEDIA = ROOT / "public" / "deck-media"
 
 W, H = 1920, 1080
@@ -32,49 +36,56 @@ BG_IMAGES = [
     ROOT / "public" / "dubai-slides" / "07-marina-aerial.jpg",
     ROOT / "public" / "dubai-slides" / "03-burj-al-arab.jpg",
     ROOT / "public" / "dubai-slides" / "05-downtown-night.jpg",
+    ROOT / "public" / "dubai-slides" / "06-sunset-silhouette.jpg",
 ]
 
 LOGO = ROOT / "public" / "brand" / "fonatprop-logo-lockup-transparent.webp"
 MARK = ROOT / "public" / "brand" / "fonatprop-final-icon.png"
 QR = ROOT / "public" / "brand" / "broker-demo-qr.png"
+FOUNDER_PHOTO = Path(
+    r"C:\Users\franc\Downloads\WhatsApp Image 2026-05-03 at 20.41.22.jpeg"
+)
 VALUATION_VIDEO = Path(
-    r"C:\Users\franc\Videos\Captures\FonatProp Broker Demo _ Valuation + Widget - Google Chrome 2026-04-29 20-29-25.mp4"
+    r"C:\Users\franc\Videos\Captures\FonatProp Broker Demo _ Valuation + Widget - Google Chrome 2026-04-29 20-28-19.mp4"
 )
 WIDGET_VIDEO = Path(
-    r"C:\Users\franc\Videos\Captures\FonatProp Broker Demo _ Valuation + Widget - Google Chrome 2026-04-29 20-28-19.mp4"
+    r"C:\Users\franc\Videos\Captures\FonatProp Broker Demo _ Valuation + Widget - Google Chrome 2026-04-29 20-29-25.mp4"
 )
 VALUATION_POSTER = DECK_MEDIA / "valuation-poster.png"
 WIDGET_POSTER = DECK_MEDIA / "widget-poster.png"
 
-WHITE = (248, 250, 252)
-SOFT = (194, 201, 216)
-MUTED = (134, 145, 166)
-BLUE = (82, 152, 255)
-CYAN = (112, 202, 255)
+WHITE = (247, 249, 255)
+SOFT = (201, 208, 226)
+MUTED = (139, 150, 176)
+BLUE = (92, 132, 255)
+CYAN = (83, 223, 255)
+VIOLET = (143, 92, 255)
+MINT = (88, 247, 205)
 GOLD = (235, 196, 105)
-CARD = (8, 13, 25, 215)
-CARD2 = (9, 15, 29, 232)
+CARD = (7, 10, 23, 222)
+CARD2 = (10, 14, 30, 238)
 INK = (3, 5, 10)
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
     candidates = {
         "serif": [
-            "C:/Windows/Fonts/georgiab.ttf",
-            "C:/Windows/Fonts/georgia.ttf",
-            "C:/Windows/Fonts/timesbd.ttf",
+            "C:/Windows/Fonts/bahnschrift.ttf",
+            "C:/Windows/Fonts/segoeuib.ttf",
+            "C:/Windows/Fonts/arialbd.ttf",
         ],
         "serif_i": [
-            "C:/Windows/Fonts/georgiai.ttf",
-            "C:/Windows/Fonts/georgia.ttf",
+            "C:/Windows/Fonts/segoeuisl.ttf",
+            "C:/Windows/Fonts/segoeuii.ttf",
+            "C:/Windows/Fonts/segoeuil.ttf",
         ],
         "sans": [
-            "C:/Windows/Fonts/aptos.ttf",
             "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/aptos.ttf",
             "C:/Windows/Fonts/arial.ttf",
         ],
         "sans_b": [
-            "C:/Windows/Fonts/aptosbd.ttf",
+            "C:/Windows/Fonts/bahnschrift.ttf",
             "C:/Windows/Fonts/segoeuib.ttf",
             "C:/Windows/Fonts/arialbd.ttf",
         ],
@@ -101,10 +112,14 @@ SANS_24 = font("sans", 24)
 SANS_22 = font("sans", 22)
 SANS_20 = font("sans", 20)
 SANS_18 = font("sans", 18)
+SANS_64 = font("sans", 64)
+SANS_52 = font("sans", 52)
 SANS_B_34 = font("sans_b", 34)
 SANS_B_28 = font("sans_b", 28)
 SANS_B_22 = font("sans_b", 22)
 SANS_B_18 = font("sans_b", 18)
+SANS_B_74 = font("sans_b", 74)
+SANS_B_56 = font("sans_b", 56)
 MONO_18 = font("mono", 18)
 MONO_15 = font("mono", 15)
 
@@ -121,28 +136,75 @@ def cover_image(path: Path) -> Image.Image:
 
 def premium_bg(path: Path, dark: int = 88) -> Image.Image:
     img = cover_image(path)
-    img = ImageEnhance.Brightness(img).enhance(1.0)
-    img = ImageEnhance.Contrast(img).enhance(1.08)
-    overlay = Image.new("RGBA", (W, H), (0, 0, 0, max(48, dark - 22)))
+    img = ImageEnhance.Brightness(img).enhance(0.96)
+    img = ImageEnhance.Contrast(img).enhance(1.14)
+    overlay = Image.new("RGBA", (W, H), (3, 5, 12, max(56, dark - 14)))
     img = Image.alpha_composite(img.convert("RGBA"), overlay)
 
-    # Organic left-side readability glow instead of a dark rectangle.
     left_glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     lg = ImageDraw.Draw(left_glow)
-    lg.ellipse((-260, 40, 1180, 1260), fill=(2, 5, 12, 118))
-    left_glow = left_glow.filter(ImageFilter.GaussianBlur(80))
+    lg.ellipse((-320, 10, 1120, 1180), fill=(16, 26, 62, 132))
+    lg.ellipse((1140, -120, 2140, 620), fill=(10, 82, 124, 78))
+    lg.polygon([(0, 760), (640, 340), (1580, 820), (1080, 1080), (0, 1080)], fill=(18, 17, 56, 54))
+    left_glow = left_glow.filter(ImageFilter.GaussianBlur(92))
     img = Image.alpha_composite(img, left_glow)
 
-    # Soft cinematic top/bottom shaping.
     atmosphere = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ad = ImageDraw.Draw(atmosphere)
-    ad.ellipse((980, -180, 2120, 620), fill=(24, 74, 122, 44))
-    ad.rectangle((0, 0, W, 180), fill=(0, 0, 0, 26))
-    ad.rectangle((0, H - 180, W, H), fill=(0, 0, 0, 56))
-    atmosphere = atmosphere.filter(ImageFilter.GaussianBlur(70))
+    ad.ellipse((1000, -120, 2180, 720), fill=(40, 82, 255, 42))
+    ad.ellipse((1300, 420, 2200, 1160), fill=(98, 69, 255, 34))
+    ad.rectangle((0, 0, W, 170), fill=(0, 0, 0, 24))
+    ad.rectangle((0, H - 180, W, H), fill=(0, 0, 0, 62))
+    atmosphere = atmosphere.filter(ImageFilter.GaussianBlur(76))
     img = Image.alpha_composite(img, atmosphere)
 
+    mesh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    md = ImageDraw.Draw(mesh, "RGBA")
+    for x in range(0, W, 120):
+        md.line((x, 0, x, H), fill=(255, 255, 255, 8), width=1)
+    for y in range(0, H, 108):
+        md.line((0, y, W, y), fill=(255, 255, 255, 6), width=1)
+    for x in range(120, W, 240):
+        for y in range(96, H, 216):
+            md.ellipse((x - 2, y - 2, x + 2, y + 2), fill=(88, 247, 205, 20))
+    mesh = mesh.filter(ImageFilter.GaussianBlur(0.4))
+    img = Image.alpha_composite(img, mesh)
+
+    draw_cinematic_lights(img)
     return img
+
+
+def draw_cinematic_lights(canvas: Image.Image, *, intensity: float = 1.0) -> None:
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer, "RGBA")
+    alpha = int(54 * intensity)
+    d.ellipse((1080, 0, 2200, 760), fill=(54, 145, 255, alpha))
+    d.ellipse((1180, 360, 2140, 1120), fill=(120, 77, 255, int(30 * intensity)))
+    d.ellipse((-260, 680, 880, 1320), fill=(29, 230, 204, int(20 * intensity)))
+    d.line((112, 156, 820, 82), fill=(83, 223, 255, int(44 * intensity)), width=4)
+    d.line((1080, 984, 1850, 804), fill=(143, 92, 255, int(38 * intensity)), width=4)
+    layer = layer.filter(ImageFilter.GaussianBlur(38))
+    canvas.alpha_composite(layer)
+
+
+def gloss_frame(draw: ImageDraw.ImageDraw, margin: int = 54) -> None:
+    draw.rounded_rectangle(
+        (margin, margin, W - margin, H - margin),
+        radius=24,
+        outline=(255, 255, 255, 20),
+        width=2,
+    )
+    draw.line((margin + 34, margin, margin + 420, margin), fill=(83, 223, 255, 118), width=4)
+    draw.line((W - margin - 460, H - margin, W - margin - 34, H - margin), fill=(143, 92, 255, 110), width=4)
+    draw.line((W - margin, margin + 90, W - margin, margin + 320), fill=(88, 247, 205, 70), width=3)
+
+
+def light_chip(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], text: str, accent=CYAN) -> None:
+    x1, y1, x2, y2 = box
+    draw.rounded_rectangle((x1, y1, x2, y2), radius=18, fill=(8, 14, 30, 208), outline=accent, width=2)
+    draw.rounded_rectangle((x1 + 14, y1 + 12, x1 + 28, y1 + 26), radius=7, fill=accent)
+    draw.line((x1 + 48, y1 + 18, x2 - 18, y1 + 18), fill=accent, width=2)
+    draw.text((x1 + 48, y1 + 26), text.upper(), font=MONO_15, fill=WHITE)
 
 
 def paste_logo(canvas: Image.Image, xy: tuple[int, int] = (92, 70), width: int = 214) -> None:
@@ -153,6 +215,73 @@ def paste_logo(canvas: Image.Image, xy: tuple[int, int] = (92, 70), width: int =
     ratio = width / logo.width
     logo = logo.resize((width, int(logo.height * ratio)), Image.Resampling.LANCZOS)
     canvas.alpha_composite(logo, xy)
+
+
+def cover_crop(path: Path, size: tuple[int, int]) -> Image.Image | None:
+    if not path.exists():
+        return None
+    img = Image.open(path).convert("RGB")
+    target_w, target_h = size
+    ratio = max(target_w / img.width, target_h / img.height)
+    img = img.resize((int(img.width * ratio), int(img.height * ratio)), Image.Resampling.LANCZOS)
+    left = max(0, (img.width - target_w) // 2)
+    top = max(0, (img.height - target_h) // 2)
+    return img.crop((left, top, left + target_w, top + target_h))
+
+
+def draw_city_horizon(
+    canvas: Image.Image,
+    *,
+    left: int = 0,
+    right: int = W,
+    base_y: int = H - 38,
+    opacity: int = 44,
+) -> None:
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer, "RGBA")
+    widths = [34, 42, 26, 58, 38, 46, 32, 66, 28, 52, 36]
+    heights = [84, 132, 98, 178, 122, 156, 110, 214, 92, 164, 118]
+    x = left - 18
+    index = 0
+    while x < right + 40:
+        width = widths[index % len(widths)]
+        height = heights[index % len(heights)]
+        top = base_y - height
+        fill = (10, 16, 30, opacity + (index % 4) * 6)
+        d.rounded_rectangle((x, top, x + width, base_y), radius=6, fill=fill)
+        if index % 2 == 0:
+            d.line((x + 6, top + 18, x + width - 6, top + 18), fill=(99, 199, 255, 18), width=2)
+        if index % 3 == 0:
+            d.line((x + 8, top + 34, x + width - 8, top + 34), fill=(143, 92, 255, 14), width=2)
+        if width > 40:
+            d.rectangle((x + width // 2 - 2, top - 18, x + width // 2 + 2, top), fill=(99, 199, 255, 42))
+            d.ellipse((x + width // 2 - 6, top - 24, x + width // 2 + 6, top - 12), fill=(99, 199, 255, 60))
+        x += width - 5
+        index += 1
+
+    d.rectangle((left, base_y, right, base_y + 5), fill=(247, 249, 255, 18))
+    haze = layer.filter(ImageFilter.GaussianBlur(1.3))
+    canvas.alpha_composite(haze)
+
+
+def portrait_card(canvas: Image.Image, box: tuple[int, int, int, int], path: Path) -> None:
+    x1, y1, x2, y2 = box
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    d.rounded_rectangle(box, radius=34, fill=(8, 13, 25, 228), outline=(85, 116, 175), width=3)
+    photo = cover_crop(path, (x2 - x1 - 28, y2 - y1 - 28))
+    if photo is None:
+        return
+    photo = photo.convert("RGBA")
+    mask = Image.new("L", photo.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, photo.size[0], photo.size[1]), radius=26, fill=255)
+    photo.putalpha(mask)
+    glow = Image.new("RGBA", photo.size, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    gd.rounded_rectangle((0, 0, photo.size[0], photo.size[1]), radius=26, outline=(255, 255, 255, 34), width=2)
+    photo.alpha_composite(glow)
+    canvas.alpha_composite(layer)
+    canvas.alpha_composite(photo, (x1 + 14, y1 + 14))
 
 
 def draw_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, fnt, fill=WHITE, spacing=8) -> None:
@@ -193,7 +322,8 @@ def dheight(fnt) -> int:
 
 def label(draw: ImageDraw.ImageDraw, text: str, x: int, y: int, fill=CYAN) -> None:
     draw.text((x, y), text.upper(), font=MONO_18, fill=fill)
-    draw.rounded_rectangle((x, y + 34, x + 132, y + 39), radius=2, fill=fill)
+    draw.rounded_rectangle((x, y + 34, x + 168, y + 40), radius=3, fill=fill)
+    draw.ellipse((x + 176, y + 31, x + 188, y + 43), fill=fill)
 
 
 def footer(draw: ImageDraw.ImageDraw, idx: int) -> None:
@@ -201,7 +331,10 @@ def footer(draw: ImageDraw.ImageDraw, idx: int) -> None:
 
 
 def rounded_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], fill=CARD, outline=(57, 83, 130), width=2, radius=28) -> None:
+    shadow = (box[0], box[1] + 12, box[2], box[3] + 12)
+    draw.rounded_rectangle(shadow, radius=radius, fill=(0, 0, 0, 34))
     draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
+    draw.line((box[0] + 28, box[1] + 18, box[2] - 28, box[1] + 18), fill=(255, 255, 255, 20), width=2)
 
 
 def video_placeholder(
@@ -212,13 +345,14 @@ def video_placeholder(
     accent,
     subtitle: str = "Embedded product video. Click to play in PowerPoint.",
 ) -> None:
-    rounded_card(draw, box, fill=(8, 13, 25, 234), outline=accent, width=3, radius=34)
+    rounded_card(draw, box, fill=(7, 11, 24, 238), outline=accent, width=3, radius=34)
     x1, y1, x2, y2 = box
     draw.text((x1 + 28, y1 + 24), tag.upper(), font=MONO_15, fill=accent)
-    draw.text((x1 + 28, y1 + 62), title_text, font=SANS_B_28, fill=WHITE)
+    draw.text((x1 + 28, y1 + 58), title_text, font=SANS_B_28, fill=WHITE)
     draw.text((x1 + 28, y2 - 46), subtitle, font=SANS_18, fill=SOFT)
     inner = (x1 + 28, y1 + 110, x2 - 28, y2 - 66)
-    draw.rounded_rectangle(inner, radius=24, fill=(16, 22, 38, 180), outline=(72, 100, 156), width=2)
+    draw.rounded_rectangle(inner, radius=24, fill=(13, 21, 40, 192), outline=(72, 100, 156), width=2)
+    draw.line((inner[0] + 24, inner[1] + 18, inner[2] - 24, inner[1] + 18), fill=accent, width=2)
     cx = (inner[0] + inner[2]) // 2
     cy = (inner[1] + inner[3]) // 2
     draw.ellipse((cx - 44, cy - 44, cx + 44, cy + 44), fill=(248, 250, 252, 230))
@@ -245,10 +379,10 @@ def copy_block(
 
 
 def metric(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], value: str, cap: str) -> None:
-    rounded_card(draw, box, fill=(8, 13, 25, 190), outline=(65, 101, 166), radius=20)
+    rounded_card(draw, box, fill=(8, 12, 26, 198), outline=(69, 104, 188), radius=20)
     x1, y1, x2, _ = box
-    draw.text((x1 + 24, y1 + 18), value, font=SERIF_56, fill=WHITE)
-    draw.text((x1 + 24, y1 + 92), cap.upper(), font=MONO_15, fill=MUTED)
+    draw.text((x1 + 24, y1 + 22), value, font=SANS_B_34, fill=WHITE)
+    draw.text((x1 + 24, y1 + 84), cap.upper(), font=MONO_15, fill=MUTED)
 
 
 def bullet_panel(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], title_text: str, bullets: list[str]) -> None:
@@ -301,6 +435,7 @@ def pricing_card(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], name
 def slide_1() -> Image.Image:
     img = premium_bg(BG_IMAGES[0], 80)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img, (92, 72), 230)
     label(draw, "Dubai brokerages", 96, 210)
     draw.text((96, 282), "AI valuation.", font=SERIF_88, fill=WHITE)
@@ -308,7 +443,7 @@ def slide_1() -> Image.Image:
     copy_block(
         draw,
         (96, 512, 1040, 694),
-        "FonatProp gives brokerages a private AI valuation workflow and a public website widget. The model is backed by 234K+ real Dubai transactions.",
+        "Private AI valuations. Public lead capture. Backed by 234K+ real Dubai transactions.",
         body_font=SANS_28,
         fill=(8, 13, 25, 168),
         outline=(61, 92, 144),
@@ -319,6 +454,7 @@ def slide_1() -> Image.Image:
     metric(draw, (100, 758, 368, 904), "234K+", "real transactions")
     metric(draw, (408, 758, 676, 904), "AI", "valuation model")
     metric(draw, (716, 758, 984, 904), "Widget", "lead capture")
+    light_chip(draw, (1188, 806, 1628, 864), "Official evidence + AI workflow", CYAN)
     footer(draw, 1)
     return img
 
@@ -326,45 +462,64 @@ def slide_1() -> Image.Image:
 def slide_2() -> Image.Image:
     img = premium_bg(BG_IMAGES[1], 74)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img)
     label(draw, "Founders", 96, 184)
-    draw.text((96, 262), "Who builds FonatProp.", font=SERIF_78, fill=WHITE)
-    draw.text((96, 350), "Real operators.", font=SERIF_I_58, fill=SOFT)
-    copy_block(
-        draw,
-        (96, 470, 1010, 656),
-        "FonatProp is led by Francisco, a professional footballer who completed secondary school at Sagrado Corazon and is now in his 4th year at UAI. The product is being built by a young team already working around real estate and focused on applying AI to brokerage workflows.",
-        body_font=SANS_28,
-        fill=(8, 13, 25, 168),
-        outline=(61, 92, 144),
-        pad_x=32,
-        pad_y=28,
-        line_gap=12,
-    )
-    rounded_card(draw, (96, 720, 760, 962), fill=CARD2, outline=BLUE, radius=24, width=3)
-    draw.text((130, 752), "FOUNDER PROFILE", font=MONO_15, fill=BLUE)
-    draw.text((130, 800), "Personal profile", font=SANS_B_34, fill=WHITE)
+    draw.text((96, 250), "Who builds FonatProp.", font=SANS_B_74, fill=WHITE)
+    draw.text((96, 348), "Real operators.", font=SANS_52, fill=SOFT)
     paragraph(
         draw,
-        "Professional footballer. Secondary school at Sagrado Corazon. UAI, 4th year. Building product and market knowledge in parallel.",
-        130,
-        872,
-        560,
+        "A young team building AI real estate tools, live in Dubai and expanding into France.",
+        96,
+        446,
+        760,
+        SANS_28,
+        SOFT,
+        10,
+    )
+
+    rounded_card(draw, (1116, 214, 1812, 444), fill=(8, 13, 25, 214), outline=(73, 108, 171), radius=34, width=3)
+    draw.text((1160, 254), "WHY TRUST MATTERS", font=MONO_18, fill=CYAN)
+    paragraph(
+        draw,
+        "Agencies should know who is behind the platform they buy. FonatProp is being built by real operators, with product live in Dubai and France already in build.",
+        1160,
+        312,
+        596,
         SANS_24,
         SOFT,
-        8,
+        9,
     )
-    bullet_panel(
-        draw,
-        (1096, 206, 1812, 890),
-        "Why this matters",
-        [
-            "Agencies should know who is behind the platform they buy.",
-            "FonatProp is being built by a young team working across real estate and AI.",
-            "Dubai is live today: private AI valuations plus public lead capture.",
-            "France is already in build as the next portal inside the same product.",
-        ],
-    )
+
+    portrait_card(img, (96, 590, 362, 964), FOUNDER_PHOTO)
+
+    rounded_card(draw, (392, 590, 1090, 964), fill=(8, 13, 25, 228), outline=(73, 108, 171), radius=34, width=3)
+    draw.text((440, 636), "FOUNDER PROFILE", font=MONO_18, fill=CYAN)
+    draw.text((440, 692), "Francisco Natale Oertly / Founder", font=SANS_B_34, fill=WHITE)
+    founder_lines = [
+        "22 years old / Professional footballer",
+        "Sagrado Corazon / High school",
+        "UAI University / 4th year",
+        "Building AI real estate tools with a young operating team",
+    ]
+    y = 766
+    for item in founder_lines:
+        draw.ellipse((444, y + 8, 456, y + 20), fill=CYAN)
+        draw.text((480, y), item, font=SANS_22, fill=SOFT)
+        y += 42
+
+    milestone_cards = [
+        ("01 / Team", "Young operators", "Built by a small team focused on real estate execution, not generic agency work.", CYAN),
+        ("02 / Dubai", "Live product", "Dubai already combines AI valuation, lead capture and a broker workflow.", GOLD),
+        ("03 / France", "Second market", "France is already in build as the next FonatProp market surface.", VIOLET),
+    ]
+    x = 1120
+    for label_text, title_text, copy, accent in milestone_cards:
+        rounded_card(draw, (x, 520, x + 212, 964), fill=(8, 13, 25, 228), outline=accent, radius=28, width=3)
+        draw.text((x + 22, 554), label_text.upper(), font=MONO_15, fill=accent)
+        draw.text((x + 22, 608), title_text, font=SANS_B_22, fill=WHITE)
+        paragraph(draw, copy, x + 22, 654, 168, SANS_20, SOFT, 6)
+        x += 232
     footer(draw, 2)
     return img
 
@@ -372,6 +527,7 @@ def slide_2() -> Image.Image:
 def slide_3() -> Image.Image:
     img = premium_bg(BG_IMAGES[1], 72)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img)
     label(draw, "Pain", 96, 214)
     draw.text((96, 292), "Slow valuations.", font=SERIF_88, fill=WHITE)
@@ -379,7 +535,7 @@ def slide_3() -> Image.Image:
     copy_block(
         draw,
         (96, 532, 988, 712),
-        "Many brokerages still value homes through broker opinion, manual comps and long back-and-forth. At the same time, website visitors leave before they share their details.",
+        "Many brokerages still rely on opinion, manual comps and slow follow-up. Website traffic leaves without converting.",
         body_font=SANS_28,
         fill=(8, 13, 25, 166),
         outline=(61, 92, 144),
@@ -390,14 +546,15 @@ def slide_3() -> Image.Image:
     bullet_panel(
         draw,
         (1190, 226, 1800, 762),
-        "What breaks",
+        "Brokerage pain",
         [
-            "Valuations depend on broker opinion more than hard evidence.",
-            "Teams spend too much time pricing one property.",
-            "Owners want a value view before a meeting or call.",
-            "Website traffic does not convert into qualified leads.",
+            "Slow pricing decisions",
+            "Subjective broker opinions",
+            "Anonymous website traffic",
+            "Late follow-up",
         ],
     )
+    light_chip(draw, (1190, 810, 1704, 868), "Problem: value + conversion speed", GOLD)
     footer(draw, 3)
     return img
 
@@ -405,6 +562,7 @@ def slide_3() -> Image.Image:
 def slide_4() -> Image.Image:
     img = premium_bg(BG_IMAGES[2], 76)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img)
     label(draw, "Private AI", 96, 214)
     draw.text((96, 292), "Fast valuations.", font=SERIF_88, fill=WHITE)
@@ -412,7 +570,7 @@ def slide_4() -> Image.Image:
     copy_block(
         draw,
         (96, 540, 860, 724),
-        "The broker workflow starts with the address, infers property context and returns guided pricing backed by 234K+ real Dubai transactions, not broker opinion alone.",
+        "Address in. AI range out. Guided by real Dubai transaction evidence and broker review logic.",
         body_font=SANS_28,
         fill=(8, 13, 25, 168),
         outline=(61, 92, 144),
@@ -426,7 +584,7 @@ def slide_4() -> Image.Image:
         "Private AI workflow",
         "AI valuation demo",
         BLUE,
-        subtitle="Embedded product video. Click to play in PowerPoint.",
+        subtitle="Click to play in PowerPoint.",
     )
     footer(draw, 4)
     return img
@@ -435,14 +593,15 @@ def slide_4() -> Image.Image:
 def slide_5() -> Image.Image:
     img = premium_bg(BG_IMAGES[3], 76)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img)
     label(draw, "Public AI", 96, 214)
     draw.text((96, 292), "Website widget.", font=SERIF_88, fill=WHITE)
-    draw.text((96, 392), "Broad AI range.", font=SERIF_I_76, fill=SOFT)
+    draw.text((96, 392), "Lead first.", font=SERIF_I_76, fill=SOFT)
     copy_block(
         draw,
         (96, 540, 860, 724),
-        "The website widget captures the lead first, then shows a broad AI valuation range. The agency keeps the contact data and the client gets a premium first experience.",
+        "Capture contact details first. Show a broad AI range second. Keep the final follow-up inside the agency.",
         body_font=SANS_28,
         fill=(8, 13, 25, 168),
         outline=(61, 92, 144),
@@ -456,7 +615,7 @@ def slide_5() -> Image.Image:
         "Public AI workflow",
         "Widget demo",
         GOLD,
-        subtitle="Embedded product video. Click to play in PowerPoint.",
+        subtitle="Click to play in PowerPoint.",
     )
     footer(draw, 5)
     return img
@@ -465,10 +624,23 @@ def slide_5() -> Image.Image:
 def slide_6() -> Image.Image:
     img = premium_bg(BG_IMAGES[4], 70)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img, (92, 64), 206)
     label(draw, "Plans", 96, 156, GOLD)
-    draw.text((96, 232), "Simple pricing", font=SERIF_78, fill=WHITE)
-    draw.text((96, 320), "For one brokerage.", font=SERIF_I_58, fill=SOFT)
+    draw.text((96, 232), "Simple pricing.", font=SERIF_78, fill=WHITE)
+    draw.text((96, 320), "Easy to buy.", font=SERIF_I_58, fill=SOFT)
+    top_cards = [
+        ("Widget", "Fixed monthly fee", "Lead capture"),
+        ("Valuation", "1 search = 1 token", "Private AI usage"),
+        ("Top-up", "Extra credits on request", "Buy more or upgrade"),
+    ]
+    x = 930
+    for title_text, detail, sub in top_cards:
+        rounded_card(draw, (x, 228, x + 266, 340), fill=(11, 18, 33, 226), outline=(62, 94, 153), radius=22)
+        draw.text((x + 18, 250), title_text.upper(), font=MONO_15, fill=CYAN)
+        draw.text((x + 18, 284), detail, font=SANS_B_18, fill=WHITE)
+        draw.text((x + 18, 314), sub, font=SANS_18, fill=SOFT)
+        x += 286
 
     rounded_card(draw, (96, 408, 520, 932), fill=(8, 13, 25, 236), outline=GOLD, width=4, radius=38)
     draw.rounded_rectangle((128, 446, 266, 482), radius=10, fill=GOLD)
@@ -476,7 +648,7 @@ def slide_6() -> Image.Image:
     draw.text((128, 532), "Lead capture", font=SANS_B_34, fill=WHITE)
     draw.text((128, 598), "AED 1,099", font=SERIF_66, fill=WHITE)
     draw.text((132, 668), "$299 / month", font=SANS_24, fill=SOFT)
-    paragraph(draw, "Public website widget for one brokerage site.", 128, 734, 330, SANS_20, SOFT, 6)
+    paragraph(draw, "One website. One widget. One monthly fee.", 128, 734, 330, SANS_20, SOFT, 6)
     rounded_card(draw, (128, 826, 488, 892), fill=(11, 18, 33, 236), outline=(88, 115, 171), radius=18)
     draw.text((154, 848), "Single-site license", font=SANS_B_18, fill=WHITE)
     draw.text((358, 848), "Live", font=MONO_15, fill=GOLD)
@@ -484,9 +656,9 @@ def slide_6() -> Image.Image:
     plans_box = (580, 392, 1812, 940)
     rounded_card(draw, plans_box, fill=(8, 13, 25, 238), outline=(62, 94, 153), width=3, radius=38)
     draw.text((628, 432), "AI valuation plans", font=SANS_B_34, fill=WHITE)
-    draw.text((628, 478), "Monthly access for agents and brokerage teams.", font=SANS_22, fill=SOFT)
-    draw.text((1450, 444), "From AED 1,465", font=SANS_B_22, fill=WHITE)
-    draw.text((1450, 476), "Starts at 10 valuations / month", font=SANS_18, fill=SOFT)
+    draw.text((628, 478), "Monthly AI access for brokerage teams.", font=SANS_22, fill=SOFT)
+    draw.text((1382, 444), "10 valuations / AED 1,465", font=SANS_B_22, fill=WHITE)
+    draw.text((1412, 476), "Scales up to 200 valuations", font=SANS_18, fill=SOFT)
 
     rows = [
         ("10 valuations / month", "AED 1,465", "$399 / mo", False),
@@ -514,7 +686,8 @@ def slide_6() -> Image.Image:
         draw.text((1464 - aed_w / 2, y + 12), aed, font=SANS_B_28, fill=WHITE)
         draw.text((1662 - usd_w / 2, y + 20), usd, font=SANS_20, fill=SOFT)
         y += 72
-    draw.text((628, 900), "Extra credits and custom bundles available on request.", font=SANS_18, fill=SOFT)
+
+    draw.text((628, 900), "Extra credits, custom bundles and enterprise setup on request.", font=SANS_18, fill=SOFT)
     footer(draw, 6)
     return img
 
@@ -522,14 +695,61 @@ def slide_6() -> Image.Image:
 def slide_7() -> Image.Image:
     img = premium_bg(BG_IMAGES[5], 74)
     draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
+    paste_logo(img)
+    label(draw, "Commercial ROI", 96, 190, GOLD)
+    draw.text((96, 268), "One mandate", font=SERIF_88, fill=WHITE)
+    draw.text((96, 368), "can pay back.", font=SERIF_I_76, fill=SOFT)
+    copy_block(
+        draw,
+        (96, 520, 870, 704),
+        "If the widget turns website traffic into one serious seller conversation, the monthly stack becomes easy to justify.",
+        body_font=SANS_28,
+        fill=(8, 13, 25, 168),
+        outline=(61, 92, 144),
+        pad_x=32,
+        pad_y=28,
+        line_gap=12,
+    )
+
+    rounded_card(draw, (990, 192, 1812, 872), fill=(8, 13, 25, 236), outline=GOLD, width=4, radius=42)
+    draw.text((1044, 242), "ROI EXAMPLE", font=MONO_18, fill=GOLD)
+    draw.text((1044, 300), "AED 3,298 / mo", font=SERIF_66, fill=WHITE)
+    draw.text((1048, 372), "Widget AED 1,099 + 20 valuation tokens AED 2,199", font=SANS_20, fill=SOFT)
+
+    roi_rows = [
+        ("1,000 website visits", "30 captured leads", "3.0% conversion"),
+        ("30 leads", "9 broker conversations", "30% contacted"),
+        ("9 conversations", "1 mandate", "seller won"),
+        ("AED 1.5M sale", "AED 30K commission", "2% agency fee"),
+    ]
+    y = 448
+    for left, right, tag in roi_rows:
+        draw.rounded_rectangle((1044, y, 1754, y + 74), radius=22, fill=(11, 18, 33, 232), outline=(62, 94, 153), width=2)
+        draw.text((1072, y + 22), left, font=SANS_B_22, fill=WHITE)
+        draw.text((1374, y + 22), right, font=SANS_B_22, fill=CYAN if "AED 30K" not in right else GOLD)
+        draw.text((1640, y + 27), tag.upper(), font=MONO_15, fill=MUTED)
+        y += 92
+
+    light_chip(draw, (1044, 800, 1608, 862), "Example scenario, not a guarantee", CYAN)
+    metric(draw, (96, 760, 386, 906), "9x", "monthly payback")
+    metric(draw, (426, 760, 716, 906), "1", "mandate target")
+    footer(draw, 7)
+    return img
+
+
+def slide_8() -> Image.Image:
+    img = premium_bg(BG_IMAGES[5], 74)
+    draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
     paste_logo(img)
     label(draw, "Next step", 96, 214)
     draw.text((96, 292), "Open the demo.", font=SERIF_88, fill=WHITE)
-    draw.text((96, 392), "Review the flow.", font=SERIF_I_76, fill=SOFT)
+    draw.text((96, 392), "See it live.", font=SERIF_I_76, fill=SOFT)
     copy_block(
         draw,
         (96, 528, 1038, 702),
-        "Review the live product, test the AI valuation flow and see how the widget captures leads before an agent call.",
+        "Test the AI valuation flow. Watch the widget capture the lead. Review the product live.",
         body_font=SANS_28,
         fill=(8, 13, 25, 162),
         outline=(61, 92, 144),
@@ -547,7 +767,50 @@ def slide_7() -> Image.Image:
         qr = Image.open(QR).convert("RGBA").resize((214, 214), Image.Resampling.LANCZOS)
         img.alpha_composite(qr, (1446, 712))
         draw.text((1492, 942), "SCAN DEMO", font=MONO_15, fill=CYAN)
-    footer(draw, 7)
+    footer(draw, 8)
+    return img
+
+
+def slide_9() -> Image.Image:
+    img = premium_bg(BG_IMAGES[6], 72)
+    draw = ImageDraw.Draw(img)
+    gloss_frame(draw)
+    paste_logo(img, (92, 72), 230)
+    label(draw, "Contact", 96, 214, GOLD)
+    draw.text((96, 292), "Let's talk.", font=SERIF_88, fill=WHITE)
+    draw.text((96, 392), "FonatProp.", font=SERIF_I_76, fill=SOFT)
+    copy_block(
+        draw,
+        (96, 526, 982, 704),
+        "For brokerages, private demos and partnership conversations.",
+        body_font=SANS_32,
+        fill=(8, 13, 25, 164),
+        outline=(61, 92, 144),
+        pad_x=32,
+        pad_y=32,
+        line_gap=12,
+    )
+
+    rounded_card(draw, (1096, 214, 1812, 892), fill=(8, 13, 25, 234), outline=GOLD, width=4, radius=42)
+    draw.text((1148, 262), "DIRECT CONTACT", font=MONO_18, fill=GOLD)
+    draw.line((1148, 316, 1710, 316), fill=(235, 196, 105, 90), width=2)
+
+    contact_rows = [
+        ("WHATSAPP", CONTACT_PHONE_DISPLAY, "Argentina mobile code included"),
+        ("EMAIL", CONTACT_EMAIL, "Commercial contact"),
+        ("LIVE DEMO", DEMO_URL, "Broker demo experience"),
+    ]
+    y = 374
+    for tag, value, sub in contact_rows:
+        rounded_card(draw, (1148, y, 1748, y + 122), fill=(11, 18, 33, 228), outline=(64, 93, 150), radius=24)
+        draw.text((1184, y + 26), tag, font=MONO_15, fill=CYAN if tag != "WHATSAPP" else GOLD)
+        draw.text((1184, y + 58), value, font=SANS_B_28 if tag != "LIVE DEMO" else SANS_B_22, fill=WHITE)
+        draw.text((1184, y + 92), sub, font=SANS_18, fill=SOFT)
+        y += 150
+
+    light_chip(draw, (96, 780, 634, 842), "AI valuation + lead capture for real estate", CYAN)
+    light_chip(draw, (96, 862, 514, 924), "Dubai live. France commercial beta.", GOLD)
+    footer(draw, 9)
     return img
 
 
@@ -636,7 +899,7 @@ def make_deck(slide_paths: list[Path]) -> Presentation:
                     poster_frame_image=str(poster_path),
                     mime_type="video/mp4",
                 )
-        if idx == 7:
+        if idx == 8:
             link = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0.92), Inches(5.72), Inches(3.78), Inches(0.74))
             link.fill.solid()
             link.fill.fore_color.rgb = RGBColor(248, 250, 252)
@@ -650,6 +913,17 @@ def make_deck(slide_paths: list[Path]) -> Presentation:
             run.font.size = Pt(12)
             run.font.color.rgb = RGBColor(3, 5, 10)
             link.click_action.hyperlink.address = DEMO_URL
+        if idx == 9:
+            hotspots = [
+                (Inches(7.78), Inches(2.6), Inches(4.17), Inches(0.86), CONTACT_WHATSAPP_URL),
+                (Inches(7.78), Inches(3.64), Inches(4.17), Inches(0.86), CONTACT_EMAIL_URL),
+                (Inches(7.78), Inches(4.68), Inches(4.17), Inches(0.86), DEMO_URL),
+            ]
+            for left, top, width, height, url in hotspots:
+                link = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.RECTANGLE, left, top, width, height)
+                link.fill.background()
+                link.line.fill.background()
+                link.click_action.hyperlink.address = url
     return prs
 
 
@@ -660,7 +934,17 @@ def main() -> None:
         shutil.rmtree(tmpdir)
     tmpdir.mkdir(parents=True, exist_ok=True)
 
-    slides = [slide_1(), slide_2(), slide_3(), slide_4(), slide_5(), slide_6(), slide_7()]
+    slides = [
+        slide_1(),
+        slide_2(),
+        slide_3(),
+        slide_4(),
+        slide_5(),
+        slide_6(),
+        slide_7(),
+        slide_8(),
+        slide_9(),
+    ]
     slide_paths = []
     for idx, slide in enumerate(slides, 1):
         path = tmpdir / f"slide_{idx:02}.png"

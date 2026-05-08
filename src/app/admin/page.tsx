@@ -5,6 +5,9 @@ import SessionRail from "@/components/access/SessionRail";
 import FonatPropLogo from "@/components/brand/FonatPropLogo";
 import { useAccess } from "@/components/access/AccessProvider";
 import { DEFAULT_FEATURE_FLAGS } from "@/lib/access-control";
+import LeadInboxAdmin from "@/components/admin/LeadInboxAdmin";
+import PublishedPropertiesAdmin from "@/components/admin/PublishedPropertiesAdmin";
+import WidgetAgencyAdmin from "@/components/admin/WidgetAgencyAdmin";
 
 const featureFlagLabels: Record<keyof typeof DEFAULT_FEATURE_FLAGS, string> = {
   mapRequiresLogin: "Map requires login",
@@ -170,6 +173,10 @@ export default function AdminPage() {
             </div>
           </div>
         </div>
+
+        <LeadInboxAdmin isAdmin={session.role === "admin"} />
+        <PublishedPropertiesAdmin isAdmin={session.role === "admin"} />
+        <WidgetAgencyAdmin isAdmin={session.role === "admin"} />
       </div>
     </div>
   );

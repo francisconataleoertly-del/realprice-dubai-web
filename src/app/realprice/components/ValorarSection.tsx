@@ -2,9 +2,17 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { MapPin, Check } from "lucide-react";
 import CountUp from "react-countup";
 import { useGoogleMaps } from "./GoogleMapsLoader";
+import DealIntelligencePanel from "@/components/intelligence/DealIntelligencePanel";
+import ValuationReliabilityPanel from "@/components/valuation/ValuationReliabilityPanel";
+import NoiseTexture from "@/components/design/NoiseTexture";
+import { buildValuationIntelligence } from "@/lib/deal-intelligence";
+import { validateDubaiAddressSelection } from "@/lib/dubai-address-guard";
+import { buildDubaiReliability, type ValuationReliability } from "@/lib/valuation-reliability";
+import { saveLatestDubaiMandatePackSession, type DubaiMandatePackComparable, type DubaiMandatePackResult } from "@/lib/mandate-pack";
 
 const AUTH_API = "/api/fonatprop";
 const PUBLIC_API = "https://web-production-9051f.up.railway.app";
@@ -70,6 +78,8 @@ interface Result {
   unit_distribution_anchor_aed?: number;
   unit_distribution_low_aed?: number;
   unit_distribution_high_aed?: number;
+  confidence_pct?: number;
+  reliability?: ValuationReliability;
 }
 
 interface Comparable {
@@ -323,11 +333,32 @@ export default function ValorarSection({
     formattedAddress,
     name,
     components,
+    placeTypes,
   }: {
     formattedAddress: string;
     name?: string | null;
     components: GoogleAddressComponent[];
+    placeTypes?: string[];
   }) => {
+    const addressGuard = validateDubaiAddressSelection({
+      formattedAddress,
+      name,
+      components: (components || []).map((component) => ({
+        types: component.types,
+        long_name: getComponentLongName(component),
+        short_name: getComponentShortName(component),
+      })),
+      placeTypes: placeTypes || [],
+    });
+
+    if (!addressGuard.valid) {
+      setAddressSelected(false);
+      setResult(null);
+      setComparables([]);
+      setError(addressGuard.reason || "Use a real Dubai property address.");
+      return;
+    }
+
     const signals: string[] = [formattedAddress];
     let buildingName: string | null = name || null;
 
@@ -335,10 +366,7 @@ export default function ValorarSection({
       signals.push(getComponentLongName(component), getComponentShortName(component));
       if (
         !buildingName &&
-        (component.types.includes("premise") ||
-          component.types.includes("subpremise") ||
-          component.types.includes("establishment") ||
-          component.types.includes("point_of_interest"))
+        (component.types.includes("premise") || component.types.includes("subpremise"))
       ) {
         buildingName = getComponentLongName(component);
       }
@@ -385,6 +413,7 @@ export default function ValorarSection({
         formattedAddress: first.formatted_address,
         name: rawValue,
         components: first.address_components || [],
+        placeTypes: first.types || [],
       });
     } catch (addressError) {
       setAddressSelected(false);
@@ -441,7 +470,7 @@ export default function ValorarSection({
       {
         types: ["address"],
         componentRestrictions: { country: "ae" },
-        fields: ["address_components", "name", "formatted_address"],
+        fields: ["address_components", "name", "formatted_address", "types"],
       }
     );
 
@@ -455,6 +484,7 @@ export default function ValorarSection({
         formattedAddress: place.formatted_address,
         name: place.name,
         components: place.address_components,
+        placeTypes: place.types || [],
       });
     });
 
@@ -510,6 +540,13 @@ export default function ValorarSection({
 
       const data = await response.json();
       setResult(data);
+      saveLatestDubaiMandatePackSession({
+        savedAt: new Date().toISOString(),
+        addressText:
+          addressText || data.resolved_building || data.building_name || data.resolved_zone || data.zona || "",
+        result: data as DubaiMandatePackResult,
+        comparables: [],
+      });
       setForm((prev) => ({
         ...prev,
         zona: data.resolved_zone || data.zona || prev.zona,
@@ -544,7 +581,17 @@ export default function ValorarSection({
       })
         .then((r) => r.json())
         .then((d) => {
-          if (d.comparables) setComparables(d.comparables.slice(0, 5));
+          if (d.comparables) {
+            const nextComparables = d.comparables.slice(0, 5) as DubaiMandatePackComparable[];
+            setComparables(nextComparables);
+            saveLatestDubaiMandatePackSession({
+              savedAt: new Date().toISOString(),
+              addressText:
+                addressText || data.resolved_building || data.building_name || data.resolved_zone || data.zona || "",
+              result: data as DubaiMandatePackResult,
+              comparables: nextComparables,
+            });
+          }
         })
         .catch((err) => console.error('[ValorarSection] Failed to load comparables:', err));
     } catch (submitError) {
@@ -564,6 +611,7 @@ export default function ValorarSection({
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/60 via-[#0a0a0f]/75 to-[#0a0a0f]" />
+      <NoiseTexture intensity={0.05} blend="overlay" />
 
       <div className="relative z-10 px-6 md:px-12 lg:px-24 py-28 max-w-6xl mx-auto">
         <motion.div
@@ -641,7 +689,7 @@ export default function ValorarSection({
                   setAddressSelected(false);
                 }
               }}
-              placeholder="Type a Dubai address to begin..."
+              placeholder="Type a real Dubai property address..."
               className="flex-1 bg-transparent text-[18px] md:text-[22px] text-white placeholder-white/25 outline-none font-['Fraunces'] font-light tracking-tight"
             />
 
@@ -680,7 +728,7 @@ export default function ValorarSection({
 
           {!addressSelected && (
             <p className="text-center mt-3 font-mono text-[10px] text-white/25 tracking-[0.25em] uppercase">
-              Select a Google suggestion or press Enter
+              Use a real Dubai address or residential building
             </p>
           )}
         </motion.div>
@@ -694,7 +742,7 @@ export default function ValorarSection({
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+              <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
                 <motion.div
                   initial="hidden"
                   animate="visible"
@@ -702,7 +750,7 @@ export default function ValorarSection({
                     hidden: {},
                     visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } },
                   }}
-                  className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-10 md:p-12 space-y-8"
+                  className="relative self-start bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-10 md:p-12 space-y-8"
                 >
                   <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/20" />
                   <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/20" />
@@ -959,7 +1007,7 @@ export default function ValorarSection({
                   </motion.button>
                 </motion.div>
 
-                <div className="relative">
+                <div className="relative self-start">
                   {error && (
                     <div className="w-full border-l-2 border-red-500/50 pl-4 py-2">
                       <p className="font-mono text-[12px] text-red-400">{error}</p>
@@ -1028,7 +1076,7 @@ export default function ValorarSection({
 
                         <div>
                           <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35 mb-2">
-                            Confidence Range &plusmn;12.7%
+                            Confidence Range &plusmn;{Number(result.confidence_pct || 12.7).toFixed(1)}%
                           </p>
                           <PriceGauge
                             value={result.predicted_aed}
@@ -1036,6 +1084,25 @@ export default function ValorarSection({
                             high={result.confidence_high_aed}
                           />
                         </div>
+
+                        <ValuationReliabilityPanel
+                          reliability={result.reliability || buildDubaiReliability(result)}
+                        />
+
+                        <DealIntelligencePanel
+                          intelligence={buildValuationIntelligence({
+                            market: "dubai",
+                            estimate: result.predicted_aed,
+                            low: result.confidence_low_aed,
+                            high: result.confidence_high_aed,
+                            supportCount: result.source_support_count || result.unit_distribution_count,
+                            recentCount: result.source_recent_count,
+                            confidencePct: Number(result.confidence_pct || 12.7),
+                            valuationMode: result.valuation_mode,
+                            currency: "AED",
+                          })}
+                          title="AI valuation memo"
+                        />
 
                         {result.unit_distribution_source && (
                           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4">
@@ -1134,6 +1201,41 @@ export default function ValorarSection({
                                   </p>
                                 </motion.div>
                               ))}
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {publicDemo && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.75 }}
+                            className="border-t border-white/[0.06] pt-6"
+                          >
+                            <div className="flex flex-col gap-4 rounded-[28px] border border-white/[0.08] bg-white/[0.03] p-5 md:flex-row md:items-center md:justify-between">
+                              <div>
+                                <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35">
+                                  Mandate Pack
+                                </p>
+                                <p className="mt-3 max-w-2xl text-sm leading-7 text-white/58">
+                                  Turn this live valuation into a seller-ready report with price strategy,
+                                  comparables, confidence and next steps.
+                                </p>
+                              </div>
+                              <div className="flex flex-wrap gap-3">
+                                <Link
+                                  href="/broker-demo/mandate-pack"
+                                  className="rounded-full bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[#0a0a0f] transition hover:bg-white/90"
+                                >
+                                  Open broker report
+                                </Link>
+                                <Link
+                                  href="/broker-demo/mandate-pack?seller=1"
+                                  className="rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-white/68 transition hover:border-white/24 hover:text-white"
+                                >
+                                  Open seller view
+                                </Link>
+                              </div>
                             </div>
                           </motion.div>
                         )}

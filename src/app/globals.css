@@ -28,6 +28,7 @@
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
 }
 
 body {
@@ -83,6 +84,374 @@ html {
 }
 
 /* Number animation */
+/* === Smooth scroll + scroll-snap (opt-in via .fp-snap-scroll on body/main) === */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* === Animated gradient border for premium cards ===
+   Apply via class="fp-gradient-border" on a relatively-positioned wrapper.
+   The pseudo element rotates a conic-gradient slowly behind the card. */
+.fp-gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+.fp-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--fp-grad-angle, 0deg),
+    rgba(99, 154, 255, 0.55),
+    rgba(167, 139, 250, 0.45),
+    rgba(34, 211, 238, 0.35),
+    rgba(99, 154, 255, 0.55)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: fp-grad-rotate 9s linear infinite;
+}
+@property --fp-grad-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes fp-grad-rotate {
+  to {
+    --fp-grad-angle: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fp-gradient-border::before {
+    animation: none;
+  }
+}
+
+/* === FonatProp Premium rebrand variant ===
+   Opt-in via class="fp-premium" on a wrapper. Swaps the surface palette to a
+   refined obsidian + gold + ink combination tuned for prestige real estate
+   (think Sotheby's / Christie's editorial language). All existing components
+   inherit through CSS variables — no JSX changes required. */
+.fp-premium {
+  --fp-surface-0: #08070b;
+  --fp-surface-1: #0d0c12;
+  --fp-surface-2: #15131c;
+  --fp-line: rgba(245, 214, 163, 0.08);
+  --fp-line-strong: rgba(245, 214, 163, 0.18);
+  --fp-blue-400: #f5d6a3; /* warm gold replaces blue accent */
+  --fp-blue-500: #e3b860;
+  --fp-blue-700: #b8893a;
+  --fp-glow-blue: 0 0 80px rgba(245, 214, 163, 0.18);
+  color: rgba(247, 240, 226, 0.86);
+}
+.fp-premium .fp-gradient-border::before {
+  background: conic-gradient(
+    from var(--fp-grad-angle, 0deg),
+    rgba(245, 214, 163, 0.55),
+    rgba(232, 156, 89, 0.40),
+    rgba(167, 139, 250, 0.30),
+    rgba(245, 214, 163, 0.55)
+  );
+}
+.fp-premium .fonatprop-pulse {
+  animation-name: fp-pulse-gold;
+}
+@keyframes fp-pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 214, 163, 0); }
+  50%      { box-shadow: 0 0 0 6px rgba(245, 214, 163, 0.16); }
+}
+
+/* === Accent theme variants — flip via data-fp-accent="violet|ember|emerald" === */
+[data-fp-accent="violet"] {
+  --fp-blue-400: #a78bfa;
+  --fp-blue-500: #8b5cf6;
+  --fp-blue-700: #6d28d9;
+}
+[data-fp-accent="ember"] {
+  --fp-blue-400: #fbbf24;
+  --fp-blue-500: #f97316;
+  --fp-blue-700: #b45309;
+}
+[data-fp-accent="emerald"] {
+  --fp-blue-400: #34d399;
+  --fp-blue-500: #10b981;
+  --fp-blue-700: #047857;
+}
+
+/* === Section snap target — opt-in via class="fp-snap-section" on a section === */
+.fp-snap-scroll {
+  scroll-snap-type: y proximity;
+}
+.fp-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+/* === FonatProp typography ramp ===
+   Fluid responsive type via clamp(). Use these classes for new components or
+   when refactoring. Existing inline clamp() values keep working — these are
+   opt-in tokens, not a forced override. */
+.fp-display-1 {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: clamp(3.2rem, 9vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+.fp-display-2 {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.fp-h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.fp-h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.fp-h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.fp-body {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.95rem, 1.1vw, 1.075rem);
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+.fp-mono-label {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: clamp(0.55rem, 0.7vw, 0.7rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* === Numeric tabular alignment === */
+/* Apply tabular-nums to all financial / mono / Fraunces numeric content. The
+   selector is opinionated: any element whose font-family includes Fraunces or
+   monospace gets aligned digits so columns of numbers don't shift width. */
+.font-mono,
+[class*="font-['Fraunces']"],
+.fp-display-1,
+.fp-display-2,
+.fp-h1,
+.fp-h2,
+.fp-h3,
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    "tnum" 1,
+    "lnum" 1;
+}
+
+/* === DVF Live ticker marquee === */
+.dvf-ticker-track {
+  animation: dvf-marquee 80s linear infinite;
+  will-change: transform;
+}
+.dvf-ticker:hover .dvf-ticker-track {
+  animation-play-state: paused;
+}
+@keyframes dvf-marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dvf-ticker-track { animation: none; }
+}
+
+/* === FonatProp design primitives === */
+
+/* Color tiers used by mesh backgrounds, accents and depth surfaces. Pulled from
+   :root so they stay overridable per-theme. */
+:root {
+  --fp-blue-50: #eff6ff;
+  --fp-blue-200: #bfdbfe;
+  --fp-blue-400: #60a5fa;
+  --fp-blue-500: #3b82f6;
+  --fp-blue-700: #1d4ed8;
+  --fp-cyan-400: #22d3ee;
+  --fp-violet-400: #a78bfa;
+  --fp-amber-400: #fbbf24;
+  --fp-emerald-400: #34d399;
+  --fp-emerald-500: #10b981;
+  --fp-rose-400: #fb7185;
+  --fp-surface-0: #05060a;
+  --fp-surface-1: #0a0a0f;
+  --fp-surface-2: #0d0d14;
+  --fp-line: rgba(255, 255, 255, 0.08);
+  --fp-line-strong: rgba(255, 255, 255, 0.16);
+  --fp-glow-blue: 0 0 60px rgba(59, 130, 246, 0.18);
+  --fp-glow-violet: 0 0 80px rgba(139, 92, 246, 0.16);
+}
+
+/* Drop cap — apply via class="fonatprop-dropcap" on a container with a <p> first child.
+   Only the first letter of the first paragraph gets the editorial scale-up. */
+.fonatprop-dropcap > p:first-of-type::first-letter,
+.fonatprop-dropcap::first-letter {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 4.4em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.05em 0.18em 0 -0.05em;
+  color: rgba(255, 255, 255, 0.85);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(99, 154, 255, 0.55)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Mesh background blobs — three drifting radial gradients used by MeshBackground */
+.fonatprop-mesh-blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(110px);
+  will-change: transform;
+}
+.fonatprop-mesh-blob-a {
+  top: -25%;
+  left: -10%;
+  animation: fp-mesh-drift-a 22s ease-in-out infinite alternate;
+}
+.fonatprop-mesh-blob-b {
+  top: 30%;
+  right: -25%;
+  animation: fp-mesh-drift-b 28s ease-in-out infinite alternate;
+}
+.fonatprop-mesh-blob-c {
+  bottom: -30%;
+  left: 30%;
+  animation: fp-mesh-drift-c 26s ease-in-out infinite alternate;
+}
+@keyframes fp-mesh-drift-a {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(8%, 6%, 0) scale(1.1);
+  }
+}
+@keyframes fp-mesh-drift-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-10%, 8%, 0) scale(1.15);
+  }
+}
+@keyframes fp-mesh-drift-c {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(6%, -6%, 0) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fonatprop-mesh-blob-a,
+  .fonatprop-mesh-blob-b,
+  .fonatprop-mesh-blob-c {
+    animation: none;
+  }
+}
+
+/* Shimmer used by ShimmerSkeleton — a slow horizontal sweep with a soft glow */
+.fonatprop-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent
+  );
+  animation: fonatprop-shimmer 1.6s linear infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes fonatprop-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Card hover lift utility — apply via class="fonatprop-lift" */
+.fonatprop-lift {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+.fonatprop-lift:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 60px -20px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Soft glow ring on focus — accessible focus state for buttons + inputs */
+.fonatprop-focus:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 0.35),
+    0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Subtle pulse on a key CTA — opt-in via class="fonatprop-pulse" */
+.fonatprop-pulse {
+  animation: fonatprop-pulse 3.6s ease-in-out infinite;
+}
+@keyframes fonatprop-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.0);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.12);
+  }
+}
+
 @keyframes countUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -150,5 +519,88 @@ html {
 @media (max-width: 767px) {
   .broker-demo-hero-slide {
     animation-duration: 35s;
+  }
+}
+
+@media print {
+  /* FonatProp France report mode — when triggered from a section CTA we set
+     body[data-print-section="<sectionId>"] and hide everything except that section. */
+  body[data-print-section="valorar"] > main > section:not(#valorar),
+  body[data-print-section="valorar"] > main > footer,
+  body[data-print-section="inversion"] > main > section:not(#inversion),
+  body[data-print-section="inversion"] > main > footer,
+  body[data-print-section="reforma"] > main > section:not(#reforma),
+  body[data-print-section="reforma"] > main > footer,
+  body[data-print-section] > main > nav,
+  body[data-print-section] [data-print-hide],
+  body[data-print-section] .print\:hidden {
+    display: none !important;
+  }
+
+  body[data-print-section] section {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    min-height: auto !important;
+    padding: 0 !important;
+  }
+
+  body[data-print-section] section,
+  body[data-print-section] section * {
+    color: #0f172a !important;
+    background-color: transparent !important;
+    border-color: #d4d4d8 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body[data-print-section] section .text-emerald-300,
+  body[data-print-section] section .text-emerald-400 {
+    color: #047857 !important;
+  }
+  body[data-print-section] section .text-amber-300,
+  body[data-print-section] section .text-amber-400 {
+    color: #b45309 !important;
+  }
+  body[data-print-section] section .text-red-300,
+  body[data-print-section] section .text-red-400 {
+    color: #b91c1c !important;
+  }
+  body[data-print-section] section .text-blue-200,
+  body[data-print-section] section .text-blue-300 {
+    color: #1e40af !important;
+  }
+
+  body[data-print-section] section h2,
+  body[data-print-section] section h3 {
+    page-break-after: avoid;
+  }
+
+  body[data-print-section] section .grid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .mandate-pack-report,
+  .mandate-pack-report * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .mandate-pack-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

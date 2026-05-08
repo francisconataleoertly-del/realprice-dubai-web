@@ -1,0 +1,101 @@
+{
+  "created_at": "2026-05-01T02:40:06.422107+00:00",
+  "source": {
+    "real_estate_data_url": "https://dubailand.gov.ae/en/open-data/real-estate-data/",
+    "open_data_transactions_endpoint": "https://gateway.dubailand.gov.ae/open-data/transactions",
+    "open_data_transactions_csv_export_endpoint": "https://gateway.dubailand.gov.ae/open-data/transactions/export/csv",
+    "consumer_id_source": "DLD public apiConfig.consumerId"
+  },
+  "filters": {
+    "P_FROM_DATE": "04/01/2026",
+    "P_TO_DATE": "04/30/2026",
+    "P_GROUP_ID": "",
+    "P_IS_OFFPLAN": "",
+    "P_IS_FREE_HOLD": "",
+    "P_AREA_ID": "",
+    "P_USAGE_ID": "",
+    "P_PROP_TYPE_ID": "",
+    "P_TAKE": "100",
+    "P_SKIP": "0",
+    "P_SORT": "INSTANCE_DATE_DESC"
+  },
+  "arguments": {
+    "from_date": "2026-04-01",
+    "to_date": "2026-04-30",
+    "group": "all",
+    "registration_type": "all",
+    "freehold": "all",
+    "usage": "all",
+    "property_type": "all",
+    "area_id": "",
+    "take": 100,
+    "max_pages": 1,
+    "sort": "INSTANCE_DATE_DESC",
+    "download_csv": true
+  },
+  "outputs": {
+    "jsonl": "C:\\Users\\franc\\FonatProp_Data_Lake\\90_processed\\dubai_live_transactions\\dld_open_data_transactions_20260401_20260430_all_all_all_all.jsonl",
+    "paged_rows_csv": "C:\\Users\\franc\\FonatProp_Data_Lake\\90_processed\\dubai_live_transactions\\dld_open_data_transactions_20260401_20260430_all_all_all_all_paged_rows.csv",
+    "dld_export_csv": "C:\\Users\\franc\\FonatProp_Data_Lake\\90_processed\\dubai_live_transactions\\dld_open_data_transactions_20260401_20260430_all_all_all_all_dld_export.csv",
+    "manifest": "C:\\Users\\franc\\FonatProp_Data_Lake\\90_processed\\dubai_live_transactions\\dld_open_data_transactions_20260401_20260430_all_all_all_all_manifest.json"
+  },
+  "page_stats": {
+    "json_rows_downloaded": 100,
+    "json_reported_total": 18882,
+    "json_pages_downloaded": 1,
+    "json_incomplete": true,
+    "stopped_on_error": null
+  },
+  "row_summary": {
+    "rows": 100,
+    "min_instance_date": "2026-04-30T13:44:21",
+    "max_instance_date": "2026-04-30T15:13:20",
+    "groups": [
+      "Gifts",
+      "Mortgage",
+      "Sales"
+    ],
+    "areas": 42,
+    "projects": 61,
+    "total_trans_value_aed": 318723346.67,
+    "sample_areas": [
+      "AL BARARI",
+      "AL FURJAN",
+      "ARJAN",
+      "Al Aweer First",
+      "Al Hamriya",
+      "Al Hebiah Fifth",
+      "Al Khawaneej First",
+      "Al Rashidiya",
+      "Al Yelayiss 1",
+      "Al Yelayiss 2",
+      "Al Yelayiss 5",
+      "BURJ KHALIFA"
+    ],
+    "sample_projects": [
+      "AG 9INE",
+      "AL FURJAN",
+      "AL MAS TOWER",
+      "ARABIAN GATE",
+      "AZIZI VENICE 7",
+      "Arabian Ranches lll - June",
+      "Azizi Berton",
+      "Azizi Mirage 1",
+      "Azizi Riviera 33",
+      "BAY SQUARE",
+      "BLUE WAVE",
+      "BONNINGTON TOWER HOTEL & RESIDENCE DUBAI"
+    ]
+  },
+  "csv_export": {
+    "bytes": 4627245,
+    "rows": 18882,
+    "content_type": "text/csv",
+    "content_disposition": "attachment; filename=transactions-2026-05-01.csv; filename*=UTF-8''transactions-2026-05-01.csv"
+  },
+  "notes": [
+    "This uses Dubai Land Department's public Real Estate Data page and open-data endpoints.",
+    "DLD's page directs previous-year data to Dubai Pulse; live page filters are intended for current-year data.",
+    "No private credentials are stored. The script extracts the public consumer id from the DLD page at runtime."
+  ]
+}

@@ -3,7 +3,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronDown, Info, Loader2 } from "lucide-react";
+import DealIntelligencePanel from "@/components/intelligence/DealIntelligencePanel";
 import RenovationMaterialSearch from "@/components/renovation/RenovationMaterialSearch";
+import { buildRenovationIntelligence } from "@/lib/deal-intelligence";
+import { DUBAI_DUE_DILIGENCE } from "@/lib/market-regulation";
 
 const API = "/api/fonatprop";
 
@@ -139,6 +142,17 @@ export default function ReformaSection() {
         </h2>
         <p className="text-white/30 text-[15px] mb-12 max-w-xl">Live rates via FonatProp API. Select categories &mdash; estimate updates instantly.</p>
 
+        <div className="mb-10 grid gap-px overflow-hidden rounded-2xl border border-blue-300/15 bg-white/[0.06] md:grid-cols-4">
+          {DUBAI_DUE_DILIGENCE.map((item) => (
+            <div key={item} className="bg-[#090a10]/90 p-5">
+              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-blue-200/50">
+                Renovation check
+              </p>
+              <p className="mt-4 text-[12px] leading-6 text-white/52">{item}</p>
+            </div>
+          ))}
+        </div>
+
         {!data ? (
           <div className="flex items-center gap-3 text-white/30">
             <Loader2 size={16} className="animate-spin" />
@@ -146,9 +160,9 @@ export default function ReformaSection() {
           </div>
         ) : (
           <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
             {/* ── LEFT: Inputs ── */}
-            <div className="space-y-6">
+            <div className="self-start space-y-6">
               {/* Tier bento grid */}
               <div>
                 <label className="block text-xs font-mono tracking-[0.25em] uppercase text-white/30 mb-3">Renovation Tier</label>
@@ -269,7 +283,7 @@ export default function ReformaSection() {
             </div>
 
             {/* ── RIGHT: Results ── */}
-            <div className="space-y-4">
+            <div className="self-start space-y-4">
               {error && (
                 <div className="border-l-2 border-red-500/50 pl-4 py-2 text-red-400 text-sm font-mono">{error}</div>
               )}
@@ -373,6 +387,23 @@ export default function ReformaSection() {
                     </div>
                   </div>
                 </div>
+              )}
+
+              {roi && estimate && (
+                <DealIntelligencePanel
+                  intelligence={buildRenovationIntelligence({
+                    market: "dubai",
+                    roiPct: roi.roiPct,
+                    costMin: estimate.grand_total_min,
+                    costMax: estimate.grand_total_max,
+                    valueIncreaseMin: propertyValue * (estimate.value_increase_pct / 100),
+                    valueIncreaseMax: propertyValue * (estimate.value_increase_pct / 100),
+                    selectedScopes: selected,
+                    confidenceScore: selected.length >= 3 ? 78 : 66,
+                    currency: "AED",
+                  })}
+                  title="AI renovation memo"
+                />
               )}
 
               {/* Timeline + per m2 */}

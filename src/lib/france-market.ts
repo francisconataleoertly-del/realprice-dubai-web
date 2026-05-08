@@ -1,4 +1,5 @@
 import marketData from "@/data/france-dvf-market.json";
+import { buildFranceReliability } from "@/lib/valuation-reliability";
 
 export type FrancePropertyType = "Appartement" | "Maison";
 
@@ -259,7 +260,12 @@ export function estimateFranceValue(input: FranceValuationInput) {
   const estimated = Math.round(psm * areaM2 * (1 + layoutAdjustment));
   const confidence = franceConfidencePct(record?.transactions || 0);
 
-  return {
+  const confidencePctRounded = Math.round(confidence * 1000) / 10;
+  const matchContext = {
+    strategy: special?.strategy || (record ? "commune_lookup" : "national_fallback"),
+    postal_code: input.address ? extractPostalCode(input.address) || null : null,
+  };
+  const response = {
     market: "france",
     valuation_mode: record ? "dvf_commune_statistical_v1" : "national_dvf_fallback_v1",
     input: {
@@ -274,16 +280,23 @@ export function estimateFranceValue(input: FranceValuationInput) {
     estimated_low_eur: Math.round(estimated * (1 - confidence)),
     estimated_high_eur: Math.round(estimated * (1 + confidence)),
     median_price_per_m2_eur: Math.round(psm),
-    confidence_pct: Math.round(confidence * 1000) / 10,
-    match_context: {
-      strategy: special?.strategy || (record ? "commune_lookup" : "national_fallback"),
-      postal_code: input.address ? extractPostalCode(input.address) || null : null,
-    },
+    confidence_pct: confidencePctRounded,
+    match_context: matchContext,
     assumptions: [
       "V1 uses cleaned DVF residential transactions by commune and property type.",
       "Address/parcelle, DPE, risks, transport and INSEE enrichment are prepared as the next model layer.",
       "Exact unit-level valuation requires robust address/parcelle matching.",
     ],
+  };
+
+  return {
+    ...response,
+    reliability: buildFranceReliability({
+      valuation_mode: response.valuation_mode,
+      confidence_pct: confidencePctRounded,
+      record: response.record,
+      match_context: matchContext,
+    }),
   };
 }
 

@@ -188,3 +188,120 @@ export const FRANCE_MORTGAGE = {
   // Typical apport personnel (down payment) range
   typical_down_payment_pct: 15,
 };
+
+// French rental tax regimes (2025 finance law)
+// Sources:
+// - service-public.gouv.fr/particuliers/vosdroits/F32744
+// - impots.gouv.fr/particulier/les-regimes-dimposition
+// - Loi de finances 2025 (réforme LMNP)
+export type TaxRegimeKey =
+  | "micro_foncier"
+  | "regime_reel_nu"
+  | "lmnp_micro_bic"
+  | "lmnp_reel"
+  | "sci_is";
+
+export type TaxRegime = {
+  key: TaxRegimeKey;
+  label: string;
+  short: string;
+  // Required property type (furnished or not)
+  furnished: boolean;
+  // Revenue cap (€/year) above which the regime cannot be used as default
+  revenue_cap_eur?: number;
+  // Flat abattement on gross rent before tax (0 if régime réel)
+  flat_abattement_pct: number;
+  // Whether expenses (notary, mortgage interest, works, charges) are fully deductible
+  expenses_deductible: boolean;
+  // Whether amortissement (depreciation) is deductible
+  amortissement_deductible: boolean;
+  // Statutory tax rate applied AFTER computing the taxable base.
+  // For IR-based regimes: TMI + Prélèvements Sociaux 17.2% (configurable in UI).
+  // For IS regimes: corporate rate 25% (15% on first €42,500 if eligible).
+  uses_corporate_rate: boolean;
+  notes: string;
+};
+
+export const FRANCE_TAX_REGIMES: TaxRegime[] = [
+  {
+    key: "micro_foncier",
+    label: "Micro-foncier (location nue)",
+    short: "Micro-foncier",
+    furnished: false,
+    revenue_cap_eur: 15_000,
+    flat_abattement_pct: 30,
+    expenses_deductible: false,
+    amortissement_deductible: false,
+    uses_corporate_rate: false,
+    notes:
+      "Regimen por defecto para alquiler vacío con ingresos < €15,000/año. Abattement forfaitaire del 30%.",
+  },
+  {
+    key: "regime_reel_nu",
+    label: "Régime réel (location nue)",
+    short: "Réel nu",
+    furnished: false,
+    flat_abattement_pct: 0,
+    expenses_deductible: true,
+    amortissement_deductible: false,
+    uses_corporate_rate: false,
+    notes:
+      "Deduce todos los gastos reales (intereses, taxe foncière, cargos, obras). Sin amortissement (eso es solo en BIC).",
+  },
+  {
+    key: "lmnp_micro_bic",
+    label: "LMNP micro-BIC (meublé)",
+    short: "LMNP micro",
+    furnished: true,
+    revenue_cap_eur: 77_700,
+    flat_abattement_pct: 50,
+    expenses_deductible: false,
+    amortissement_deductible: false,
+    uses_corporate_rate: false,
+    notes:
+      "Para alquiler amueblado < €77,700/año. Abattement 50%. Más eficiente que micro-foncier.",
+  },
+  {
+    key: "lmnp_reel",
+    label: "LMNP régime réel (meublé)",
+    short: "LMNP réel",
+    furnished: true,
+    flat_abattement_pct: 0,
+    expenses_deductible: true,
+    amortissement_deductible: true,
+    uses_corporate_rate: false,
+    notes:
+      "Régimen estrella: deduce gastos reales + amortissement (~3-4% del valor del bien por año). Cash neto frecuentemente cerca de 0 fiscalmente.",
+  },
+  {
+    key: "sci_is",
+    label: "SCI à l'IS",
+    short: "SCI IS",
+    furnished: false,
+    flat_abattement_pct: 0,
+    expenses_deductible: true,
+    amortissement_deductible: true,
+    uses_corporate_rate: true,
+    notes:
+      "Sociedad civil impositiva al impuesto societario 25% (15% sobre los primeros €42,500). Para patrimonio largo plazo, transmisión.",
+  },
+];
+
+// Prélèvements sociaux on rental income (Loi de finances 2025)
+export const FRANCE_PS_RATE_FONCIER_PCT = 17.2;
+export const FRANCE_PS_RATE_BIC_MEUBLE_PCT = 18.6;
+export const FRANCE_PS_RATE_PCT = FRANCE_PS_RATE_FONCIER_PCT;
+
+// Standard TMI brackets (Tranche Marginale d'Imposition) — barème 2025
+// Source: impots.gouv.fr — Article 197 du CGI
+export const FRANCE_TMI_OPTIONS: { label: string; tmi_pct: number }[] = [
+  { label: "0% (revenus < €11,294)", tmi_pct: 0 },
+  { label: "11% (€11,294 - €28,797)", tmi_pct: 11 },
+  { label: "30% (€28,797 - €82,341)", tmi_pct: 30 },
+  { label: "41% (€82,341 - €177,106)", tmi_pct: 41 },
+  { label: "45% (> €177,106)", tmi_pct: 45 },
+];
+
+// IFI threshold (Impôt sur la Fortune Immobilière) — 2025
+// Source: economie.gouv.fr / Bofip BOI-PAT-IFI
+export const FRANCE_IFI_THRESHOLD_EUR = 1_300_000;

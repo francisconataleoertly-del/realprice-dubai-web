@@ -3,7 +3,9 @@ import path from "node:path";
 
 import { NextResponse } from "next/server";
 import { DEFAULT_FEATURE_FLAGS, canAccessFeature } from "@/lib/access-control";
+import { isLikelyDubaiAddressText } from "@/lib/dubai-address-guard";
 import { getServerAccessSession } from "@/lib/supabase/access";
+import { buildDubaiReliability } from "@/lib/valuation-reliability";
 
 const UPSTREAM_API =
   process.env.NEXT_PUBLIC_FONATPROP_API_BASE_URL ||
@@ -321,6 +323,15 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    if (body?.address && !isLikelyDubaiAddressText(body.address)) {
+      return NextResponse.json(
+        {
+          detail:
+            "Use a real Dubai property address or residential building. Stations, bridges and generic landmarks are not supported.",
+        },
+        { status: 422 }
+      );
+    }
 
     // Prefer the Railway API as the canonical valuation engine. It has the
     // latest DLD-derived address profiles, unit-distribution anchors, and date
@@ -336,7 +347,11 @@ export async function POST(request: Request) {
       const upstreamAddressData = await upstreamAddressResponse.json();
 
       if (upstreamAddressResponse.ok) {
-        return NextResponse.json(upstreamAddressData);
+        return NextResponse.json({
+          ...upstreamAddressData,
+          reliability:
+            upstreamAddressData?.reliability || buildDubaiReliability(upstreamAddressData),
+        });
       }
 
       if (![404, 422].includes(upstreamAddressResponse.status)) {
@@ -446,7 +461,10 @@ export async function POST(request: Request) {
       inferred_has_parking: usedHasParking,
     };
 
-    return NextResponse.json(response);
+    return NextResponse.json({
+      ...response,
+      reliability: buildDubaiReliability(response),
+    });
   } catch (error) {
     console.error("predict-address route failed", error);
     return NextResponse.json(

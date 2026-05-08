@@ -1,126 +1,127 @@
-"use client";
-
 import MarketRadarSection, {
   type RadarListing,
 } from "@/components/radar/MarketRadarSection";
+import profilesData from "@/app/realprice/data/realprice-address-profiles-v4-slim.json";
 
-const DUBAI_RADAR_LISTINGS: RadarListing[] = [
-  {
-    id: 1,
-    title: "Jumeirah Gate Tower 2",
-    subtitle: "JBR | 2 BR",
-    listedValue: 3_200_000,
-    benchmarkValue: 3_960_000,
-    diffPct: -19.2,
-    signal: "green",
-    angle: 42,
-    distance: 0.86,
-    areaLabel: "145 m2",
-    note: "Tower inventory published below the model range, strong green-light candidate for investor outreach.",
-  },
-  {
-    id: 2,
-    title: "Burj Royale",
-    subtitle: "Downtown Dubai | 1 BR",
-    listedValue: 1_920_000,
-    benchmarkValue: 1_975_000,
-    diffPct: -2.8,
-    signal: "yellow",
-    angle: 88,
-    distance: 0.58,
-    areaLabel: "73 m2",
-    note: "Very close to market. Good brochure listing, but not a discount alert.",
-  },
-  {
-    id: 3,
-    title: "Vida Residences",
-    subtitle: "Dubai Marina | 1 BR",
-    listedValue: 1_340_000,
-    benchmarkValue: 1_575_000,
-    diffPct: -14.9,
-    signal: "green",
-    angle: 128,
-    distance: 0.61,
-    areaLabel: "69 m2",
-    note: "Published under the AVM benchmark. Push this into the radar feed when the owner wants fast traction.",
-  },
-  {
-    id: 4,
-    title: "The Sterling East",
-    subtitle: "Business Bay | Studio",
-    listedValue: 855_000,
-    benchmarkValue: 828_000,
-    diffPct: 3.3,
-    signal: "yellow",
-    angle: 164,
-    distance: 0.44,
-    areaLabel: "44 m2",
-  },
-  {
-    id: 5,
-    title: "Belgravia Heights",
-    subtitle: "JVC | 2 BR",
-    listedValue: 1_380_000,
-    benchmarkValue: 1_245_000,
-    diffPct: 10.8,
-    signal: "red",
-    angle: 208,
-    distance: 0.69,
-    areaLabel: "112 m2",
-    note: "Listing is published above the model. The radar marks it red so agents can re-price before pushing traffic.",
-  },
-  {
-    id: 6,
-    title: "Sidra Villas III",
-    subtitle: "Dubai Hills | 4 BR",
-    listedValue: 6_050_000,
-    benchmarkValue: 5_480_000,
-    diffPct: 10.4,
-    signal: "red",
-    angle: 248,
-    distance: 0.88,
-    areaLabel: "355 m2",
-  },
-  {
-    id: 7,
-    title: "Marina Gate 1",
-    subtitle: "Dubai Marina | 2 BR",
-    listedValue: 2_280_000,
-    benchmarkValue: 2_570_000,
-    diffPct: -11.3,
-    signal: "green",
-    angle: 292,
-    distance: 0.72,
-    areaLabel: "121 m2",
-  },
-  {
-    id: 8,
-    title: "Index Tower",
-    subtitle: "DIFC | 1 BR",
-    listedValue: 2_180_000,
-    benchmarkValue: 2_120_000,
-    diffPct: 2.8,
-    signal: "yellow",
-    angle: 332,
-    distance: 0.53,
-    areaLabel: "81 m2",
-  },
-];
+type ProfileRow = {
+  name: string;
+  zone?: string;
+  project?: string;
+  count: number;
+  recent_count: number;
+  dominance_pct: number;
+  property_type: string;
+  rooms: string;
+  area_m2: number;
+  median_price_aed?: number;
+  latest_date?: string;
+};
+
+type ProfilesPayload = {
+  generated_at?: string;
+  building_profiles: ProfileRow[];
+  zone_profiles: ProfileRow[];
+};
+
+const profiles = profilesData as ProfilesPayload;
+
+function signalFromDiff(diffPct: number): RadarListing["signal"] {
+  if (diffPct <= -8) return "green";
+  if (diffPct >= 8) return "red";
+  return "yellow";
+}
+
+function confidenceFromProfile(row: ProfileRow) {
+  const countScore = row.count >= 100 ? 28 : row.count >= 25 ? 22 : row.count >= 8 ? 16 : 9;
+  const recentScore = row.recent_count >= 4 ? 18 : row.recent_count >= 2 ? 13 : row.recent_count >= 1 ? 8 : 2;
+  const dominanceScore = row.dominance_pct >= 65 ? 18 : row.dominance_pct >= 45 ? 12 : 6;
+  return Math.max(45, Math.min(94, 34 + countScore + recentScore + dominanceScore));
+}
+
+function buildDubaiListings(): RadarListing[] {
+  const zoneBenchmarks = new Map<string, ProfileRow>();
+
+  profiles.zone_profiles.forEach((row) => {
+    if (!row.name || !row.median_price_aed) return;
+    zoneBenchmarks.set(`${row.name}-${row.property_type}-${row.rooms}`, row);
+    zoneBenchmarks.set(`${row.name}-${row.property_type}`, row);
+    zoneBenchmarks.set(row.name, row);
+  });
+
+  return profiles.building_profiles
+    .filter((row) => row.name && row.zone && row.median_price_aed && row.count >= 3)
+    .map((row) => {
+      const benchmark =
+        zoneBenchmarks.get(`${row.zone}-${row.property_type}-${row.rooms}`) ||
+        zoneBenchmarks.get(`${row.zone}-${row.property_type}`) ||
+        zoneBenchmarks.get(row.zone || "");
+
+      if (!benchmark?.median_price_aed) return null;
+
+      const observed = Math.round(row.median_price_aed || 0);
+      const benchmarkValue = Math.round(benchmark.median_price_aed);
+      const diffPct = ((observed - benchmarkValue) / benchmarkValue) * 100;
+
+      return {
+        row,
+        listing: {
+          id: `${row.name}-${row.zone}-${row.rooms}`,
+          title: row.name,
+          subtitle: `${row.zone} | ${row.rooms}`,
+          listedValue: observed,
+          benchmarkValue,
+          diffPct,
+          signal: signalFromDiff(diffPct),
+          angle: 0,
+          distance: Math.max(0.38, Math.min(0.9, 0.34 + row.count / 900)),
+          areaLabel: `${Math.round(row.area_m2)} m2`,
+          sourceLabel: "DLD profile vs zone benchmark",
+          transactions: row.count,
+          confidenceScore: confidenceFromProfile(row),
+          lastUpdated: row.latest_date || profiles.generated_at,
+          note:
+            diffPct <= -8
+              ? "Building median sits below its zone benchmark in the DLD profile layer, so the radar marks it as a green opportunity signal."
+              : diffPct >= 8
+                ? "Building median is above the zone benchmark. Useful for pricing discipline before pushing a public listing."
+                : "Building median is close to the zone benchmark, so the radar keeps it in range.",
+        } satisfies RadarListing,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (!a || !b) return 0;
+      const signalRank = { green: 0, yellow: 1, red: 2 };
+      return (
+        signalRank[a.listing.signal] - signalRank[b.listing.signal] ||
+        b.listing.confidenceScore! - a.listing.confidenceScore! ||
+        b.row.count - a.row.count
+      );
+    })
+    .slice(0, 12)
+    .map((entry, index) => ({
+      ...entry!.listing,
+      angle: 22 + index * 29,
+    }));
+}
+
+const DUBAI_RADAR_LISTINGS = buildDubaiListings();
 
 export default function RadarSection() {
   return (
     <MarketRadarSection
+      market="dubai"
       chapterLabel="Chapter V"
       sectionLabel="Radar"
       title="Watch every"
-      accentTitle="published opportunity."
-      description="A live radar layer for the public FonatProp Dubai page. Every property you publish can light up green, amber or red against your valuation model, so owners and investors immediately see where the opportunity sits."
+      accentTitle="market signal."
+      description="A visual radar for FonatProp Dubai built from real DLD-derived building profiles. Green, amber and red show how each building median sits against its local benchmark before you publish live inventory."
       backgroundImage="/dubai-tower-bg.jpg"
-      scanningLabel="Dubai feed live"
-      feedLabel="developer + tower inventory"
-      publishedLabel="Published semaforo"
-      tableTitle="Traffic lights for published Dubai listings"
-      listTitle="Published radar feed"
+      scanningLabel="DLD benchmark scan"
+      feedLabel="building + zone evidence"
+      publishedLabel="Market semaforo"
+      tableTitle="Traffic lights from Dubai DLD profiles"
+      listTitle="Dubai benchmark radar"
       currencyPrefix="AED"
       locale="en-AE"
       listings={DUBAI_RADAR_LISTINGS}

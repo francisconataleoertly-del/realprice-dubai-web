@@ -8,6 +8,15 @@ import SessionRail from "@/components/access/SessionRail";
 import FonatPropLogo from "@/components/brand/FonatPropLogo";
 import { useAccess } from "@/components/access/AccessProvider";
 
+const OWNER_ADMIN_EMAIL = "fonatprop@gmail.com";
+const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  "";
+const SUPABASE_SETTINGS_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? `${process.env.NEXT_PUBLIC_SUPABASE_URL.replace(/\/rest\/v1\/?$/, "").replace(/\/+$/, "")}/auth/v1/settings`
+  : "";
+
 function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,6 +31,7 @@ function LoginPageContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [googleEnabled, setGoogleEnabled] = useState(false);
 
   const nextPath = searchParams.get("next") || "/app";
 
@@ -29,16 +39,70 @@ function LoginPageContent() {
     setMode(searchParams.get("mode") === "signup" ? "signup" : "signin");
   }, [searchParams]);
 
+  useEffect(() => {
+    if (!SUPABASE_SETTINGS_URL) return;
+    let cancelled = false;
+    const loadSettings = async () => {
+      try {
+        const response = await fetch(SUPABASE_SETTINGS_URL, {
+          cache: "no-store",
+          headers: SUPABASE_ANON_KEY
+            ? {
+                apikey: SUPABASE_ANON_KEY,
+              }
+            : undefined,
+        });
+        if (!response.ok) return;
+        const data = (await response.json()) as { external?: { google?: boolean } };
+        if (!cancelled) {
+          setGoogleEnabled(Boolean(data?.external?.google));
+        }
+      } catch {
+        if (!cancelled) {
+          setGoogleEnabled(false);
+        }
+      }
+    };
+    void loadSettings();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const formatAuthError = (submitError: unknown, fallback: string) => {
     if (!(submitError instanceof Error)) {
       return fallback;
     }
+
+    const lowered = submitError.message.toLowerCase();
 
     if (submitError.message.toLowerCase().includes("failed to fetch")) {
       return (
         "Could not reach Supabase. Check NEXT_PUBLIC_SUPABASE_URL " +
         "(must be https://ryaaggulcxwstieoxaqs.supabase.co, without /rest/v1), " +
         "NEXT_PUBLIC_SUPABASE_ANON_KEY, and Supabase Auth URL Configuration."
+      );
+    }
+
+    if (lowered.includes("invalid login credentials")) {
+      return (
+        "That email and password do not match an active account yet. " +
+        `If this is your first FonatProp owner session, create the account once with ${OWNER_ADMIN_EMAIL} and then sign in.`
+      );
+    }
+
+    if (lowered.includes("provider is not enabled")) {
+      return "Google sign-in is not enabled in Supabase yet. Use email and password for now.";
+    }
+
+    if (lowered.includes("user already registered")) {
+      return "That email already has an account. Switch to Log in and use the same email and password.";
+    }
+
+    if (lowered.includes("rate limit")) {
+      return (
+        "Supabase is rate-limiting confirmation emails right now. " +
+        "If this owner account was already provisioned, switch to Log in and use the same email and password."
       );
     }
 
@@ -58,7 +122,7 @@ function LoginPageContent() {
         return;
       }
 
-      const result = await signUp({ name, email, password, phone });
+      const result = await signUp({ name, email, password, phone, nextPath });
       if (result.pendingConfirmation) {
         setNotice(
           result.message ||
@@ -110,7 +174,7 @@ function LoginPageContent() {
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-8 text-white/52">
             The public landing stays open to everyone. Signed-in members can use
-            the private product today while billing is still being wired. The
+            the member surfaces today while Pro workflows stay gated until billing is wired. The
             admin command center stays separate.
           </p>
 
@@ -118,11 +182,11 @@ function LoginPageContent() {
             {[
               {
                 label: "Member",
-                description: "Signed-in product access for now",
+                description: "Signed-in access to Map and Radar",
               },
               {
                 label: "Pro",
-                description: "Will later gate paid agency workflows",
+                description: "Valuation, investment and renovation",
               },
               {
                 label: "Admin",
@@ -186,14 +250,37 @@ function LoginPageContent() {
                 ))}
               </div>
 
-              <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                className="mb-5 w-full rounded-2xl border border-white/12 bg-white/[0.03] px-5 py-4 text-[11px] uppercase tracking-[0.24em] text-white hover:bg-white/[0.07] disabled:opacity-45"
-              >
-                Continue with Google
-              </button>
+              <div className="mb-5 rounded-[22px] border border-[#3b82f6]/15 bg-[#3b82f6]/[0.06] px-5 py-4">
+                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-[#7fb3ff] mb-2">
+                  Owner onboarding
+                </p>
+                <p className="text-[13px] leading-7 text-white/68">
+                  The owner/admin email is <span className="text-white">{OWNER_ADMIN_EMAIL}</span>.
+                  Create that account once with email and password, confirm the email if Supabase
+                  asks for it, and the admin role will attach to the new profile automatically.
+                </p>
+              </div>
+
+              {googleEnabled ? (
+                <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
+                  className="mb-5 w-full rounded-2xl border border-white/12 bg-white/[0.03] px-5 py-4 text-[11px] uppercase tracking-[0.24em] text-white hover:bg-white/[0.07] disabled:opacity-45"
+                >
+                  Continue with Google
+                </button>
+              ) : (
+                <div className="mb-5 rounded-[22px] border border-white/10 bg-white/[0.03] px-5 py-4">
+                  <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-white/30">
+                    Google sign-in
+                  </p>
+                  <p className="mt-2 text-[13px] leading-7 text-white/62">
+                    Google login is not enabled in Supabase yet. Use email and password for now so
+                    the flow does not look broken in front of clients.
+                  </p>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" ? (
@@ -253,7 +340,22 @@ function LoginPageContent() {
 
                 {error ? (
                   <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-[13px] text-red-300">
-                    {error}
+                    <p>{error}</p>
+                    {mode === "signin" ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMode("signup");
+                          setError("");
+                          setNotice(
+                            `Use the same email once in Create account. For owner/admin access, use ${OWNER_ADMIN_EMAIL}.`
+                          );
+                        }}
+                        className="mt-3 text-[11px] uppercase tracking-[0.22em] text-red-100 underline underline-offset-4"
+                      >
+                        Switch to create account
+                      </button>
+                    ) : null}
                   </div>
                 ) : null}
 
@@ -285,11 +387,10 @@ function LoginPageContent() {
               Live Auth Structure
             </p>
             <p className="text-[13px] leading-7 text-white/60">
-              Authentication now runs through Supabase. Until billing goes live,
-              every signed-in account is treated as{" "}
-              <span className="text-white">pro</span> so you can use the full
-              product. Later we can wire paid plans and admin roles through
-              metadata or billing sync.
+              Authentication now runs through Supabase. Regular signed-in accounts
+              open the member layer, while Pro workflows stay reserved for paid or
+              manually approved agencies. Later we can wire the plan state through
+              billing sync or metadata.
             </p>
           </div>
 

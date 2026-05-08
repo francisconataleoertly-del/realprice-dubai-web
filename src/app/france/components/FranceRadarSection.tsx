@@ -1,5 +1,3 @@
-"use client";
-
 import MarketRadarSection, {
   type RadarListing,
 } from "@/components/radar/MarketRadarSection";
@@ -30,6 +28,7 @@ type FranceMarketShape = {
   featured: FeaturedRecord[];
   by_department: DepartmentRecord[];
   by_commune: FeaturedRecord[];
+  generated_at?: string;
 };
 
 const data = marketData as unknown as FranceMarketShape;
@@ -69,11 +68,15 @@ function buildFranceListings(): RadarListing[] {
       angle: 24 + index * 34,
       distance: Math.max(0.36, Math.min(0.92, 0.34 + row.transactions / 110000)),
       areaLabel: `${Math.round(row.avg_area_m2 || 62)} m2`,
+      sourceLabel: "DVF commune vs department benchmark",
+      transactions: row.transactions,
+      confidenceScore: Math.max(48, Math.min(94, 54 + Math.round(Math.log10(row.transactions || 1) * 9))),
+      lastUpdated: data.generated_at,
       note:
         signal === "green"
-          ? "Commune-level pricing sits below the departmental benchmark, so this zone would surface as a green-light publication."
+          ? "Commune-level pricing sits below the departmental benchmark, so this zone surfaces as a green opportunity signal."
           : signal === "red"
-            ? "Published price context is above the benchmark. Useful for owners who need a market reality check before going live."
+            ? "Commune pricing is above the benchmark. Useful for owners who need a market reality check before going live."
             : "Balanced against the departmental benchmark. Good for neutral market positioning.",
     };
   });
@@ -84,17 +87,18 @@ const FRANCE_RADAR_LISTINGS = buildFranceListings();
 export default function FranceRadarSection() {
   return (
     <MarketRadarSection
+      market="france"
       chapterLabel="Chapter V"
       sectionLabel="Radar"
       title="Track every"
-      accentTitle="published French asset."
-      description="The France radar mirrors the Dubai experience, but feeds on French pricing intelligence. As you publish inventory, FonatProp can mark each asset green, amber or red against its local benchmark instead of leaving the pricing story ambiguous."
+      accentTitle="French market signal."
+      description="The France radar mirrors the Dubai experience, but feeds on DVF pricing intelligence. Green, amber and red compare commune medians against department benchmarks before live inventory is connected."
       backgroundImage="/france/nice-riviera.jpg"
-      scanningLabel="France feed live"
+      scanningLabel="DVF benchmark scan"
       feedLabel="dvf + local benchmark"
-      publishedLabel="Published semaforo"
-      tableTitle="Traffic lights for published France listings"
-      listTitle="Published radar feed"
+      publishedLabel="Market semaforo"
+      tableTitle="Traffic lights from France DVF profiles"
+      listTitle="France benchmark radar"
       currencyPrefix="EUR"
       locale="fr-FR"
       listings={FRANCE_RADAR_LISTINGS}

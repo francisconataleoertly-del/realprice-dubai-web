@@ -102,11 +102,46 @@ Log out and log back in.
 
 ## 3. Current behavior
 
-- all signed-in users are treated as `pro` for now
-- master users are `admin`
+- signed-in users default to `member`
+- promoted operators / master users are `admin`
+- `admin` users are forced to `plan = 'pro'`
 - `/admin` remains reserved for `admin`
 
-## 4. Later billing
+## 4. Published properties / Radar inventory
+
+To let `/admin` publish real Dubai and France properties into the public radar,
+run this migration in Supabase SQL Editor:
+
+```text
+supabase/migrations/20260501_001_published_properties.sql
+```
+
+This creates:
+
+- `public.published_properties`
+- public read access for `status = 'published'`
+- admin insert/update/delete access
+- radar fields: asking price, estimated value, low/high range, confidence score and green/yellow/red signal
+
+Until this migration is applied, the app safely falls back to benchmark radar data.
+
+## 4b. Widget agencies
+
+To let `/admin` create real widget agencies with domain allowlists and agency tokens,
+run this migration in Supabase SQL Editor:
+
+```text
+supabase/migrations/20260504_002_widget_agencies.sql
+```
+
+This creates:
+
+- `public.widget_agencies`
+- admin-only read/write policies
+- per-agency token storage
+- allowed host/domain control for the embeddable widget
+
+## 5. Later billing
 
 When billing is ready, switch non-paying users to:
 

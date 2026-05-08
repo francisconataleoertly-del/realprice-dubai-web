@@ -1,14 +1,48 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Loader2, TrendingUp as TrendUpIcon, TrendingDown } from "lucide-react";
+import { ChevronDown, Database, Loader2, ShieldCheck, TrendingUp as TrendUpIcon, TrendingDown } from "lucide-react";
 import CountUp from "react-countup";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip as ReTooltip, ResponsiveContainer, PieChart, Pie, Cell,
 } from "recharts";
+import DealIntelligencePanel from "@/components/intelligence/DealIntelligencePanel";
+import { buildInvestmentIntelligence } from "@/lib/deal-intelligence";
+import {
+  DUBAI_DUE_DILIGENCE,
+  DUBAI_FEE_STACK,
+  estimateDubaiServiceCharge,
+} from "@/lib/market-regulation";
 
 const API = "/api/fonatprop";
+
+const DUBAI_INVESTOR_LAYERS = [
+  {
+    label: "Rent reality",
+    title: "Ejari contracts",
+    metric: "Daily feed",
+    body: "DLD rent contracts can turn gross yield into evidence-based rent bands by building and community.",
+  },
+  {
+    label: "Cost drag",
+    title: "Service charges",
+    metric: "Net yield",
+    body: "Service-charge data should reduce inflated yields and expose expensive buildings before purchase.",
+  },
+  {
+    label: "Supply pressure",
+    title: "Building permits",
+    metric: "Pipeline",
+    body: "Dubai Municipality permits help flag future supply and local development momentum.",
+  },
+  {
+    label: "Quality layer",
+    title: "Al Sa'fat + safety",
+    metric: "Risk",
+    body: "Green building and safety rules can become a premium due-diligence layer for investors.",
+  },
+];
 
 // Verdict calculator
 function getVerdict(gy: number, cashFlow: number, appreciation: number) {
@@ -33,6 +67,61 @@ interface InvestmentResult {
 interface TrendZone { zone: string; cagr: number; }
 interface TrendsData { total_zones: number; top_10: TrendZone[]; bottom_10: TrendZone[]; }
 interface ZoneTrend { zone: string; resolved: string; cagr: number; yearly: Record<string, number>; }
+interface MarketCoverage {
+  combined_sales_rows?: number;
+  historical_sales_rows?: number;
+  live_sales_rows?: number;
+  min_date?: string;
+  max_date?: string;
+  areas?: number;
+  projects?: number;
+  median_price_per_m2_aed?: number;
+  total_sales_value_aed?: number;
+}
+interface MarketSignal {
+  area_name_en?: string;
+  project_name_en?: string;
+  property_type_en?: string;
+  live_transactions?: number;
+  live_median_price_per_m2_aed?: number;
+  live_total_sales_value_aed?: number;
+  live_vs_historical_price_per_m2_pct?: number;
+  historical_five_year_cagr_pct?: number;
+  investment_signal?: string;
+  confidence_label?: string;
+}
+interface DubaiInvestmentMarket {
+  generated_at?: string;
+  coverage?: MarketCoverage;
+  pipeline?: {
+    latest_full_historical_year?: number;
+    latest_live_year?: number;
+    comparison_base_year?: number;
+    historical_cagr_base_year?: number;
+  };
+  source_layers?: Array<{
+    source_layer?: string;
+    rows?: number;
+    min_date?: string;
+    max_date?: string;
+    areas?: number;
+    projects?: number;
+    total_sales_value_aed?: number;
+  }>;
+  top_area_signals?: MarketSignal[];
+  top_project_signals?: MarketSignal[];
+  caveats?: string[];
+}
+
+function titleCaseSignal(value?: string) {
+  return (value || "watchlist")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function normalizeZone(value?: string) {
+  return (value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
 
 export default function InversionSection() {
   const [zones, setZones] = useState<string[]>([]);
@@ -53,6 +142,8 @@ export default function InversionSection() {
     mortgage_years: 25,
   });
   const [result, setResult] = useState<InvestmentResult | null>(null);
+  const [market, setMarket] = useState<DubaiInvestmentMarket | null>(null);
+  const [marketLoading, setMarketLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -73,6 +164,12 @@ export default function InversionSection() {
         }
       })
       .catch((err) => console.error('[InversionSection] Failed to load trends:', err));
+
+    fetch("/api/dubai/investment")
+      .then((r) => r.json())
+      .then((d) => setMarket(d))
+      .catch((err) => console.error("[InversionSection] Failed to load Dubai investment market:", err))
+      .finally(() => setMarketLoading(false));
   }, []);
 
   // Fetch zone-specific trend when zone changes
@@ -107,6 +204,31 @@ export default function InversionSection() {
   };
 
   const fmt = (n: number) => new Intl.NumberFormat("en-AE", { maximumFractionDigits: 0 }).format(n);
+  const fmtCompact = (n?: number) =>
+    new Intl.NumberFormat("en-AE", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(Number(n || 0));
+  const fmtPct = (n?: number) =>
+    typeof n === "number" && Number.isFinite(n) ? `${n >= 0 ? "+" : ""}${n.toFixed(1)}%` : "n/a";
+  const selectMarketZone = (areaName?: string) => {
+    if (!areaName) return;
+    const areaKey = normalizeZone(areaName);
+    const matchedZone = zones.find((zone) => normalizeZone(zone) === areaKey);
+    setForm({ ...form, zona: matchedZone || areaName });
+  };
+  const serviceCharge = useMemo(
+    () => estimateDubaiServiceCharge(form.zona, form.property_type, form.area_m2),
+    [form.area_m2, form.property_type, form.zona],
+  );
+  const serviceChargeMid =
+    (serviceCharge.annualLowAed + serviceCharge.annualHighAed) / 2;
+  const netYieldAfterServiceCharge =
+    result && result.property.estimated_value_aed > 0
+      ? ((result.rental_income.annual_rent_aed - serviceChargeMid) /
+          result.property.estimated_value_aed) *
+        100
+      : null;
 
   return (
     <section id="inversion" className="relative min-h-screen overflow-hidden">
@@ -139,14 +261,216 @@ export default function InversionSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.75, delay: 0.08 }}
+          className="mb-10 overflow-hidden rounded-lg border border-blue-300/15 bg-blue-500/[0.05] backdrop-blur-2xl"
+        >
+          <div className="grid gap-px bg-white/[0.06] md:grid-cols-4">
+            {DUBAI_FEE_STACK.map((fee) => (
+              <article key={fee.label} className="bg-[#090a10]/92 p-5">
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-blue-200/48">
+                    {fee.label}
+                  </p>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
+                    {fee.value}
+                  </span>
+                </div>
+                <p className="text-[12px] leading-6 text-white/48">{fee.body}</p>
+              </article>
+            ))}
+          </div>
+          <div className="grid gap-px bg-white/[0.06] lg:grid-cols-[0.75fr_1.25fr]">
+            <div className="bg-[#090a10] p-5">
+              <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/32">
+                Service charge estimate
+              </p>
+              <p className="mt-3 font-['Fraunces'] text-[28px] font-light text-white">
+                AED {fmt(serviceCharge.annualLowAed)} - {fmt(serviceCharge.annualHighAed)}
+              </p>
+              <p className="mt-2 text-[12px] leading-6 text-white/45">
+                {serviceCharge.label} / {serviceCharge.lowAedPerSqft}-{serviceCharge.highAedPerSqft} AED per sqft per year.
+              </p>
+            </div>
+            <div className="grid gap-px bg-white/[0.06] md:grid-cols-2">
+              {DUBAI_DUE_DILIGENCE.slice(0, 4).map((item) => (
+                <p key={item} className="bg-[#090a10] p-5 text-[12px] leading-6 text-white/50">
+                  {item}
+                </p>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.75, delay: 0.05 }}
+          className="mb-10 grid gap-px overflow-hidden rounded-lg border border-white/[0.07] bg-white/[0.06] md:grid-cols-2 xl:grid-cols-4"
+        >
+          {DUBAI_INVESTOR_LAYERS.map((layer) => (
+            <article key={layer.title} className="bg-[#090a10]/92 p-5 backdrop-blur-xl">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-blue-200/48">
+                  {layer.label}
+                </p>
+                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/26">
+                  {layer.metric}
+                </span>
+              </div>
+              <h3 className="text-xl font-medium tracking-[-0.03em] text-white">{layer.title}</h3>
+              <p className="mt-4 text-[12px] leading-6 text-white/48">{layer.body}</p>
+            </article>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.75 }}
+          className="mb-10 overflow-hidden rounded-lg border border-white/[0.07] bg-[#090a10]/78 backdrop-blur-2xl"
+        >
+          <div className="grid gap-px bg-white/[0.06] lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="bg-[#090a10] p-6 md:p-7">
+              <div className="mb-7 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
+                  {marketLoading ? (
+                    <Loader2 size={15} className="animate-spin text-white/45" />
+                  ) : (
+                    <Database size={15} className="text-blue-200/70" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/30">
+                    DLD Live Market Intelligence
+                  </p>
+                  <p className="mt-1 text-sm text-white/55">
+                    Historical archive + official April 2026 transaction export
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded border border-white/[0.06] bg-white/[0.06]">
+                {[
+                  { label: "Combined sales", value: fmtCompact(market?.coverage?.combined_sales_rows) },
+                  { label: "Live sales", value: fmtCompact(market?.coverage?.live_sales_rows) },
+                  { label: "Areas", value: fmtCompact(market?.coverage?.areas) },
+                  { label: "Projects", value: fmtCompact(market?.coverage?.projects) },
+                ].map((item) => (
+                  <div key={item.label} className="bg-[#090a10] p-4">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/24">{item.label}</p>
+                    <p className="mt-2 font-['Fraunces'] text-2xl font-light text-white">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 space-y-2">
+                {(market?.source_layers || []).map((layer) => (
+                  <div key={layer.source_layer} className="flex items-center justify-between gap-4 border-t border-white/[0.05] pt-3 text-xs">
+                    <span className="font-mono uppercase tracking-[0.2em] text-white/28">
+                      {(layer.source_layer || "source").replace(/_/g, " ")}
+                    </span>
+                    <span className="text-right font-mono text-white/52">
+                      {fmtCompact(layer.rows)} rows
+                      <span className="ml-2 text-white/25">{layer.min_date} - {layer.max_date}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-px bg-white/[0.06] md:grid-cols-2">
+              <div className="bg-[#090a10] p-6 md:p-7">
+                <div className="mb-5 flex items-center gap-2">
+                  <TrendUpIcon size={15} className="text-green-300/80" />
+                  <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/35">Area signals</p>
+                </div>
+                <div className="space-y-2">
+                  {(market?.top_area_signals || []).slice(0, 6).map((signal, index) => (
+                    <button
+                      key={`${signal.area_name_en}-${signal.property_type_en}-${index}`}
+                      onClick={() => selectMarketZone(signal.area_name_en)}
+                      className="w-full border-t border-white/[0.05] pt-3 text-left transition-colors hover:bg-white/[0.025]"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="w-6 shrink-0 font-mono text-[10px] text-white/20">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="truncate text-[13px] text-white/74">{signal.area_name_en}</p>
+                            <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-white/28">
+                              {signal.property_type_en}
+                            </span>
+                          </div>
+                          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-blue-200/52">
+                            {titleCaseSignal(signal.investment_signal)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-mono text-[12px] text-green-300">
+                            {fmtPct(signal.live_vs_historical_price_per_m2_pct)}
+                          </p>
+                          <p className="mt-1 font-mono text-[10px] text-white/28">
+                            {fmtCompact(signal.live_transactions)} tx
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-[#090a10] p-6 md:p-7">
+                <div className="mb-5 flex items-center gap-2">
+                  <ShieldCheck size={15} className="text-blue-200/70" />
+                  <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/35">Project pulse</p>
+                </div>
+                <div className="space-y-2">
+                  {(market?.top_project_signals || []).slice(0, 6).map((signal, index) => (
+                    <button
+                      key={`${signal.project_name_en}-${signal.area_name_en}-${index}`}
+                      onClick={() => selectMarketZone(signal.area_name_en)}
+                      className="w-full border-t border-white/[0.05] pt-3 text-left transition-colors hover:bg-white/[0.025]"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="w-6 shrink-0 font-mono text-[10px] text-white/20">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[13px] text-white/74">{signal.project_name_en}</p>
+                          <p className="mt-1 truncate text-[11px] text-white/34">{signal.area_name_en}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-mono text-[12px] text-white/70">
+                            AED {fmtCompact(signal.live_total_sales_value_aed)}
+                          </p>
+                          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-blue-200/45">
+                            {signal.confidence_label || "watch"}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
           {/* ── INPUTS PANEL — editorial framed ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: 0.8 }}
-            className="relative bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-8 space-y-7"
+            className="relative self-start bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08] p-8 space-y-7"
           >
             {/* Corner frame marks */}
             <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/20" />
@@ -308,7 +632,7 @@ export default function InversionSection() {
           </motion.div>
 
           {/* Results */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="self-start lg:col-span-2 space-y-4">
             {error && <div className="p-4 rounded border border-red-500/20 bg-red-500/5 text-red-400 text-sm">{error}</div>}
 
             {result && (
@@ -399,6 +723,61 @@ export default function InversionSection() {
                       </p>
                     </motion.div>
                   ))}
+                </motion.div>
+
+                <DealIntelligencePanel
+                  intelligence={buildInvestmentIntelligence({
+                    market: "dubai",
+                    grossYieldPct: result.rental_income.gross_yield_pct,
+                    annualCashFlow: result.cash_flow.annual_cash_flow_aed,
+                    monthlyCashFlow: result.cash_flow.monthly_cash_flow_aed,
+                    cagrPct: form.annual_appreciation_pct,
+                    confidenceScore: 76,
+                    currency: "AED",
+                  })}
+                  title="AI investment memo"
+                />
+
+                <motion.div
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+                  className="rounded-2xl border border-blue-300/15 bg-blue-500/[0.06] p-5"
+                >
+                  <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-blue-100/62">
+                        Net-yield reality check
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-white/55">
+                        Gross yield becomes investment-grade only after service charges, Ejari/rent evidence,
+                        financing and transfer costs are visible.
+                      </p>
+                    </div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/35">
+                      {serviceCharge.label}
+                    </p>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <div className="rounded-xl border border-white/[0.08] bg-[#0a0a0f]/70 p-4">
+                      <p className="text-xs text-white/30">Annual service charge</p>
+                      <p className="mt-2 font-mono text-lg text-white">
+                        AED {fmt(serviceCharge.annualLowAed)} - {fmt(serviceCharge.annualHighAed)}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-white/[0.08] bg-[#0a0a0f]/70 p-4">
+                      <p className="text-xs text-white/30">Net yield after service</p>
+                      <p className="mt-2 font-mono text-lg text-emerald-300">
+                        {netYieldAfterServiceCharge === null
+                          ? "Run calc"
+                          : `${netYieldAfterServiceCharge.toFixed(1)}%`}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-white/[0.08] bg-[#0a0a0f]/70 p-4">
+                      <p className="text-xs text-white/30">Official check</p>
+                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/56">
+                        DLD Mollak / Ejari
+                      </p>
+                    </div>
+                  </div>
                 </motion.div>
 
                 {/* --- hidden marker for original content below --- */}

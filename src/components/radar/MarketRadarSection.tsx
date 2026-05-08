@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUp, Minus, Radar } from "lucide-react";
 
+import ParallaxBackdrop from "@/components/design/ParallaxBackdrop";
+
 export type RadarSignal = "green" | "yellow" | "red";
 
 export type RadarListing = {
@@ -18,10 +20,15 @@ export type RadarListing = {
   distance: number;
   areaLabel?: string;
   note?: string;
+  confidenceScore?: number;
+  sourceLabel?: string;
+  transactions?: number;
+  lastUpdated?: string;
 };
 
 type MarketRadarSectionProps = {
   id?: string;
+  market?: "dubai" | "france";
   chapterLabel: string;
   sectionLabel: string;
   title: string;
@@ -389,6 +396,7 @@ function RadarCanvas({
 
 export default function MarketRadarSection({
   id = "radar",
+  market,
   chapterLabel,
   sectionLabel,
   title,
@@ -406,8 +414,32 @@ export default function MarketRadarSection({
 }: MarketRadarSectionProps) {
   const [filter, setFilter] = useState<RadarSignal | "all">("all");
   const [selected, setSelected] = useState<RadarListing | null>(listings[0] ?? null);
+  const [publishedListings, setPublishedListings] = useState<RadarListing[] | null>(null);
 
-  const visible = filter === "all" ? listings : listings.filter((item) => item.signal === filter);
+  const activeListings = publishedListings?.length ? publishedListings : listings;
+  const visible =
+    filter === "all" ? activeListings : activeListings.filter((item) => item.signal === filter);
+
+  useEffect(() => {
+    if (!market) return;
+
+    let active = true;
+
+    fetch(`/api/published-properties?market=${market}`, { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (!active) return;
+        const nextListings = Array.isArray(payload?.listings) ? payload.listings : [];
+        setPublishedListings(nextListings.length ? nextListings : null);
+      })
+      .catch(() => {
+        if (active) setPublishedListings(null);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [market]);
 
   useEffect(() => {
     if (!visible.length) {
@@ -423,10 +455,7 @@ export default function MarketRadarSection({
 
   return (
     <section id={id} className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center md:bg-fixed"
-        style={{ backgroundImage: `url('${backgroundImage}')` }}
-      />
+      <ParallaxBackdrop image={backgroundImage} speed={0.42} opacity={0.42} />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,185,197,0.14),transparent_36%),linear-gradient(180deg,rgba(4,12,16,0.46),rgba(5,10,18,0.88)_50%,rgba(5,7,12,0.98))]" />
       <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(8,12,20,0.88)_10%,rgba(8,12,20,0.58)_42%,rgba(8,12,20,0.86)_100%)]" />
 
@@ -461,7 +490,7 @@ export default function MarketRadarSection({
             <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-1">
               {(["green", "yellow", "red"] as const).map((signal) => {
                 const config = SIGNAL_CONFIG[signal];
-                const total = listings.filter((item) => item.signal === signal).length;
+                const total = activeListings.filter((item) => item.signal === signal).length;
 
                 return (
                   <div
@@ -502,7 +531,7 @@ export default function MarketRadarSection({
             <div className="h-px min-w-[80px] flex-1 bg-white/[0.06]" />
             <div className="inline-grid overflow-hidden rounded-full border border-white/[0.08] bg-black/20 sm:grid-cols-4">
               {[
-                { key: "all", label: "All published" },
+                { key: "all", label: "All signals" },
                 { key: "green", label: "Green lights" },
                 { key: "yellow", label: "In range" },
                 { key: "red", label: "Too high" },
@@ -529,7 +558,7 @@ export default function MarketRadarSection({
             </div>
           </motion.div>
 
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+          <div className="grid gap-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -556,7 +585,9 @@ export default function MarketRadarSection({
                     {publishedLabel}
                   </p>
                   <p className="text-sm leading-6 text-white/54">
-                    Green, amber and red turn on automatically when a property is published against your valuation model.
+                    {publishedListings?.length
+                      ? "Green, amber and red turn on automatically from properties published in the admin."
+                      : "Green, amber and red turn on automatically when market evidence is compared against the valuation model."}
                   </p>
                 </div>
                 <div className="relative py-6">
@@ -570,7 +601,8 @@ export default function MarketRadarSection({
               </div>
             </motion.div>
 
-            <div className="space-y-4">
+            <div className="grid items-start gap-4 xl:grid-cols-[minmax(320px,0.82fr)_minmax(0,1.18fr)]">
+              <div className="space-y-4">
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -586,7 +618,7 @@ export default function MarketRadarSection({
                     </p>
                   </div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/28">
-                    {visible.length} live rows
+                    {visible.length} signals
                   </p>
                 </div>
 
@@ -628,7 +660,7 @@ export default function MarketRadarSection({
                   <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/[0.06] px-5 py-5">
                     <div>
                       <p className="mb-1 font-['Fraunces'] text-[12px] font-light italic text-white/38">
-                        Selected listing
+                        Selected signal
                       </p>
                       <p className="font-['Fraunces'] text-[28px] font-light leading-none tracking-tight text-white">
                         {selected.title}
@@ -656,7 +688,7 @@ export default function MarketRadarSection({
                   <div className="grid gap-4 px-5 py-5 sm:grid-cols-2">
                     <div className="rounded-[24px] border border-white/[0.06] bg-white/[0.02] px-4 py-4">
                       <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.26em] text-white/26">
-                        Published value
+                        Observed value
                       </p>
                       <p className="font-['Fraunces'] text-[28px] font-extralight leading-none text-white">
                         <span className="mr-1 text-[0.55em] text-white/34">{currencyPrefix}</span>
@@ -665,7 +697,7 @@ export default function MarketRadarSection({
                     </div>
                     <div className="rounded-[24px] border border-white/[0.06] bg-white/[0.02] px-4 py-4">
                       <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.26em] text-white/26">
-                        Model benchmark
+                        Benchmark
                       </p>
                       <p
                         className="font-['Fraunces'] text-[28px] font-extralight leading-none"
@@ -680,11 +712,11 @@ export default function MarketRadarSection({
                   <div className="grid gap-4 border-t border-white/[0.06] px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
                     <div>
                       <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-white/26">
-                        Publishing signal
+                        Market signal
                       </p>
                       <p className="mt-1 text-sm leading-6 text-white/52">
                         {selected.note ??
-                          "The radar keeps a live semaforo based on how far the asking value sits from the model range."}
+                          "The radar keeps a live semaforo based on how far the observed value sits from the model benchmark."}
                       </p>
                     </div>
                     <p
@@ -695,24 +727,54 @@ export default function MarketRadarSection({
                       {selected.diffPct.toFixed(1)}%
                     </p>
                   </div>
+
+                  <div className="grid gap-3 border-t border-white/[0.06] px-5 py-4 sm:grid-cols-3">
+                    {[
+                      [selected.sourceLabel || "Verified market data", "source"],
+                      [
+                        selected.transactions
+                          ? `${new Intl.NumberFormat(locale).format(selected.transactions)} tx`
+                          : "model evidence",
+                        "evidence",
+                      ],
+                      [
+                        selected.confidenceScore
+                          ? `${selected.confidenceScore}/100`
+                          : selected.lastUpdated || "active layer",
+                        selected.confidenceScore ? "confidence" : "freshness",
+                      ],
+                    ].map(([value, label]) => (
+                      <div
+                        key={label}
+                        className="rounded-[20px] border border-white/[0.06] bg-white/[0.02] px-4 py-3"
+                      >
+                        <p className="truncate text-sm text-white/64">{value}</p>
+                        <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.24em] text-white/26">
+                          {label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </motion.div>
               ) : null}
+
+              </div>
 
               <div className="overflow-hidden rounded-[30px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(11,17,26,0.88),rgba(8,12,20,0.78))] backdrop-blur-2xl">
                 <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
                   <p className="font-['Fraunces'] text-[14px] font-light italic text-white/64">
-                    {listTitle}
+                    {publishedListings?.length ? "Published property feed" : listTitle}
                   </p>
                   <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/28">
-                    {feedLabel}
+                    {publishedListings?.length ? "admin inventory" : feedLabel}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-[1.15fr_1fr_0.8fr_0.8fr_0.65fr] gap-3 border-b border-white/[0.05] px-5 py-3 font-mono text-[9px] uppercase tracking-[0.24em] text-white/22">
                   <span>Asset</span>
                   <span>Context</span>
-                  <span className="text-right">Publish</span>
-                  <span className="text-right">Model</span>
+                  <span className="text-right">Observed</span>
+                  <span className="text-right">Benchmark</span>
                   <span className="text-right">Light</span>
                 </div>
 

@@ -71,7 +71,7 @@ export default function HeroCarousel() {
           </h1>
 
           {/* Refined tagline — no blue highlights, elegant prose */}
-          <p className="font-['Inter'] text-[clamp(1rem,1.25vw,1.2rem)] text-white/55 font-light leading-[1.7] max-w-xl mb-12">
+          <p className="fonatprop-dropcap font-['Inter'] text-[clamp(1rem,1.25vw,1.2rem)] text-white/55 font-light leading-[1.7] max-w-xl mb-12">
             A market intelligence platform trained on a decade of Dubai real estate.
             Instant valuations, live opportunities, and cost analytics
             &mdash; designed for serious investors.

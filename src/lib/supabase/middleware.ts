@@ -4,6 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 
 import { DEFAULT_SESSION, resolveSessionFromUser } from "@/lib/access-control";
 import { getSupabasePublicEnv } from "@/lib/supabase/env";
+import { fetchOwnProfile } from "@/lib/supabase/profiles";
 
 export async function updateSupabaseSession(request: NextRequest) {
   const env = getSupabasePublicEnv();
@@ -46,9 +47,11 @@ export async function updateSupabaseSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const profile = await fetchOwnProfile(supabase, user);
+
   return {
     response,
-    session: resolveSessionFromUser(user),
+    session: resolveSessionFromUser(user, profile),
     configured: true,
   };
 }

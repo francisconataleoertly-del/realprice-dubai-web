@@ -246,7 +246,7 @@ export default function MapSection() {
         </motion.div>
 
         {/* Zone details + price legend */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
           {/* Price legend */}
           <div className="relative p-4 bg-[#0a0a0f]/70 backdrop-blur-2xl border-t border-b border-white/[0.08]">
             <div className="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/20" />
