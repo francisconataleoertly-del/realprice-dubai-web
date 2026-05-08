@@ -322,9 +322,14 @@ function SectionBackdrop({
 }) {
   return (
     <>
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('${image}')`, backgroundPosition: position, opacity }}
+      <img
+        src={image}
+        alt=""
+        aria-hidden
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover will-change-transform [transform:translateZ(0)]"
+        style={{ objectPosition: position, opacity }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,10,0.96),rgba(5,6,10,0.82)_48%,rgba(5,6,10,0.62))]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_18%,rgba(59,130,246,0.14),transparent_34%)]" />
@@ -707,7 +712,7 @@ function HeroSection() {
       <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-7xl flex-col items-start justify-center px-6 py-28 md:min-h-screen md:px-12 lg:px-24">
         <FonatPropLogo
           variant="lockup"
-          className="mb-10 h-auto w-full max-w-[390px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
+          className="fp-shared-logo mb-10 h-auto w-full max-w-[390px] opacity-95 drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
           priority
         />
         <p className="font-mono text-[10px] tracking-[0.32em] uppercase text-white/28 mb-4">

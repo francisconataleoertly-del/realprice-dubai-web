@@ -272,6 +272,44 @@ html {
     "lnum" 1;
 }
 
+/* === View Transitions API ===
+   Cross-fade with a soft scale between routes. The Next.js experimental flag
+   enables document.startViewTransition() under the hood; these rules style
+   the pseudo-elements the browser injects during the transition. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root) {
+  animation-name: fp-view-fade-out;
+}
+::view-transition-new(root) {
+  animation-name: fp-view-fade-in;
+}
+@keyframes fp-view-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.985); }
+}
+@keyframes fp-view-fade-in {
+  from { opacity: 0; transform: scale(1.015); filter: blur(2px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* Logo persists across the Dubai/France boundary — both pages opt-in by
+   setting `view-transition-name: fp-logo` on the lockup. The browser then
+   morphs the logo between positions instead of cross-fading it. */
+.fp-shared-logo {
+  view-transition-name: fp-logo;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 /* === DVF Live ticker marquee === */
 .dvf-ticker-track {
   animation: dvf-marquee 80s linear infinite;
