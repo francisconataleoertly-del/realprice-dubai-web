@@ -20,6 +20,7 @@ import { getFranceRegulationProfile } from "@/lib/market-regulation";
 import marketData from "@/data/france-dvf-market.json";
 import ParallaxBackdrop from "@/components/design/ParallaxBackdrop";
 import NoiseTexture from "@/components/design/NoiseTexture";
+import DigitRoller from "@/components/design/DigitRoller";
 import FranceReportCTA from "./FranceReportCTA";
 import { useFranceMarket } from "./FranceMarketContext";
 import {
@@ -1326,8 +1327,12 @@ export default function FranceInvestmentSection() {
                             style={{ backgroundColor: c.bg }}
                           >
                             <div className="text-[18px] font-light" style={{ color: c.text }}>
-                              {cell.totalReturnPct > 0 ? "+" : ""}
-                              {cell.totalReturnPct.toFixed(0)}%
+                              <DigitRoller
+                                value={Math.round(cell.totalReturnPct)}
+                                prefix={cell.totalReturnPct > 0 ? "+" : ""}
+                                suffix="%"
+                                duration={520}
+                              />
                             </div>
                             <div className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/35">
                               {cell.annualAfterTax > 0 ? "+" : ""}

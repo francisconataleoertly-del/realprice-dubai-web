@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import ShimmerSkeleton from "@/components/design/ShimmerSkeleton";
+import DigitRoller from "@/components/design/DigitRoller";
 
 type ComparableRecord = {
   d: string;
@@ -127,7 +128,15 @@ export default function FranceComparablesPanel({
             <span>
               {data.filtered_count} matches · median{" "}
               <span className="text-white/80">
-                {data.median_price_per_m2 ? eur(data.median_price_per_m2) : "—"} EUR/m²
+                {data.median_price_per_m2 ? (
+                  <DigitRoller
+                    value={data.median_price_per_m2}
+                    suffix=" EUR/m²"
+                    duration={550}
+                  />
+                ) : (
+                  <>— EUR/m²</>
+                )}
               </span>
             </span>
           ) : null}
