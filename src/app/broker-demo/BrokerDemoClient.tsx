@@ -5,27 +5,34 @@ import Script from "next/script";
 
 import GoogleMapsLoader from "@/app/realprice/components/GoogleMapsLoader";
 import ValorarSection from "@/app/realprice/components/ValorarSection";
+import { DUBAI_PUBLIC_BENCHMARKS } from "@/lib/dubai-benchmarks";
 import MandatePackPreviewSection from "@/components/mandate-pack/MandatePackPreviewSection";
 import { FONATPROP_CONTACT } from "@/lib/fonatprop-contact";
+import SmartRenovationRequest from "@/components/fonatprop/SmartRenovationRequest";
 
 const BROKER_DEMO_WIDGET_TOKEN =
   process.env.NEXT_PUBLIC_BROKER_DEMO_WIDGET_TOKEN || "fp_demo_widget_2026";
 
-const handoffCards = [
+const widgetToolCards = [
   {
-    label: "1 / Capture",
-    title: "Capture the visitor before the estimate",
-    body: "The widget collects name, email and phone first, so the agency gets a qualified inquiry even before the visitor sees a range.",
+    label: "Widget 01 / AI valuation",
+    title: "Open the seller conversation with an instant range",
+    body: "This is the strongest lead hook: the owner gets a broad AI valuation signal, and the broker receives the property context to continue the real pricing conversation privately.",
   },
   {
-    label: "2 / Estimate",
-    title: "Give a broad AI market range",
-    body: "The public widget shows a non-final range. The precise valuation stays inside the brokerage, where the agent controls the conversation.",
+    label: "Widget 02 / Golden Visa",
+    title: "Capture investor demand around the Golden Visa threshold",
+    body: "The visitor checks whether their budget or property value reaches the main UAE thresholds. The agency receives a qualified investor lead instead of a vague first message.",
   },
   {
-    label: "3 / Agent handoff",
-    title: "Send the inquiry to the agent instantly",
-    body: "Every inquiry can go to WhatsApp, email, Google Sheets, Zapier, Make, HubSpot, Pipedrive or the brokerage's private CRM.",
+    label: "Widget 03 / Yield Net",
+    title: "Open the investment conversation with rental return",
+    body: "The visitor gets a first net-yield angle before speaking to anyone. The broker starts with a concrete return discussion, not a generic investment inquiry.",
+  },
+  {
+    label: "Widget 04 / Off-plan fit",
+    title: "Qualify off-plan buyers before the first serious call",
+    body: "The visitor checks whether a payment plan feels realistic. The broker sees stronger buyer intent and spends less time on weak off-plan inquiries.",
   },
 ];
 
@@ -53,7 +60,7 @@ const heroSlides = [
 ];
 
 const proofPoints = [
-  "234K+ verified Dubai transactions",
+  "1.05M+ Dubai DLD transactions",
   "Private AI valuation for agents",
   "Public AI widget for qualified inquiries",
 ];
@@ -96,172 +103,12 @@ const cycleSteps = [
   },
 ];
 
-const widgetPlan = {
-  label: "Widget",
-  title: "Lead capture",
-  priceAed: "AED 1,099",
-  priceUsd: "$299 / month",
-  body: "One website. One widget. One monthly fee.",
-  foot: "Single-site license / Live",
-};
-
-const pricingSummaryCards = [
-  {
-    name: "Widget",
-    eyebrow: "Fixed website layer",
-    price: "AED 1,099",
-    detail: "$299 / month",
-    foot: "One site. One live widget license.",
-    body: "Public lead capture for one brokerage website. No tokens needed.",
-    accent: "#ebc469",
-    skyline: [24, 52, 36, 68, 40, 58, 34],
-  },
-  {
-    name: "Valuation",
-    eyebrow: "Entry AI tier",
-    price: "AED 1,465",
-    detail: "10 tokens / month",
-    foot: "1 private valuation = 1 token.",
-    body: "This price is only for the 10-token entry tier. Higher tiers scale up to 200 tokens.",
-    accent: "#63c7ff",
-    skyline: [18, 44, 72, 92, 64, 40, 56],
-  },
-  {
-    name: "Top-up",
-    eyebrow: "Flexible expansion",
-    price: "Extra credits",
-    detail: "10, 20 or custom packs",
-    foot: "Mid-cycle top-up or plan upgrade.",
-    body: "For agencies that need more valuation volume without waiting for the next billing cycle.",
-    accent: "#8f5cff",
-    skyline: [30, 48, 28, 76, 32, 60, 42],
-  },
-];
-
-const valuationPlans = [
-  { tokens: 10, priceAed: "AED 1,465", priceUsd: "$399 / mo", featured: false },
-  { tokens: 20, priceAed: "AED 2,199", priceUsd: "$599 / mo", featured: true },
-  { tokens: 50, priceAed: "AED 4,400", priceUsd: "$1,199 / mo", featured: false },
-  { tokens: 100, priceAed: "AED 7,345", priceUsd: "$2,000 / mo", featured: false },
-  { tokens: 200, priceAed: "AED 12,855", priceUsd: "$3,500 / mo", featured: false },
-];
-
-const topUpPacks = [
-  {
-    name: "Extra 10 tokens",
-    price: "AED 1,465",
-    copy: "Fast top-up for a team that needs more valuations before the next billing cycle.",
-  },
-  {
-    name: "Extra 20 tokens",
-    price: "AED 2,199",
-    copy: "Best fit when usage grows but the agency is not ready to move to a higher monthly tier yet.",
-  },
-  {
-    name: "Custom pack",
-    price: "Quote",
-    copy: "For larger broker teams, branch structures and dedicated CRM routing or API access.",
-  },
-];
-
-const upgradeRules = [
-  "1 private valuation search = 1 AI valuation token.",
-  "The public lead-capture widget is a separate fixed monthly license.",
-  "Agencies can start with a token plan, buy extra packs mid-cycle or move to a higher tier.",
-  "Custom enterprise setups can combine widget licenses, token bundles and dedicated integrations.",
-];
-
-function PricingSkyline({
-  bars,
-  color,
-}: {
-  bars: number[];
-  color: string;
-}) {
-  return (
-    <div className="pointer-events-none flex h-20 items-end gap-[6px] opacity-95">
-      {bars.map((height, index) => (
-        <span
-          key={`${color}-${height}-${index}`}
-          className="w-[18px] rounded-t-[8px] border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.06)]"
-          style={{
-            height: `${height}px`,
-            background: `linear-gradient(180deg, ${color}33 0%, rgba(10,10,15,0.2) 100%)`,
-            boxShadow: `0 0 24px ${color}22`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function PricingSignalCard({
-  card,
-  onOpenModal,
-}: {
-  card: (typeof pricingSummaryCards)[number];
-  onOpenModal?: () => void;
-}) {
-  return (
-    <article className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.02))] p-6 shadow-[0_22px_80px_rgba(0,0,0,0.22)]">
-      <div
-        className="absolute inset-0 opacity-90"
-        style={{
-          background: `radial-gradient(circle at 82% 10%, ${card.accent}20 0%, transparent 28%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))`,
-        }}
-      />
-      <div className="absolute inset-x-0 bottom-0 h-[120px] bg-[linear-gradient(180deg,rgba(10,10,15,0),rgba(10,10,15,0.78))]" />
-
-      <div className="relative flex min-h-[335px] flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p
-              className="font-mono text-[10px] uppercase tracking-[0.28em]"
-              style={{ color: card.accent }}
-            >
-              {card.name}
-            </p>
-            <p className="mt-3 text-[12px] uppercase tracking-[0.22em] text-white/42">
-              {card.eyebrow}
-            </p>
-          </div>
-          {card.name === "Top-up" ? (
-            <button
-              type="button"
-              onClick={onOpenModal}
-              className="rounded-full border border-white/12 px-4 py-2 text-[10px] uppercase tracking-[0.24em] text-white/68 transition hover:border-white/24 hover:text-white"
-            >
-              Open logic
-            </button>
-          ) : null}
-        </div>
-
-        <div className="mt-8">
-          <p className="font-['Fraunces'] text-[clamp(2.2rem,3.2vw,3.25rem)] font-light tracking-[-0.05em] text-white">
-            {card.price}
-          </p>
-          <div className="mt-4 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-white/78">
-            {card.detail}
-          </div>
-          <p className="mt-5 text-[15px] leading-8 text-white/56">{card.body}</p>
-        </div>
-
-        <div className="mt-auto flex items-end justify-between gap-4 pt-8">
-          <PricingSkyline bars={card.skyline} color={card.accent} />
-          <p className="max-w-[180px] text-right text-[12px] leading-6 text-white/46">
-            {card.foot}
-          </p>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 function mountWidget() {
   const maybeWindow = window as unknown as {
+    FonatPropWidget?: { mountAll?: () => void };
     RealPriceWidget?: { mountAll?: () => void };
   };
-  maybeWindow.RealPriceWidget?.mountAll?.();
+  (maybeWindow.FonatPropWidget || maybeWindow.RealPriceWidget)?.mountAll?.();
 }
 
 function ProductSplit() {
@@ -272,7 +119,7 @@ function ProductSplit() {
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#3b82f6]">
             Product category
           </p>
-          <h2 className="mt-4 font-['Fraunces'] text-[clamp(2.6rem,5vw,5.4rem)] font-light leading-[0.9] tracking-[-0.055em]">
+          <h2 className="mt-4 font-[var(--font-display)] text-[clamp(2.6rem,5vw,5.4rem)] font-light leading-[0.9] tracking-normal">
             AI valuation &
             <br />
             <span className="italic text-[#15120f]/42">lead conversion engine.</span>
@@ -288,7 +135,7 @@ function ProductSplit() {
             <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/38">
               Private tool
             </p>
-            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em]">
+            <h3 className="mt-4 text-3xl font-semibold tracking-normal">
               Exact valuation for the brokerage
             </h3>
             <p className="mt-4 text-sm leading-7 text-white/58">
@@ -301,7 +148,7 @@ function ProductSplit() {
             <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-black/38">
               Public widget
             </p>
-            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em]">
+            <h3 className="mt-4 text-3xl font-semibold tracking-normal">
               Broad range for website visitors
             </h3>
             <p className="mt-4 text-sm leading-7 text-black/58">
@@ -324,61 +171,66 @@ function WidgetShowcase() {
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-[#15120f]/45">
               Product 02 / Website widget
             </p>
-            <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
+            <h2 className="max-w-4xl font-[var(--font-display)] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-normal">
               Turn the website
               <br />
               <span className="italic text-[#15120f]/42">into an inquiry engine.</span>
             </h2>
           </div>
           <p className="max-w-md text-[15px] leading-8 text-[#15120f]/58">
-            This is the embeddable widget brokers install with one script. It works on mobile,
-            keeps styles isolated with Shadow DOM and sends qualified inquiries to the agency in
-            real time.
+            This is one embeddable widget with four different reasons to start a conversation.
+            The agency keeps one surface on the site, but captures seller, investor and off-plan
+            intent from different entry points.
           </p>
         </div>
 
-        <div className="rounded-[34px] border border-black/10 bg-white p-5 shadow-[0_32px_90px_rgba(21,18,15,0.14)]">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 px-2">
+        <div className="mb-10 grid gap-4 lg:grid-cols-2">
+          {widgetToolCards.map((card) => (
+            <article
+              key={card.label}
+              className="rounded-[28px] border border-black/10 bg-white/72 p-6 shadow-[0_18px_55px_rgba(21,18,15,0.07)]"
+            >
+              <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#3b82f6]">
+                {card.label}
+              </p>
+              <h3 className="text-[1.6rem] font-semibold tracking-normal text-[#15120f]">
+                {card.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-black/56">{card.body}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="overflow-hidden rounded-[44px] border border-white/8 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_28%),linear-gradient(180deg,#06101b,#05070c)] p-6 shadow-[0_42px_120px_rgba(0,0,0,0.28)] md:p-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 px-1">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-black/35">
+              <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-white/38">
                 Live script preview
               </p>
-              <p className="mt-1 text-sm text-black/55">
-                Banner mode: hero, contact capture, broad estimate and agent handoff.
+              <p className="mt-1 text-sm text-white/56">
+                One premium widget. Four different lead-capture conversations in the same frame.
               </p>
             </div>
-            <div className="rounded-full border border-black/10 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-black/45">
+            <div className="rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/46">
               Private implementation
             </div>
           </div>
 
           <Script src="/widget/embed.js" strategy="afterInteractive" onLoad={mountWidget} />
-          <div
-            data-realprice-widget
-            data-mode="banner"
-            data-agency-id="broker-demo-001"
-            data-agency-token={BROKER_DEMO_WIDGET_TOKEN}
-            data-brand-color="#3b82f6"
-            data-banner-title="Want to know how much your Dubai property is worth?"
-            data-banner-cta="Get your free valuation"
-            data-banner-image="/dubai-slides/03-burj-al-arab.jpg"
-          />
-        </div>
-
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {handoffCards.map((card) => (
+          <div className="rounded-[40px] border border-white/8 bg-black/20 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:p-3">
             <div
-              key={card.label}
-              className="rounded-[28px] border border-black/10 bg-white/70 p-6 shadow-[0_18px_55px_rgba(21,18,15,0.07)]"
-            >
-              <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#3b82f6]">
-                {card.label}
-              </p>
-              <h3 className="text-xl font-semibold tracking-[-0.035em]">{card.title}</h3>
-              <p className="mt-4 text-sm leading-7 text-black/55">{card.body}</p>
-            </div>
-          ))}
-        </div>
+              data-fonatprop-widget
+              data-mode="inline"
+              data-widget-mode="carousel"
+              data-carousel-cards="valuation,golden_visa,net_yield,offplan_payment"
+              data-agency-id="broker-demo-001"
+              data-agency-token={BROKER_DEMO_WIDGET_TOKEN}
+              data-brand-color="#3b82f6"
+              data-banner-title="Want to know how much your Dubai property is worth?"
+              data-banner-cta="Get your free valuation"
+              data-banner-image="/dubai-slides/03-burj-al-arab.jpg"
+            />
+          </div>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="rounded-[28px] border border-black/10 bg-[#15120f] p-6 text-white">
@@ -386,37 +238,110 @@ function WidgetShowcase() {
                 Delivery model
               </p>
               <p className="text-[15px] leading-8 text-white/62">
-                The live demo shows the public experience, but the implementation layer stays
-                private. Embed code, routing setup and deployment details are shared only during
-                the commercial onboarding flow.
+                The agency installs one script, chooses the cards it wants to show, and keeps the
+                lead routing private behind its own token and contact setup.
               </p>
             </div>
             <div className="rounded-[28px] border border-black/10 bg-white/70 p-6">
               <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-black/35">
-                What the buyer needs to know
+                Why this matters
               </p>
               <p className="text-[15px] leading-8 text-black/60">
-                FonatProp handles the setup with the agency ID, lead routing and contact handoff.
-                The brokerage gets the finished widget on its website without needing public access
-                to the implementation code.
+                Not every visitor wants only a valuation. Some want yield, some want Golden Visa
+                clarity, and some want to understand an off-plan payment plan before speaking to a broker.
               </p>
             </div>
           </div>
         </div>
-      </section>
-    );
-  }
+      </div>
+    </section>
+  );
+}
+
+function SmartRenovationDemoSection() {
+  return (
+    <section id="smart-renovation" className="relative overflow-hidden bg-[#07101a] px-5 py-24 text-white">
+      <div className="absolute inset-0 bg-[url('/dubai-slides/04-marina-night.jpg')] bg-cover bg-center opacity-18" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(7,16,26,0.96),rgba(7,10,18,0.98)_52%,rgba(18,34,48,0.92))]" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-100/55">
+              Smart renovation
+            </p>
+            <h2 className="mt-5 font-[var(--font-display)] text-[clamp(3rem,6vw,6.6rem)] font-light leading-[0.9] tracking-normal">
+              Visualize the upgrade.
+              <span className="block italic text-white/38">Capture the project.</span>
+            </h2>
+          </div>
+          <p className="max-w-2xl text-[15px] leading-7 text-white/58 lg:justify-self-end">
+            A premium lead magnet for owners, investors and buyers: upload a room, mark what should change, estimate cost and hand the context to the broker or designer.
+          </p>
+        </div>
+        <SmartRenovationRequest agencyId="broker-demo-001" />
+      </div>
+    </section>
+  );
+}
+
+function TrafficGenerationDemoSection() {
+  return (
+    <section id="traffic-generation" className="relative overflow-hidden bg-[#061018] px-5 py-24 text-white">
+      <div className="absolute inset-0 bg-[url('/dubai-slides/07-marina-aerial.jpg')] bg-cover bg-center opacity-22" />
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(6,16,24,0.97),rgba(6,16,24,0.88)_48%,rgba(6,50,60,0.7))]" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-100/52">
+              Demand operating layer
+            </p>
+            <h2 className="font-[var(--font-display)] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-normal">
+              Bring demand.
+              <br />
+              <span className="italic text-white/42">Own the relationship.</span>
+            </h2>
+          </div>
+          <p className="max-w-xl text-[15px] leading-8 text-white/58">
+            FonatProp does not replace the agency website or the web studio. It adds a confidential acquisition layer around the agency brand.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-px overflow-hidden rounded-[34px] border border-white/[0.08] bg-white/[0.06] lg:grid-cols-3">
+          {[
+            ["Demand", "Increase qualified commercial attention."],
+            ["Qualify", "Turn property intent into a private agency inquiry."],
+            ["Proof", "Show enough commercial movement to scale with confidence."],
+          ].map(([title, body], index) => (
+            <article key={title} className="min-h-[240px] bg-[#090a10]/94 p-7">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-100/52">
+                0{index + 1}
+              </p>
+              <h3 className="mt-8 text-2xl font-semibold tracking-normal text-white">
+                {title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-white/50">{body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function CycleClosureSection() {
+  const supportMape = DUBAI_PUBLIC_BENCHMARKS.support.meanErrorPct.toFixed(1);
+  const supportWithin20 = DUBAI_PUBLIC_BENCHMARKS.support.within20Pct.toFixed(1);
+  const broadMape = DUBAI_PUBLIC_BENCHMARKS.broad.mapePct.toFixed(1);
+
   return (
-    <section className="bg-[#0a0a0f] px-5 py-24 text-white">
+    <section id="handoff" className="bg-[#0a0a0f] px-5 py-24 text-white">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-white/35">
               Sales loop / closed
             </p>
-            <h2 className="font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
+            <h2 className="font-[var(--font-display)] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-normal">
               The demo now
               <br />
               <span className="italic text-white/42">becomes pipeline.</span>
@@ -434,7 +359,7 @@ function CycleClosureSection() {
               <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-blue-200/55">
                 {step.label}
               </p>
-              <h3 className="mt-8 text-2xl font-semibold tracking-[-0.045em] text-white">
+              <h3 className="mt-8 text-2xl font-semibold tracking-normal text-white">
                 {step.title}
               </h3>
               <p className="mt-4 text-sm leading-7 text-white/50">{step.body}</p>
@@ -448,9 +373,10 @@ function CycleClosureSection() {
               Public precision proof
             </p>
             <p className="mt-3 text-sm leading-7 text-white/58">
-              Dubai backtest: 234K+ verified DLD transactions, R2 0.889, MAPE 12.7%,
-              and 81.6% of estimates inside 20%. The public site shows ranges; the agent
-              keeps the final professional recommendation.
+              Dubai proof stays honest: the support-rich slice is around {supportMape}% MAPE with{" "}
+              {supportWithin20}% of estimates inside 20%, while the broader strict temporal
+              holdout is around {broadMape}% MAPE. The public site shows ranges; the agent keeps the final
+              professional recommendation.
             </p>
           </div>
           <a
@@ -466,202 +392,231 @@ function CycleClosureSection() {
 }
 
 function PricingSection() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
+  const plans = [
+    {
+      name: "Launch Widget",
+      price: billingCycle === "monthly" ? "$700" : "$7,000",
+      detail: billingCycle === "monthly" ? "/ month" : "/ year",
+      badge: "Watermark included",
+      body: "For brokerages that want a private intake experience live fast, with FonatProp branding visible on the surface.",
+      points: [
+        "FonatProp software fee: USD 700/month",
+        "30-day free pilot included",
+        "Agency-branded widget with FonatProp mark",
+        "Broker-ready inquiries",
+        "Private performance dashboard",
+        "FonatProp watermark visible",
+      ],
+    },
+    {
+      name: "Private Label",
+      price: billingCycle === "monthly" ? "$1,000" : "$10,000",
+      detail: billingCycle === "monthly" ? "/ month" : "/ year",
+      badge: "No watermark",
+      body: "For agencies that want the same product with a cleaner branded surface and no FonatProp mark visible to the visitor.",
+      points: [
+        "FonatProp software fee: USD 1,000/month",
+        "30-day free pilot included",
+        "Everything in Launch Widget",
+        "Agency-branded widget setup",
+        "Broker-ready inquiries",
+        "No FonatProp watermark",
+      ],
+    },
+    {
+      name: "Growth OS",
+      price: billingCycle === "monthly" ? "$1,500" : "$15,000",
+      detail: billingCycle === "monthly" ? "/ month" : "/ year",
+      badge: "Managed growth",
+      body: "Seller Acquisition Operating System: a managed monthly program for qualified demand, private intake and commercial proof.",
+      points: [
+        "FonatProp operating fee: USD 1,500/month",
+        "Everything in Private Label",
+        "Managed demand program",
+        "Agency-approved growth budget stays separate",
+        "Private conversion workspace",
+        "Monthly commercial optimization",
+      ],
+    },
+    {
+      name: "Premium OS",
+      price: billingCycle === "monthly" ? "$3,000" : "$30,000",
+      detail: billingCycle === "monthly" ? "/ month" : "/ year",
+      badge: "Full operating layer",
+      body: "For teams that want advanced acquisition modules, private routing, reporting and priority operating support.",
+      points: [
+        "FonatProp premium operating fee: USD 3,000/month",
+        "Everything in Growth OS",
+        "Advanced acquisition modules",
+        "Advanced private routing",
+        "Monthly executive report",
+        "Agency-approved growth budget stays separate",
+      ],
+    },
+  ];
 
   return (
     <section className="bg-[#0a0a0f] px-5 py-24 text-white">
       <div className="mx-auto max-w-7xl">
         <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-white/35">
-          Commercial model / valuation tokens
+          Commercial model / memberships
         </p>
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <h2 className="max-w-4xl font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
-            Simple pricing.
+          <h2 className="max-w-4xl font-[var(--font-display)] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-normal">
+            Four ways in.
             <br />
-            <span className="italic text-white/42">Easy to buy.</span>
+            <span className="italic text-white/42">One acquisition layer.</span>
           </h2>
           <p className="max-w-md text-[15px] leading-8 text-white/55">
-            The widget has one fixed monthly fee. Private AI valuation works with tokens:
-            one private valuation search consumes one token.
+            FonatProp does not build websites. Partners keep the site; FonatProp adds a private acquisition layer.
+            Every plan starts with a 30-day pilot.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {pricingSummaryCards.map((card) => (
-            <PricingSignalCard
-              key={card.name}
-              card={card}
-              onOpenModal={card.name === "Top-up" ? () => setModalOpen(true) : undefined}
-            />
-          ))}
-        </div>
-
-        <div className="relative mt-8 overflow-hidden rounded-[36px] border border-white/10 bg-[linear-gradient(180deg,rgba(11,16,32,0.78),rgba(7,10,18,0.96))] p-6 shadow-[0_22px_80px_rgba(0,0,0,0.22)]">
-          <div className="absolute right-6 top-6 h-[120px] w-[220px] opacity-70">
-            <div className="flex h-full items-end justify-end gap-[7px]">
-              {[26, 40, 56, 92, 74, 48, 60, 34].map((height, index) => (
-                <span
-                  key={`plan-sky-${height}-${index}`}
-                  className="w-[18px] rounded-t-[10px] border border-white/8"
-                  style={{
-                    height: `${height}px`,
-                    background:
-                      "linear-gradient(180deg, rgba(99,199,255,0.32), rgba(18,24,40,0.12))",
-                    boxShadow: "0 0 24px rgba(99,199,255,0.14)",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="relative flex flex-col gap-5 border-b border-white/8 pb-6 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-200/62">
-                Private AI valuation grid
-              </p>
-              <h3 className="mt-3 text-[2rem] font-semibold tracking-[-0.05em] text-white">
-                Buy the exact volume you need.
-              </h3>
-              <p className="mt-2 max-w-xl text-sm leading-7 text-white/56">
-                Entry starts at 10 valuations. Every private valuation search consumes one token.
-              </p>
-            </div>
-            <div className="text-left md:text-right">
-              <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-white/42">
-                Entry tier
-              </p>
-              <p className="mt-2 text-xl font-semibold text-white">10 tokens / AED 1,465</p>
-              <p className="mt-1 text-sm text-white/52">Scale up to 200 tokens / AED 12,855</p>
-            </div>
-          </div>
-
-          <div className="relative mt-6 space-y-3">
-            {valuationPlans.map((plan) => (
-              <div
-                key={plan.tokens}
-                className={`grid gap-3 rounded-[24px] border px-5 py-5 transition md:grid-cols-[1fr_auto_auto] md:items-center ${
-                  plan.featured
-                    ? "border-[#ebc469] bg-[linear-gradient(90deg,rgba(235,196,105,0.08),rgba(18,24,40,0.92))]"
-                    : "border-white/10 bg-white/[0.025]"
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  {plan.featured && (
-                    <span className="rounded-full bg-[#ebc469] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#0a0a0f]">
-                      Popular
-                    </span>
-                  )}
-                  <div>
-                    <p className="text-base text-white">{plan.tokens} valuations / month</p>
-                    <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-white/38">
-                      {plan.tokens} tokens / month
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-5 md:min-w-[240px] md:justify-end">
-                  <p className="text-[1.7rem] font-semibold tracking-[-0.04em] text-white">
-                    {plan.priceAed}
-                  </p>
-                </div>
-                <div className="flex items-center md:justify-end">
-                  <p className="min-w-[86px] text-right text-sm text-white/52">
-                    {plan.priceUsd}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-5 flex flex-col gap-4 border-t border-white/10 pt-5 md:flex-row md:items-center md:justify-between">
-            <p className="text-sm leading-7 text-white/52">
-              Extra credits, custom bundles and enterprise setup on request.
-            </p>
+        <div className="mt-10 flex justify-center">
+          <div className="inline-flex rounded-full border border-white/12 bg-white/[0.04] p-1">
             <button
               type="button"
-              onClick={() => setModalOpen(true)}
-              className="rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-white/72 transition hover:border-white/24 hover:text-white"
+              onClick={() => setBillingCycle("monthly")}
+              className={`rounded-full px-5 py-3 text-[11px] uppercase tracking-[0.26em] transition ${
+                billingCycle === "monthly"
+                  ? "bg-white text-[#0a0a0f]"
+                  : "text-white/60 hover:text-white"
+              }`}
             >
-              Tokens, top-ups & upgrades
+              Monthly
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingCycle("annual")}
+              className={`rounded-full px-5 py-3 text-[11px] uppercase tracking-[0.26em] transition ${
+                billingCycle === "annual"
+                  ? "bg-white text-[#0a0a0f]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Annual
             </button>
           </div>
         </div>
-      </div>
 
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/72 px-5 backdrop-blur-sm">
-          <div className="w-full max-w-5xl rounded-[34px] border border-white/10 bg-[#0b1020] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] md:p-8">
-            <div className="flex flex-col gap-4 border-b border-white/10 pb-5 md:flex-row md:items-start md:justify-between">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-300/70">
-                  Token model
-                </p>
-                <h3 className="mt-3 font-['Fraunces'] text-[clamp(2rem,4vw,3.4rem)] font-light tracking-[-0.05em] text-white">
-                  Extra credits & plan upgrades.
-                </h3>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-white/56">
-                  Keep the buying logic simple: one widget fee, one valuation token per private
-                  AI search, and top-ups when a brokerage needs more volume.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setModalOpen(false)}
-                className="rounded-full border border-white/12 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-white/70 transition hover:border-white/24 hover:text-white"
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="mt-6 grid gap-6 xl:grid-cols-[0.45fr_0.55fr]">
-              <div className="space-y-3">
-                {upgradeRules.map((rule) => (
-                  <div
-                    key={rule}
-                    className="rounded-[22px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm leading-7 text-white/68"
-                  >
-                    {rule}
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid gap-4">
-                {topUpPacks.map((pack) => (
-                  <div
-                    key={pack.name}
-                    className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5"
-                  >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div>
-                        <p className="text-lg font-semibold tracking-[-0.03em] text-white">
-                          {pack.name}
-                        </p>
-                        <p className="mt-2 text-sm leading-7 text-white/56">{pack.copy}</p>
-                      </div>
-                      <p className="text-xl font-semibold text-white">{pack.price}</p>
-                    </div>
-                  </div>
-                ))}
-
-                <div className="rounded-[24px] border border-[#ebc469]/30 bg-[#ebc469]/[0.06] p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#ebc469]">
-                    Sales logic
+        <div className="mt-10 grid gap-5 lg:grid-cols-4">
+          {plans.map((plan, index) => (
+            <article
+              key={plan.name}
+              className={`overflow-hidden rounded-[34px] border p-7 shadow-[0_22px_80px_rgba(0,0,0,0.22)] ${
+                index === 1
+                  ? "border-[#ebc469]/40 bg-[radial-gradient(circle_at_top_right,rgba(235,196,105,0.18),transparent_32%),linear-gradient(180deg,rgba(18,20,28,0.96),rgba(7,10,18,0.98))]"
+                  : index === 2
+                    ? "border-cyan-200/30 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_32%),linear-gradient(180deg,rgba(13,31,42,0.96),rgba(7,10,18,0.98))]"
+                    : index === 3
+                      ? "border-emerald-200/30 bg-[radial-gradient(circle_at_top_right,rgba(52,211,153,0.18),transparent_32%),linear-gradient(180deg,rgba(13,34,28,0.96),rgba(7,10,18,0.98))]"
+                  : "border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_32%),linear-gradient(180deg,rgba(14,18,30,0.94),rgba(7,10,18,0.98))]"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/42">
+                    {plan.badge}
                   </p>
-                  <p className="mt-3 text-sm leading-7 text-white/68">
-                    The easiest explanation for the buyer is: the widget is a fixed monthly
-                    website product, while the private AI valuation tool scales by token volume
-                    depending on how many owner or investor pricing conversations the agency runs.
-                  </p>
+                  <h3 className="mt-4 text-[2rem] font-semibold tracking-normal text-white">
+                    {plan.name}
+                  </h3>
                 </div>
+                {index === 1 ? (
+                  <span className="rounded-full bg-[#ebc469] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#0a0a0f]">
+                    Premium
+                  </span>
+                ) : null}
               </div>
-            </div>
-          </div>
+
+              <div className="mt-8 flex items-end gap-3">
+                <p className="font-[var(--font-display)] text-[clamp(3rem,5vw,4.8rem)] font-light leading-none tracking-normal text-white">
+                  {plan.price}
+                </p>
+                <p className="pb-3 text-sm uppercase tracking-[0.2em] text-white/46">{plan.detail}</p>
+              </div>
+
+              <p className="mt-5 max-w-xl text-[15px] leading-8 text-white/58">{plan.body}</p>
+
+              <div className="mt-8 space-y-3">
+                {plan.points.map((point) => (
+                  <div
+                    key={point}
+                    className="rounded-[20px] border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-white/68"
+                  >
+                    {point}
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
         </div>
-      )}
+
+        <div className="mt-6 rounded-[28px] border border-white/10 bg-white/[0.03] px-6 py-5 text-sm leading-7 text-white/54">
+          FonatProp is partner-friendly: it does not replace website builders or creative studios.
+          It adds a confidential acquisition layer that turns their work into qualified inquiries
+          and measurable monthly reports.
+        </div>
+      </div>
     </section>
   );
 }
 
 function ContactSection() {
+  const hasPublicDubaiWhatsApp = FONATPROP_CONTACT.whatsappDisplay.trim().startsWith("+971");
+  const contactCards = hasPublicDubaiWhatsApp
+    ? [
+        {
+          label: "WhatsApp",
+          value: FONATPROP_CONTACT.whatsappDisplay,
+          href: FONATPROP_CONTACT.whatsappHref,
+          accent:
+            "border-emerald-300/20 bg-emerald-300/[0.07] hover:border-emerald-200/40 hover:bg-emerald-300/[0.11]",
+          textAccent: "text-emerald-100/62",
+          external: true,
+        },
+        {
+          label: "Email",
+          value: FONATPROP_CONTACT.email,
+          href: FONATPROP_CONTACT.emailHref,
+          accent:
+            "border-blue-300/20 bg-blue-300/[0.07] hover:border-blue-200/40 hover:bg-blue-300/[0.11]",
+          textAccent: "text-blue-100/62",
+          external: false,
+        },
+      ]
+    : [
+        {
+          label: "Website",
+          value: FONATPROP_CONTACT.website,
+          href: FONATPROP_CONTACT.websiteHref,
+          accent:
+            "border-cyan-300/20 bg-cyan-300/[0.07] hover:border-cyan-200/40 hover:bg-cyan-300/[0.11]",
+          textAccent: "text-cyan-100/62",
+          external: true,
+        },
+        {
+          label: "Email",
+          value: FONATPROP_CONTACT.email,
+          href: FONATPROP_CONTACT.emailHref,
+          accent:
+            "border-blue-300/20 bg-blue-300/[0.07] hover:border-blue-200/40 hover:bg-blue-300/[0.11]",
+          textAccent: "text-blue-100/62",
+          external: false,
+        },
+        {
+          label: "Private demo",
+          value: "Broker demo access",
+          href: FONATPROP_CONTACT.brokerDemoHref,
+          accent:
+            "border-white/12 bg-white/[0.04] hover:border-white/24 hover:bg-white/[0.08]",
+          textAccent: "text-white/62",
+          external: true,
+        },
+      ];
+
   return (
     <section className="bg-[#0a0a0f] px-5 py-24 text-white">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
@@ -669,14 +624,14 @@ function ContactSection() {
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-white/35">
             Contact / FonatProp
           </p>
-          <h2 className="font-['Fraunces'] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-[-0.055em]">
+          <h2 className="font-[var(--font-display)] text-[clamp(2.8rem,6vw,6rem)] font-light leading-[0.9] tracking-normal">
             Book the demo.
             <br />
             <span className="italic text-white/42">Talk to us directly.</span>
           </h2>
           <p className="mt-6 max-w-xl text-[15px] leading-8 text-white/55">
-            For brokerages, pilots and commercial setup, contact FonatProp through WhatsApp
-            or email.
+            For brokerages, pilots and commercial setup, use the private demo route and the
+            FonatProp commercial inbox.
           </p>
         </div>
         <div className="rounded-[34px] border border-white/10 bg-white/[0.045] p-7 shadow-[0_28px_90px_rgba(0,0,0,0.25)]">
@@ -684,30 +639,20 @@ function ContactSection() {
             Direct contact
           </p>
           <div className="grid gap-4">
-            <a
-              href={FONATPROP_CONTACT.whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-[24px] border border-emerald-300/20 bg-emerald-300/[0.07] p-5 transition hover:border-emerald-200/40 hover:bg-emerald-300/[0.11]"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-emerald-100/62">
-                WhatsApp
-              </p>
-              <p className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
-                {FONATPROP_CONTACT.whatsappDisplay}
-              </p>
-            </a>
-            <a
-              href={FONATPROP_CONTACT.emailHref}
-              className="rounded-[24px] border border-blue-300/20 bg-blue-300/[0.07] p-5 transition hover:border-blue-200/40 hover:bg-blue-300/[0.11]"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-blue-100/62">
-                Email
-              </p>
-              <p className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
-                {FONATPROP_CONTACT.email}
-              </p>
-            </a>
+            {contactCards.map((card) => (
+              <a
+                key={card.label}
+                href={card.href}
+                target={card.external ? "_blank" : undefined}
+                rel={card.external ? "noopener noreferrer" : undefined}
+                className={`rounded-[24px] border p-5 transition ${card.accent}`}
+              >
+                <p className={`font-mono text-[10px] uppercase tracking-[0.28em] ${card.textAccent}`}>
+                  {card.label}
+                </p>
+                <p className="mt-3 text-2xl font-semibold tracking-normal">{card.value}</p>
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -736,12 +681,12 @@ export default function BrokerDemoClient() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/0 via-[#0a0a0f]/3 to-[#0a0a0f]/28" />
         <div className="relative mx-auto max-w-7xl">
           <div className="mb-10 inline-flex items-center gap-5 text-white drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]">
-            <span className="font-['Fraunces'] text-[3.2rem] font-light italic leading-none tracking-[-0.08em] text-white/92">
+            <span className="font-[var(--font-display)] text-[3.2rem] font-light italic leading-none tracking-normal text-white/92">
               fp
             </span>
             <span className="h-16 w-px bg-white/42" />
             <span>
-              <span className="block font-['Fraunces'] text-[clamp(2.6rem,4.2vw,4.7rem)] font-light leading-none tracking-[-0.06em]">
+              <span className="block font-[var(--font-display)] text-[clamp(2.6rem,4.2vw,4.7rem)] font-light leading-none tracking-normal">
                 FonatProp
               </span>
               <span className="mt-3 block font-mono text-[9px] uppercase tracking-[0.48em] text-white/62">
@@ -752,7 +697,7 @@ export default function BrokerDemoClient() {
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.36em] text-white/42">
             Dubai brokerage revenue demo
           </p>
-          <h1 className="max-w-5xl font-['Fraunces'] text-[clamp(3.2rem,7vw,7.5rem)] font-light leading-[0.88] tracking-[-0.06em]">
+          <h1 className="max-w-5xl font-[var(--font-display)] text-[clamp(3.2rem,7vw,7.5rem)] font-light leading-[0.88] tracking-normal">
             Turn property value
             <br />
             <span className="italic text-white/46">into qualified inquiries.</span>
@@ -807,6 +752,16 @@ export default function BrokerDemoClient() {
         </div>
       </section>
 
+      <WidgetShowcase />
+      <TrafficGenerationDemoSection />
+      <CycleClosureSection />
+
+      <div id="valuation">
+        <GoogleMapsLoader>
+          <ValorarSection publicDemo />
+        </GoogleMapsLoader>
+      </div>
+
       <ProductSplit />
 
       <section className="bg-[#0a0a0f] px-5 py-20">
@@ -820,7 +775,7 @@ export default function BrokerDemoClient() {
                 key={benefit.title}
                 className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6"
               >
-                <h3 className="text-2xl font-semibold tracking-[-0.045em]">{benefit.title}</h3>
+                <h3 className="text-2xl font-semibold tracking-normal">{benefit.title}</h3>
                 <p className="mt-4 text-sm leading-7 text-white/52">{benefit.body}</p>
               </div>
             ))}
@@ -828,15 +783,7 @@ export default function BrokerDemoClient() {
         </div>
       </section>
 
-      <div id="valuation">
-        <GoogleMapsLoader>
-          <ValorarSection publicDemo />
-        </GoogleMapsLoader>
-      </div>
-
       <MandatePackPreviewSection />
-      <CycleClosureSection />
-      <WidgetShowcase />
       <PricingSection />
       <ContactSection />
     </div>

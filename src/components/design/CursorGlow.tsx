@@ -25,26 +25,41 @@ export default function CursorGlow({
   intensity = 0.85,
   className = "",
 }: Props) {
+  const [enabled, setEnabled] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const target = useRef({ x: -9999, y: -9999 });
   const current = useRef({ x: -9999, y: -9999 });
   const raf = useRef<number | null>(null);
-  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduced) return;
-    setEnabled(true);
+    const frame = window.requestAnimationFrame(() => {
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setEnabled(fine && !reduced);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled || typeof window === "undefined") return;
+
+    const stop = () => {
+      if (raf.current) {
+        cancelAnimationFrame(raf.current);
+        raf.current = null;
+      }
+    };
 
     const onMove = (e: PointerEvent) => {
       target.current.x = e.clientX;
       target.current.y = e.clientY;
+      if (!raf.current) raf.current = requestAnimationFrame(tick);
     };
     const onLeave = () => {
       target.current.x = -9999;
       target.current.y = -9999;
+      if (!raf.current) raf.current = requestAnimationFrame(tick);
     };
 
     const tick = () => {
@@ -56,19 +71,22 @@ export default function CursorGlow({
       if (el) {
         el.style.transform = `translate3d(${current.current.x - size / 2}px, ${current.current.y - size / 2}px, 0)`;
       }
+      if (Math.abs(dx) < 0.35 && Math.abs(dy) < 0.35) {
+        raf.current = null;
+        return;
+      }
       raf.current = requestAnimationFrame(tick);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave, { passive: true });
-    raf.current = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerleave", onLeave);
-      if (raf.current) cancelAnimationFrame(raf.current);
+      stop();
     };
-  }, [size]);
+  }, [enabled, size]);
 
   if (!enabled) return null;
 
