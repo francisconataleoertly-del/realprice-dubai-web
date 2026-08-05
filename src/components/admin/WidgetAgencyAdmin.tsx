@@ -5,7 +5,15 @@ import { useEffect, useMemo, useState } from "react";
 type WidgetAgencyMarket = "dubai" | "france" | "multi";
 type WidgetMode = "valuation" | "carousel";
 type WidgetLeadOverageMode = "soft_gate" | "hard_gate" | "unlimited";
-type WidgetLeadRoutingMode = "email" | "webhook" | "email_webhook" | "manual";
+type WidgetLeadRoutingMode =
+  | "email"
+  | "webhook"
+  | "email_webhook"
+  | "whatsapp"
+  | "whatsapp_email"
+  | "whatsapp_webhook"
+  | "all"
+  | "manual";
 type WidgetBillingStatus = "trial" | "active" | "paused" | "cancelled";
 type WidgetFrameShape = "soft" | "rounded" | "square" | "pill";
 type WidgetSurfaceTone = "dark" | "light" | "glass";
@@ -455,7 +463,7 @@ export default function WidgetAgencyAdmin({ isAdmin }: { isAdmin: boolean }) {
                 Broker handoff
               </p>
               <p className="mt-2 text-sm leading-6 text-white/45">
-                Send each captured lead to the broker by email or CRM webhook, with card, score, source and suggested next action.
+                Send each captured lead to the broker by email, WhatsApp or CRM webhook, with card, score, source and suggested next action.
               </p>
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <label className="grid gap-2">
@@ -486,6 +494,10 @@ export default function WidgetAgencyAdmin({ isAdmin }: { isAdmin: boolean }) {
                     <option value="email">Email</option>
                     <option value="webhook">CRM webhook</option>
                     <option value="email_webhook">Email + CRM webhook</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="whatsapp_email">WhatsApp + email</option>
+                    <option value="whatsapp_webhook">WhatsApp + CRM webhook</option>
+                    <option value="all">All configured channels</option>
                     <option value="manual">Manual only</option>
                   </select>
                 </label>
