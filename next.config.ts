@@ -1,11 +1,40 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Enables the browser View Transitions API for client-side route changes
-    // (Chrome/Edge stable, Safari TP, Firefox behind flag). Falls back to a
-    // standard navigation when the API isn't available.
-    viewTransition: true,
+  env: {
+    NEXT_PUBLIC_APP_BUILD:
+      process.env.VERCEL_GIT_COMMIT_SHA ||
+      process.env.APP_BUILD_VERSION ||
+      "local-dev",
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(self), payment=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+        ],
+      },
+    ];
   },
 };
 
